@@ -1,0 +1,39 @@
+ext {
+    android = [
+            applicationId    : "com.app.eye",
+            minSdkVersion    : 21,
+            targetSdkVersion : 29,
+            compileSdkVersion: 29,
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    dependencies = [
+            appcompat            : "androidx.appcompat:appcompat:1.2.0",
+            viewpager2           : 'androidx.viewpager2:viewpager2:1.0.0',
+            kotlin               : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            core_ktx             : "androidx.core:core-ktx:1.3.0",
+            constraintlayout     : "androidx.constraintlayout:constraintlayout:1.1.3",
+            rxjava3              : "io.reactivex.rxjava3:rxjava:3.0.7",
+            retrofit             : "com.squareup.retrofit2:retrofit:2.9.0",
+            converter_gson       : 'com.squareup.retrofit2:converter-gson:2.9.0',
+            adapter_rxjava       : 'com.squareup.retrofit2:adapter-rxjava3:2.9.0',
+            glide                : 'com.github.bumptech.glide:glide:4.11.0',
+            glide_compiler       : "com.github.bumptech.glide:compiler:4.11.0",
+            glide_transformations: "jp.wasabeef:glide-transformations:4.3.0",
+            adapterHelper        : "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4",
+            logger               : 'com.orhanobut:logger:2.2.0',
+            utilCode             : "com.blankj:utilcodex:1.29.0",
+            immersionbar         : 'com.gyf.immersionbar:immersionbar:3.0.0',
+            logging_interceptor  : "com.squareup.okhttp3:logging-interceptor:3.4.1",
+            okhttp3_integration  : "com.github.bumptech.glide:okhttp3-integration:4.11.0",
+            rxandroid            : 'io.reactivex.rxjava3:rxandroid:3.0.0',
+            autosize             : 'me.jessyan:autosize:1.2.1',
+            fragmentationx       : 'me.yokeyword:fragmentationx:1.0.2',
+            eventbus             : 'org.greenrobot:eventbus:3.2.0',
+            multi_status         : 'com.classic.common:multiple-status-view:1.7',
+            FlycoTabLayout       : 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar',
+            banner               : 'com.youth.banner:banner:2.1.0',
+            itemdecoration       : 'com.github.thekhaeng:recycler-margin:1.2.1',
+    ]
+}
