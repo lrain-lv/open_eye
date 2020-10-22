@@ -86,6 +86,7 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
 
     override fun onStop() {
         super.onStop()
+
     }
 
     override fun showLoading() {
