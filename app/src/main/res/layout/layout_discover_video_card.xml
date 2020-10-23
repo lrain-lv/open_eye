@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
+    android:layout_height="90dp"
     android:layout_marginBottom="10dp"
     android:paddingHorizontal="15dp">
 
@@ -11,12 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <ImageView
         android:id="@+id/iv_pic"
         android:layout_width="0dp"
-        android:layout_height="85dp"
+        android:layout_height="90dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/icon_splash"
         app:layout_constraintBottom_toBottomOf="parent"

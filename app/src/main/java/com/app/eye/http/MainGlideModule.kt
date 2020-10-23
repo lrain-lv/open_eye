@@ -38,20 +38,18 @@ class MainGlideModule : AppGlideModule() {
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         builder.setDefaultRequestOptions(options)
         val maxMemory = Runtime.getRuntime().maxMemory().toInt() //获取系统分配给应用的总内存大小
-
         val memoryCacheSize = maxMemory / 8 //设置图片内存缓存占用八分之一
-
         //设置内存缓存大小
         //设置内存缓存大小
         builder.setMemoryCache(LruResourceCache(memoryCacheSize.toLong()))
         builder.setBitmapPool(LruBitmapPool(memoryCacheSize.toLong()))
-        val cacheDir: File? //指定的是数据的缓存地址
+        val cacheDir: File? =
+            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+                context.externalCacheDir
+            } else {
+                context.cacheDir
+            }//指定的是数据的缓存地址
 
-        cacheDir = if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            context.externalCacheDir
-        } else {
-            context.cacheDir
-        }
         //设置磁盘缓存大小
         //设置磁盘缓存大小
         val diskCacheSize = 1024 * 1024 * 500 //最多可以缓存多少字节的数据

@@ -22,6 +22,7 @@ class SquareItemAdapter(var dataList: MutableList<ItemX>) : BaseQuickAdapter<Ite
         holder.setText(R.id.tv_title, item.data.title)
         Glide.with(context)
             .load(item.data.image)
+            .override(SizeUtils.dp2px(100f), SizeUtils.dp2px(100f))
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
             .into(imageView)

@@ -21,6 +21,7 @@ import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.widgets.STATUS_CONTENT
 import com.blankj.utilcode.util.SizeUtils
+import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_find.*
 
@@ -36,7 +37,6 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
     override fun getLayoutRes(): Int = R.layout.fragment_find
 
     lateinit var discoverAdapter: DiscoverAdapter
-    private lateinit var footView : TextView
     override fun initView() {
         status_view.showLoadingView()
         initSwipeRefreshLayout(refresh_layout)
@@ -44,16 +44,8 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
         discoverAdapter = DiscoverAdapter(mutableListOf())
         recycler_view.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+        discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
         recycler_view.adapter = discoverAdapter
-        footView = TextView(mContext)
-        val layoutParams =
-            FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, SizeUtils.dp2px(100f))
-        footView.layoutParams = layoutParams
-        footView.gravity = Gravity.CENTER
-        footView.text = "-The End-"
-        footView.setTextColor(Color.BLACK)
-        var typeface = Typeface.createFromAsset(mContext.assets, "fonts/Lobster-1.4.otf")
-        footView.typeface = typeface
 
     }
 
@@ -74,9 +66,14 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
     }
 
     override fun getResponse(discoverEntity: DiscoverEntity) {
-        discoverAdapter.setList(discoverEntity.itemList)
-        discoverAdapter.setFooterView(footView)
-        discoverAdapter.banner.addBannerLifecycleObserver(this)
+        if (discoverEntity.itemList.isEmpty()) {
+            status_view.showEmptyView()
+        } else {
+            status_view.showContentView()
+            discoverAdapter.setList(discoverEntity.itemList)
+            discoverAdapter.loadMoreModule.loadMoreEnd(gone = false)
+            discoverAdapter.banner.addBannerLifecycleObserver(this)
+        }
     }
 
     override fun onStart() {
@@ -96,4 +93,5 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
         status_view.showContentView()
         refresh_layout.isRefreshing = false
     }
+
 }

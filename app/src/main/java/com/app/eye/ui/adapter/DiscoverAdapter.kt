@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import com.youth.banner.Banner
@@ -27,7 +28,7 @@ import java.util.*
 
 
 class DiscoverAdapter(var datas: MutableList<Item>) :
-    BaseMultiItemQuickAdapter<Item, BaseViewHolder>(datas) {
+    BaseMultiItemQuickAdapter<Item, BaseViewHolder>(datas),LoadMoreModule {
 
     lateinit var banner: Banner<ItemX, BannerItemAdapter>
 
@@ -120,6 +121,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                     .setText(R.id.tv_dec, item.data.description)
                 Glide.with(context)
                     .load(item.data.icon)
+                    .override(SizeUtils.dp2px(70f), SizeUtils.dp2px(70f))
                     .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(img)
