@@ -21,6 +21,8 @@ private const val ARG_PARAM2 = "param2"
 class CommunityFragment : BaseFragment() {
 
     override fun getLayoutRes(): Int = R.layout.fragment_community
+    override fun reConnect() {
+    }
 
     override fun initView() {
     }

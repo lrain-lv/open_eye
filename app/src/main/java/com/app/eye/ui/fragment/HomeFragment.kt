@@ -19,7 +19,7 @@ class HomeFragment : BaseFragment() {
             RecommendFragment.newInstance(),
             DailyFragment.newInstance()
         )
-        val tabFragmentAdapter = TabFragmentAdapter(fragmentManager!!, fragmentList, titleList)
+        val tabFragmentAdapter = TabFragmentAdapter(requireFragmentManager(), fragmentList, titleList)
         view_pager.adapter = tabFragmentAdapter
         view_pager.offscreenPageLimit = 3
         tab_layout.setViewPager(view_pager)
@@ -55,6 +55,7 @@ class HomeFragment : BaseFragment() {
 
             }
     }
-
+    override fun reConnect() {
+    }
 
 }

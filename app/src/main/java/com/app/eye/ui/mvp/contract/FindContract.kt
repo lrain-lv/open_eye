@@ -9,9 +9,7 @@ import io.reactivex.rxjava3.core.Observable
 interface FindContract {
 
     interface View : IBaseView {
-        fun getDiscoveryData()
-
-        fun getResponse(discoverEntity: DiscoverEntity)
+        fun setResponse(discoverEntity: DiscoverEntity)
     }
 
     interface Model : IModel {

@@ -17,7 +17,7 @@ class FindPresenter : BasePresenter<FindContract.Model, FindContract.View>(),
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 view?.hideLoading()
-                view?.getResponse(it)
+                view?.setResponse(it)
             }, { view?.hideLoading() })
         addDisposable(subscribe)
     }

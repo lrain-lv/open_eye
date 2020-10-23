@@ -144,6 +144,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
 
     fun showNoNetworkView() {
         visibility = View.VISIBLE
+        showNoNetworkView(noNetworkViewResId,layoutParams)
     }
 
 

@@ -36,4 +36,7 @@ class NotificationFragment : BaseFragment() {
 
             }
     }
+
+    override fun reConnect() {
+    }
 }

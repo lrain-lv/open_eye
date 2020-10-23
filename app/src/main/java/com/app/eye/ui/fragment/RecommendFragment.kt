@@ -46,4 +46,7 @@ class RecommendFragment : BaseFragment() {
                 }
             }
     }
+
+    override fun reConnect() {
+    }
 }

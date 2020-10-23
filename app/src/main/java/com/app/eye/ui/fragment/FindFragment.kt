@@ -19,11 +19,17 @@ import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.presenter.FindPresenter
+import com.app.eye.widgets.MultipleStatusView
 import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_NO_NETWORK
+import com.blankj.utilcode.util.NetworkUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.orhanobut.logger.Logger
+import kotlinx.android.synthetic.main.fragment_daily.*
 import kotlinx.android.synthetic.main.fragment_find.*
+import kotlinx.android.synthetic.main.fragment_find.refresh_layout
+import kotlinx.android.synthetic.main.fragment_find.status_view
 
 class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(),
     FindContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -38,7 +44,7 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
 
     lateinit var discoverAdapter: DiscoverAdapter
     override fun initView() {
-        status_view.showLoadingView()
+
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
         discoverAdapter = DiscoverAdapter(mutableListOf())
@@ -46,26 +52,27 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
         recycler_view.adapter = discoverAdapter
-
     }
 
     override fun initData() {
-        getDiscoveryData()
-    }
+        if (!NetworkUtils.isConnected()) {
+            status_view.showNoNetworkView()
 
+        } else {
+            status_view.showLoadingView()
+            recycler_view.post { mPresenter?.getDiscoveryData() }
+        }
+    }
 
     override fun onRefresh() {
         refresh_layout.isRefreshing = true
-        getDiscoveryData()
+        mPresenter?.getDiscoveryData()
     }
 
     override fun createPresenter(): FindContract.Presenter? = FindPresenter()
 
-    override fun getDiscoveryData() {
-        mPresenter?.getDiscoveryData()
-    }
 
-    override fun getResponse(discoverEntity: DiscoverEntity) {
+    override fun setResponse(discoverEntity: DiscoverEntity) {
         if (discoverEntity.itemList.isEmpty()) {
             status_view.showEmptyView()
         } else {
@@ -76,16 +83,6 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-    }
-
     override fun showLoading() {
     }
 
@@ -94,4 +91,10 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
         refresh_layout.isRefreshing = false
     }
 
+    override fun reConnect() {
+        if (status_view.getViewStatus() == STATUS_NO_NETWORK) {
+            status_view.showLoadingView()
+            mPresenter?.getDiscoveryData()
+        }
+    }
 }

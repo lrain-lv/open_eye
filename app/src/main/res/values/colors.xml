@@ -40,4 +40,5 @@
     <color name="right_text">#1296db</color>
     <color name="category">#BBBBBB</color>
     <color name="duration_bg">#201F1F</color>
+    <color name="container_bg">#EDEDED</color>
 </resources>

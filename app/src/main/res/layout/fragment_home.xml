@@ -43,7 +43,7 @@
 
     <com.flyco.tablayout.SlidingTabLayout
         android:id="@+id/tab_layout"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toTopOf="@id/bar_line"
@@ -54,6 +54,7 @@
         app:tl_indicator_height="3dp"
         app:tl_indicator_width="12dp"
         app:tl_tab_space_equal="true"
+        app:tl_tab_padding="20dp"
         app:tl_textSelectColor="@color/tab_bar_selected"
         app:tl_textUnselectColor="@color/tab_bar_unselected"
         app:tl_textsize="12dp" />

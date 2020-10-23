@@ -21,7 +21,6 @@ private const val ARG_PARAM2 = "param2"
 class MineFragment : BaseFragment() {
 
 
-
     override fun getLayoutRes(): Int = R.layout.fragment_mine
 
     override fun initView() {
@@ -36,5 +35,8 @@ class MineFragment : BaseFragment() {
             MineFragment().apply {
 
             }
+    }
+
+    override fun reConnect() {
     }
 }

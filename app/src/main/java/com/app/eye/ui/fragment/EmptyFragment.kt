@@ -55,4 +55,6 @@ class EmptyFragment : BaseFragment() {
             EmptyFragment().apply {
             }
     }
+    override fun reConnect() {
+    }
 }
