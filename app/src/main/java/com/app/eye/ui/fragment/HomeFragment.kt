@@ -3,7 +3,9 @@ package com.app.eye.ui.fragment
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
+import com.app.eye.ui.activity.SearchActivity
 import com.app.eye.ui.adapter.TabFragmentAdapter
+import com.blankj.utilcode.util.ActivityUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.yokeyword.fragmentation.SupportFragment
 
@@ -19,7 +21,8 @@ class HomeFragment : BaseFragment() {
             RecommendFragment.newInstance(),
             DailyFragment.newInstance()
         )
-        val tabFragmentAdapter = TabFragmentAdapter(requireFragmentManager(), fragmentList, titleList)
+        val tabFragmentAdapter =
+            TabFragmentAdapter(requireFragmentManager(), fragmentList, titleList)
         view_pager.adapter = tabFragmentAdapter
         view_pager.offscreenPageLimit = 3
         tab_layout.setViewPager(view_pager)
@@ -38,8 +41,10 @@ class HomeFragment : BaseFragment() {
             override fun onPageSelected(position: Int) {
                 tab_layout.currentTab = position
             }
-
         })
+        iv_search.setOnClickListener {
+            ActivityUtils.startActivity(SearchActivity::class.java)
+        }
     }
 
     override fun initData() {
@@ -55,6 +60,7 @@ class HomeFragment : BaseFragment() {
 
             }
     }
+
     override fun reConnect() {
     }
 

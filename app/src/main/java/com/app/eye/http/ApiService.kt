@@ -3,6 +3,7 @@ package com.app.eye.http
 import com.app.eye.http.Constant
 import com.app.eye.ui.mvp.model.entity.DailyEntity
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
+import com.app.eye.ui.mvp.model.entity.HotSearchEntity
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.Response
 import okhttp3.ResponseBody
@@ -23,4 +24,7 @@ interface ApiService {
 
     @GET(Constant.DAILY)
     fun getDaily(@QueryMap map: Map<String, String>): Observable<DailyEntity>
+
+    @GET(Constant.HOT)
+    fun getHot(): Observable<List<String>>
 }

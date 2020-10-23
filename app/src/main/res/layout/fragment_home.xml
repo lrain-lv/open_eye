@@ -57,7 +57,7 @@
         app:tl_tab_padding="20dp"
         app:tl_textSelectColor="@color/tab_bar_selected"
         app:tl_textUnselectColor="@color/tab_bar_unselected"
-        app:tl_textsize="12dp" />
+        app:tl_textsize="14dp" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"

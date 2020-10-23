@@ -17,6 +17,7 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.activity.SearchActivity"></activity>
         <activity
             android:name=".ui.activity.SplashActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -24,6 +25,7 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
