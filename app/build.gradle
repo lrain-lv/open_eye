@@ -51,11 +51,9 @@ dependencies {
     implementation ext.dependencies.autosize
     implementation ext.dependencies.fragmentationx
     implementation ext.dependencies.eventbus
-//    implementation ext.dependencies.multi_status
     implementation ext.dependencies.utilCode
     implementation ext.dependencies.FlycoTabLayout
     implementation ext.dependencies.itemdecoration
-//    implementation ext.dependencies.viewpager2
     implementation ext.dependencies.banner
     implementation ext.dependencies.itemdecoration
     implementation ext.dependencies.rxpermissions

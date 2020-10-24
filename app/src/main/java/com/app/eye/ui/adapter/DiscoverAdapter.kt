@@ -28,7 +28,7 @@ import java.util.*
 
 
 class DiscoverAdapter(var datas: MutableList<Item>) :
-    BaseMultiItemQuickAdapter<Item, BaseViewHolder>(datas),LoadMoreModule {
+    BaseMultiItemQuickAdapter<Item, BaseViewHolder>(datas), LoadMoreModule {
 
     lateinit var banner: Banner<ItemX, BannerItemAdapter>
 

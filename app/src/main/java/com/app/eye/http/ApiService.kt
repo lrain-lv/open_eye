@@ -4,6 +4,7 @@ import com.app.eye.http.Constant
 import com.app.eye.ui.mvp.model.entity.DailyEntity
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.model.entity.HotSearchEntity
+import com.app.eye.ui.mvp.model.entity.SearchEntity
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.Response
 import okhttp3.ResponseBody
@@ -26,5 +27,12 @@ interface ApiService {
     fun getDaily(@QueryMap map: Map<String, String>): Observable<DailyEntity>
 
     @GET(Constant.HOT)
-    fun getHot(): Observable<List<String>>
+    fun getHot(): Observable<MutableList<String>>
+
+    @GET(Constant.PRE_SEARCH)
+    fun doPreSearch(@Query("query") query: String): Observable<MutableList<String>>
+
+    @GET(Constant.SEARCH)
+    fun doSearch(@Query("query") query: String): Observable<SearchEntity>
+
 }

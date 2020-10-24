@@ -1,6 +1,7 @@
 package com.app.eye.widgets
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
                 R.layout.default_loading_view
             )
             recycle()
+            setBackgroundColor(Color.WHITE)
         }
 
     }
@@ -144,7 +146,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
 
     fun showNoNetworkView() {
         visibility = View.VISIBLE
-        showNoNetworkView(noNetworkViewResId,layoutParams)
+        showNoNetworkView(noNetworkViewResId, layoutParams)
     }
 
 
@@ -201,7 +203,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
         this.viewStatus = viewStatus
     }
 
-    private fun inflateView(resId: Int): View = inflater.inflate(resId, null)
+    private fun inflateView(resId: Int): View = inflater.inflate(resId, null )
 
     private fun showViewById(viewId: Int) {
         for (index in 0 until childCount) {

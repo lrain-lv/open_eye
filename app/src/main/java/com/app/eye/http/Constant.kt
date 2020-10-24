@@ -17,6 +17,11 @@ object Constant {
     const val HOT =
         "v3/queries/hot?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
+    const val PRE_SEARCH =
+        "v3/search/preSearch?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
+    const val SEARCH =
+        "v3/search?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
+
     //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1603155600000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1602982800000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1602810000000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
