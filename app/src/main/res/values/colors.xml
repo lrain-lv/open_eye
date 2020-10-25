@@ -41,4 +41,6 @@
     <color name="category">#BBBBBB</color>
     <color name="duration_bg">#201F1F</color>
     <color name="container_bg">#EDEDED</color>
+
+    <color name="btn_un_enable">#BFC8C8C8</color>
 </resources>

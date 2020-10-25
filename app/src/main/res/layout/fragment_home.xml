@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bar_line"
@@ -53,8 +52,8 @@
         app:tl_indicator_color="@color/tab_bar_selected"
         app:tl_indicator_height="3dp"
         app:tl_indicator_width="12dp"
-        app:tl_tab_space_equal="true"
         app:tl_tab_padding="20dp"
+        app:tl_tab_space_equal="true"
         app:tl_textSelectColor="@color/tab_bar_selected"
         app:tl_textUnselectColor="@color/tab_bar_unselected"
         app:tl_textsize="14dp" />

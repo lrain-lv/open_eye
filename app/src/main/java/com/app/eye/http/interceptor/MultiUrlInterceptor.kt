@@ -13,11 +13,16 @@ class MultiUrlInterceptor : Interceptor {
         val headers: MutableList<String>? = originalRequest.headers("hostName")
         if (headers?.isNotEmpty()!!) {
             builder.removeHeader("hostName")
-            val hostName = headers[0]
-            var baseUrl = if (hostName == "recommend") {
-                HttpUrl.parse(Constant.RECOMMEND_BASE_URL)!!
-            } else {
-                oldUrl
+            val baseUrl = when (headers[0]) {
+                "recommend" -> {
+                    HttpUrl.parse(Constant.RECOMMEND_BASE_URL)!!
+                }
+                "account" -> {
+                    HttpUrl.parse(Constant.ACCOUNT_BASE_URL)!!
+                }
+                else -> {
+                    oldUrl
+                }
             }
 
             val newUrl = oldUrl.newBuilder()

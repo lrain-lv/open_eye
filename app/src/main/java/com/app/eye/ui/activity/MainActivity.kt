@@ -113,4 +113,6 @@ class MainActivity : BaseActivity() {
     override fun reConnect() {
     }
 
+    override fun isUseEventBus(): Boolean = true
+
 }

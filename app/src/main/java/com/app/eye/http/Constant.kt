@@ -4,6 +4,9 @@ object Constant {
 
     const val COMMON_BASE_URL = "http://baobab.kaiyanapp.com/api/"
     const val RECOMMEND_BASE_URL = "http://api.eyepetizer.net/"
+    const val ACCOUNT_BASE_URL = "https://account.kaiyanapp.com/"
+
+    const val LOGIN = "v1/api/login"
 
     const val CONFIGS =
         "v2/configs?model=Android&deviceTypeOs=29&deviceImsi=0&deviceBrand=HUAWEI&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
@@ -21,6 +24,8 @@ object Constant {
         "v3/search/preSearch?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
     const val SEARCH =
         "v3/search?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
+
+    const val USER_AGREEMENT = "http://www.eyepetizer.net/agreement.html"
 
     //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1603155600000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1602982800000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29

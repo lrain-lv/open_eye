@@ -17,7 +17,9 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.SearchActivity"></activity>
+        <activity android:name=".ui.activity.WebActivity"></activity>
+        <activity android:name=".ui.activity.LoginActivity" />
+        <activity android:name=".ui.activity.SearchActivity" />
         <activity
             android:name=".ui.activity.SplashActivity"
             android:configChanges="keyboard|orientation|screenSize"

@@ -19,6 +19,7 @@ import me.yokeyword.fragmentation.SupportActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.prefs.Preferences
 
 abstract class BaseActivity : SupportActivity() {
 

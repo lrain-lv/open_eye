@@ -15,7 +15,9 @@ import com.app.eye.receiver.NetworkChangeReceiver
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gyf.immersionbar.ImmersionBar
+import com.orhanobut.logger.Logger
 import me.yokeyword.fragmentation.SupportFragment
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -38,6 +40,9 @@ abstract class BaseFragment : SupportFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (isUseEventBus()) {
+            EventBus.getDefault().register(this)
+        }
         mRootView = inflater.inflate(getLayoutRes(), container, false)
         return mRootView
     }
@@ -73,12 +78,21 @@ abstract class BaseFragment : SupportFragment() {
         refreshLayout.setColorSchemeColors(*intArray)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (isUseEventBus()) {
+            EventBus.getDefault().unregister(this)
+        }
+    }
+
 
     abstract fun getLayoutRes(): Int
 
-    open fun useLazyLoad(): Boolean = false
+    open fun useLazyLoad(): Boolean = true
     open fun init() {}
     abstract fun reConnect()
     abstract fun initView()
     abstract fun initData()
+
+    open fun isUseEventBus(): Boolean = false
 }

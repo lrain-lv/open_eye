@@ -1,14 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.MineFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/iv_more"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:src="@mipmap/ic_menu_more"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_header"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+
+        android:src="@mipmap/pgc_default_avatar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_more" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="wode " />
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
 
-</FrameLayout>
+        android:text="点击登录即可评论及发布内容"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_header" />
+
+    <LinearLayout
+        android:id="@+id/layout_collect"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/line2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/line1"
+        app:layout_constraintTop_toBottomOf="@id/tv_login">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@mipmap/ic_action_like_heart_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="收藏"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="1dp"
+        android:layout_height="30dp"
+        android:background="@color/gray5"
+        app:layout_constraintBottom_toTopOf="@id/line2"
+        app:layout_constraintLeft_toRightOf="@id/layout_collect"
+        app:layout_constraintRight_toLeftOf="@id/layout_cache"
+        app:layout_constraintTop_toBottomOf="@id/tv_login" />
+
+    <LinearLayout
+        android:id="@+id/layout_cache"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/line2"
+        app:layout_constraintLeft_toRightOf="@id/line1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_login">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@mipmap/icon_download" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="缓存"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray5"
+        app:layout_constraintBottom_toBottomOf="@id/layout_collect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_attention"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+
+                android:text="我的关注"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_record"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+
+                android:text="观看记录"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_notification"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+
+                android:text="通知开关"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_badge"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+
+                android:text="我的徽章"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+
+                android:text="意见反馈"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_submit"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+
+                android:text="我要投稿"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="Version 6.3.10"
+                android:textColor="@color/gray5"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,7 @@
 package com.app.eye.http
 
 import com.app.eye.http.Constant
-import com.app.eye.ui.mvp.model.entity.DailyEntity
-import com.app.eye.ui.mvp.model.entity.DiscoverEntity
-import com.app.eye.ui.mvp.model.entity.HotSearchEntity
-import com.app.eye.ui.mvp.model.entity.SearchEntity
+import com.app.eye.ui.mvp.model.entity.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.Response
 import okhttp3.ResponseBody
@@ -35,4 +32,9 @@ interface ApiService {
     @GET(Constant.SEARCH)
     fun doSearch(@Query("query") query: String): Observable<SearchEntity>
 
+    @Headers("hostName: account")
+    @POST(Constant.LOGIN)
+    @FormUrlEncoded
+    fun doLogin(@Field("username") username: String, @Field("password") password: String)
+            : Observable<LoginEntity>
 }
