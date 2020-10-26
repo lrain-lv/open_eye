@@ -42,4 +42,28 @@ object Constant {
     //社区推荐 http://baobab.kaiyanapp.com/api/v7/community/tab/rec?refreshCount=1&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v7/community/tab/rec?startScore=1603371432000&pageCount=2&refreshCount=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 
+    //社区 关注
+    //http://baobab.kaiyanapp.com/api/v6/community/tab/follow?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+//http://baobab.kaiyanapp.com/api/v6/community/tab/follow?start=10&num=10&newest=false&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+//http://baobab.kaiyanapp.com/api/v6/community/tab/follow?start=20&num=10&newest=false&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+
+    //推送
+    //http://baobab.kaiyanapp.com/api/v3/messages?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v3/messages?start=10&num=10&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //topic
+   // https://baobab.kaiyanapp.com/api/v7/topic/detail?id=407&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786
+
+    //私信
+    //https://baobab.kaiyanapp.com/api/v7/topic/detail?id=406&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786
+
+    //发现好友
+    //http://baobab.kaiyanapp.com/api/v5/userInfo/recFriend?uid=304200827&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v5/userInfo/recFriend?uid=304200827&start=10&num=10&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v5/userInfo/recFriend?uid=304200827&start=20&num=10&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+
+    //tab
+    //https://baobab.kaiyanapp.com/api/v5/userInfo/tab?id=300713682&userType=NORMAL&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786
+//https://baobab.kaiyanapp.com/api/v5/userInfo/tab/works?uid=300713682&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+
+    //http://baobab.kaiyanapp.com/api/v2/configs?model=Android&deviceTypeOs=29&deviceImsi=0&deviceBrand=HUAWEI&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 }
