@@ -58,6 +58,5 @@ dependencies {
     implementation ext.dependencies.itemdecoration
     implementation ext.dependencies.rxpermissions
     implementation ext.dependencies.agentweb
-    implementation ext.dependencies.cardview
 //    implementation ext.dependencies.rxbinding
 }

@@ -234,7 +234,9 @@ data class DataX(
     val label: Label,
     val labelList: MutableList<LabelX>,
     val shade: Boolean,
-    val title: String
+    val title: String,
+    val subTitle: String,
+    val bgPicture: String
 )
 
 data class AdTrack(

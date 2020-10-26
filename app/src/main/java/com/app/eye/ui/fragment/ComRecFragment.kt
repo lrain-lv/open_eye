@@ -7,21 +7,25 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.BannerItemAdapter
 import com.app.eye.ui.adapter.ComRecAdapter
+import com.app.eye.ui.adapter.SquareCardAdapter
 import com.app.eye.ui.mvp.contract.CommunityContract
 import com.app.eye.ui.mvp.model.entity.ComRecEntity
 import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.app.eye.widgets.MultipleStatusView
+import com.app.eye.widgets.StaggeredDividerItemDecoration
 import com.blankj.utilcode.util.SizeUtils
+import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import com.youth.banner.Banner
 import kotlinx.android.synthetic.main.fragment_rec.*
 
 class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityContract.View>(),
     CommunityContract.View, SwipeRefreshLayout.OnRefreshListener,
-    MultipleStatusView.OnRetryClickListener {
+    MultipleStatusView.OnRetryClickListener, OnLoadMoreListener {
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -37,7 +41,10 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
 
     private lateinit var comRecAdapter: ComRecAdapter
 
-    private var isRefresh : Boolean = true
+    private lateinit var squareCardAdapter: SquareCardAdapter
+    private lateinit var bannerItemAdapter: BannerItemAdapter
+
+    private var isRefresh: Boolean = true
 
     override fun getLayoutRes(): Int = R.layout.fragment_rec
 
@@ -51,24 +58,40 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
         comRecAdapter = ComRecAdapter(mutableListOf())
         recycler_view.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        recycler_view.addItemDecoration(LayoutMarginDecoration(2, SizeUtils.dp2px(5f)))
+        recycler_view.addItemDecoration(
+            StaggeredDividerItemDecoration(
+                mContext,
+              5f,
+                2
+            )
+        )
         initHeader()
         recycler_view.adapter = comRecAdapter
+        comRecAdapter.loadMoreModule.setOnLoadMoreListener(this)
     }
 
     private fun initHeader() {
         headerView =
             layoutInflater.inflate(R.layout.layout_com_rec_header, recycler_view, false)
         recyclerHeader = headerView.findViewById(R.id.recycler_header)
-        recyclerHeader.layoutManager = LinearLayoutManager(mContext)
+        recyclerHeader.layoutManager =
+            LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
+        squareCardAdapter = SquareCardAdapter(mutableListOf())
+        recyclerHeader.adapter = squareCardAdapter
         banner = headerView.findViewById(R.id.banner)
         banner.addBannerLifecycleObserver(this)
+        bannerItemAdapter = BannerItemAdapter(mutableListOf())
+        banner.setAdapter(bannerItemAdapter, false)
+        banner.apply {
+            setBannerGalleryEffect(0, 6, 1f)
+            setScrollTime(1000)
+        }
     }
 
     override fun initData() {
         status_view.showLoadingView()
         recycler_view.post {
-            mPresenter?.getRecRequest(true, map)
+            mPresenter?.getRecRequest(isRefresh, hashMapOf())
         }
     }
 
@@ -76,8 +99,32 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
 
     override fun setComRecResponse(comRecEntity: ComRecEntity?) {
         comRecEntity ?: status_view.showEmptyView()
-//        val itemList = comRecEntity?.itemList?.filter { it.type == "communityColumnsCard" }
-        comRecAdapter.setList(comRecEntity?.itemList)
+        if (isRefresh) {
+            if (!comRecAdapter.hasHeaderLayout()) {
+                val squareItem = comRecEntity?.itemList?.get(0)
+                squareCardAdapter.setList(squareItem!!.data.itemList)
+                val bannerItem = comRecEntity.itemList[1]
+                bannerItemAdapter.setDatas(bannerItem.data.itemList)
+                comRecAdapter.addHeaderView(headerView)
+            }
+            val nextPageUrl = comRecEntity?.nextPageUrl
+            map = nextPageUrl?.urlToMap() as HashMap<String, String>
+            val itemList = comRecEntity.itemList.filter { it.type == "communityColumnsCard" }
+            comRecAdapter.loadMoreModule.isEnableLoadMore =
+                !nextPageUrl.isNullOrEmpty()
+            comRecAdapter.setList(itemList)
+            if (nextPageUrl.isNullOrEmpty()) comRecAdapter.loadMoreModule.loadMoreEnd()
+        } else {
+            val nextPageUrl = comRecEntity?.nextPageUrl
+            map = nextPageUrl?.urlToMap() as HashMap<String, String>
+            comRecAdapter.loadMoreModule.isEnableLoadMore =
+                !nextPageUrl.isNullOrEmpty()
+            comRecAdapter.addData(comRecEntity.itemList)
+            if (nextPageUrl.isNullOrEmpty()) comRecAdapter.loadMoreModule.loadMoreEnd()
+            else comRecAdapter.loadMoreModule.loadMoreComplete()
+        }
+
+        refresh_layout.isEnabled = true
     }
 
     override fun setComAttentionResponse() {
@@ -92,9 +139,17 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
     }
 
     override fun onRefresh() {
-        mPresenter?.getRecRequest(true,map)
+        isRefresh = true
+        comRecAdapter.loadMoreModule.isEnableLoadMore = false
+        mPresenter?.getRecRequest(isRefresh, hashMapOf())
     }
 
     override fun onRetryClick() {
+    }
+
+    override fun onLoadMore() {
+        isRefresh = false
+        refresh_layout.isEnabled = false
+        mPresenter?.getRecRequest(isRefresh, map)
     }
 }

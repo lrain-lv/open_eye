@@ -4,7 +4,7 @@ data class ComRecEntity(
     val adExist: Boolean,
     val count: Int,
     var itemList: MutableList<ComItem>,
-    val nextPageUrl: String,
+    val nextPageUrl: String?,
     val total: Int
 ){
     override fun toString(): String {
