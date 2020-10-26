@@ -1,20 +1,15 @@
 package com.app.eye
 
+import com.app.eye.rx.formToMap
+import com.blankj.utilcode.util.EncodeUtils
+
 
 fun main(args: Array<String>) {
-    val stringToMp =
-        stringToMp("http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1603242000000&num=2")
-    print(stringToMp)
-}
+    val s =
+        "title=%e6%af%8f%e6%97%a5%e6%96%b0%e9%b2%9c%e8%b5%84%e8%ae%af&url=https%3a%2f%2fwww.kaiyanapp.com%2fnew_article.html%3fnid%3d2252%26shareable%3dtrue%26rid%3d623"
+    val formToMap = s.formToMap()
+    println(formToMap.toString())
 
-
-private fun stringToMp(s: String): Map<String, String> {
-    var map = hashMapOf<String, String>()
-    val index = s.indexOf("?")
-    val result = s.substring(index + 1)
-    val split = result.split("&")
-    split.forEach {
-        map[it.split("=")[0]] = it.split("=")[1]
-    }
-    return map
+    val urlDecode = EncodeUtils.urlDecode(s)
+    println(urlDecode)
 }

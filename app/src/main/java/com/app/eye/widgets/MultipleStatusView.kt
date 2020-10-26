@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import com.app.eye.R
-import kotlinx.android.synthetic.main.activity_main.view.*
 
 const val STATUS_CONTENT = 0X00
 const val STATUS_LOADING = 0x01
@@ -31,7 +29,11 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
 
     private var viewStatus = -1;
 
-    private var onRetryClickListener: OnClickListener? = null
+    private var onRetryClickListener: OnRetryClickListener? = null
+
+    fun setOnRetryClickListener(onClickListener: OnRetryClickListener) {
+        this.onRetryClickListener = onClickListener
+    }
 
     private val inflater by lazy { LayoutInflater.from(context) }
 
@@ -105,7 +107,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
             emptyView = view
             val retryView = emptyView!!.findViewById<ImageView>(R.id.retry_view)
             if (null != retryView && onRetryClickListener != null) {
-                retryView.setOnClickListener { onRetryClickListener }
+                retryView.setOnClickListener { onRetryClickListener!!.onRetryClick() }
             }
             addView(emptyView, 0, layoutParams)
         }
@@ -133,7 +135,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
             errorView = view
             val retryView = errorView!!.findViewById<ImageView>(R.id.retry_view)
             if (null != retryView && onRetryClickListener != null) {
-                retryView.setOnClickListener { onRetryClickListener }
+                retryView.setOnClickListener { onRetryClickListener!!.onRetryClick() }
             }
             addView(errorView, 0, layoutParams)
         }
@@ -163,7 +165,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
             noNetworkView = view
             val retryView = noNetworkView!!.findViewById<ImageView>(R.id.retry_view)
             if (null != retryView && onRetryClickListener != null) {
-                retryView.setOnClickListener { onRetryClickListener }
+                retryView.setOnClickListener { onRetryClickListener!!.onRetryClick() }
             }
             addView(noNetworkView, 0, layoutParams)
         }
@@ -203,7 +205,7 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
         this.viewStatus = viewStatus
     }
 
-    private fun inflateView(resId: Int): View = inflater.inflate(resId, null )
+    private fun inflateView(resId: Int): View = inflater.inflate(resId, null)
 
     private fun showViewById(viewId: Int) {
         for (index in 0 until childCount) {
@@ -216,6 +218,10 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
         views.forEach {
             removeView(it)
         }
+    }
+
+    interface OnRetryClickListener {
+        fun onRetryClick()
     }
 
 }

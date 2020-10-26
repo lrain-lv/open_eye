@@ -1,12 +1,9 @@
 package com.app.eye.http
 
-import com.app.eye.http.Constant
 import com.app.eye.ui.mvp.model.entity.*
 import io.reactivex.rxjava3.core.Observable
-import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.http.*
-import java.util.*
 
 interface ApiService {
     @GET(Constant.CONFIGS)
@@ -37,4 +34,10 @@ interface ApiService {
     @FormUrlEncoded
     fun doLogin(@Field("username") username: String, @Field("password") password: String)
             : Observable<LoginEntity>
+
+    @GET(Constant.MESSAGE)
+    fun getPushMessage(@QueryMap map: Map<String, String>): Observable<PushEntity>
+
+    @GET(Constant.COM_REC)
+    fun getCommunityRec(@QueryMap map: Map<String, String>): Observable<ComRecEntity>
 }

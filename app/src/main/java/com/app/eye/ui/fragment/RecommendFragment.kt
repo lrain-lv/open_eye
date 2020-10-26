@@ -2,9 +2,6 @@ package com.app.eye.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
 

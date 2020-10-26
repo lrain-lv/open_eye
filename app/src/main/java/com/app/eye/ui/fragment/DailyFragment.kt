@@ -1,11 +1,11 @@
 package com.app.eye.ui.fragment
 
-import android.os.Bundle
 import android.text.TextUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.DailyAdapter
 import com.app.eye.ui.mvp.contract.DailyContract
 import com.app.eye.ui.mvp.model.entity.DailyEntity
@@ -14,9 +14,6 @@ import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.blankj.utilcode.util.NetworkUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_daily.*
-import kotlinx.android.synthetic.main.fragment_daily.refresh_layout
-import kotlinx.android.synthetic.main.fragment_daily.status_view
-import kotlinx.android.synthetic.main.fragment_find.*
 
 class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.View>(),
     DailyContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
@@ -98,20 +95,7 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
     override fun onLoadMore() {
         isRefresh = false
         refresh_layout.isEnabled = false
-        mPresenter?.getDailyData(isRefresh, stringToMp(nextPage!!))
+        mPresenter?.getDailyData(isRefresh, nextPage!!.urlToMap())
     }
-
-
-    private fun stringToMp(s: String): Map<String, String> {
-        var map = hashMapOf<String, String>()
-        val index = s.indexOf("?")
-        val result = s.substring(index + 1)
-        val split = result.split("&")
-        split.forEach {
-            map[it.split("=")[0]] = it.split("=")[1]
-        }
-        return map
-    }
-
 
 }

@@ -1,20 +1,23 @@
 package com.app.eye.ui.activity
 
-import android.view.View
 import com.app.eye.R
 import com.app.eye.base.BaseActivity
+import com.app.eye.event.ChangeTabEvent
 import com.app.eye.ui.fragment.*
 import com.app.eye.ui.mvp.model.entity.TabEntity
+import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.flyco.tablayout.listener.CustomTabEntity
 import com.flyco.tablayout.listener.OnTabSelectListener
 import kotlinx.android.synthetic.main.activity_main.*
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class MainActivity : BaseActivity() {
-
     override fun getLayoutRes(): Int = R.layout.activity_main
 
     private var homeFragment: HomeFragment? = null
@@ -28,6 +31,8 @@ class MainActivity : BaseActivity() {
     private var tabEntityList = arrayListOf<CustomTabEntity>()
 
     private var fragments = arrayOfNulls<SupportFragment>(5)
+
+    private var firstPressTime = 0L
 
 
     private val selectedRes =
@@ -107,6 +112,13 @@ class MainActivity : BaseActivity() {
         fragments[4] = mineFragment!!
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onChangeIndexEvent(event: ChangeTabEvent) {
+        bottom_bar.currentTab = 0
+        showHideFragment(fragments[0], currentFragment)
+        currentFragment = fragments[0]
+    }
+
     override fun initData() {
     }
 
@@ -115,4 +127,15 @@ class MainActivity : BaseActivity() {
 
     override fun isUseEventBus(): Boolean = true
 
+    override fun onBackPressedSupport() {
+
+        if (System.currentTimeMillis() - firstPressTime < 2000) {
+            super.onBackPressedSupport()
+            ActivityUtils.finishAllActivities()
+            AppUtils.exitApp()
+        } else {
+            ToastUtils.showShort("再按一次退出")
+            firstPressTime = System.currentTimeMillis()
+        }
+    }
 }

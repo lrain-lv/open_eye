@@ -14,6 +14,7 @@ class MainApp : Application() {
         @JvmStatic
         lateinit var mContext: Application
             private set
+
     }
 
     override fun onCreate() {
