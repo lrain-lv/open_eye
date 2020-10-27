@@ -13,6 +13,7 @@ public class StaggeredDividerItemDecoration extends RecyclerView.ItemDecoration 
     private float interval;
     private int spanCount;
 
+
     /**
      * @param interval item的间距
      * @param spanCount 列数
@@ -21,6 +22,7 @@ public class StaggeredDividerItemDecoration extends RecyclerView.ItemDecoration 
         this.context = context;
         this.interval = interval;
         this.spanCount = spanCount;
+
     }
 
     @Override
@@ -30,7 +32,7 @@ public class StaggeredDividerItemDecoration extends RecyclerView.ItemDecoration 
         int spanIndex = params.getSpanIndex();
         int interval = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 this.interval, context.getResources().getDisplayMetrics());
-        // 中间间隔
+        // 下面间隔
 
         /**
          * 这个判断适用于瀑布流只有两列的情况，如果有多列，那么再增加spanIndex % spanCount == 的判断并做处理就好了
@@ -43,6 +45,6 @@ public class StaggeredDividerItemDecoration extends RecyclerView.ItemDecoration 
         }
 
         // 下方间隔
-        outRect.bottom = interval;
+//        outRect.bottom = bottom;
     }
 }
