@@ -18,6 +18,7 @@ import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.app.eye.widgets.MultipleStatusView
 import com.app.eye.widgets.StaggeredDividerItemDecoration
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.youth.banner.Banner
 import kotlinx.android.synthetic.main.fragment_rec.*
@@ -67,6 +68,19 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
         initHeader()
         recycler_view.adapter = comRecAdapter
         comRecAdapter.loadMoreModule.setOnLoadMoreListener(this)
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!_mActivity.isFinishing) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        Glide.with(_mActivity)
+                            .resumeRequests()
+                    } else {
+                        Glide.with(_mActivity)
+                            .pauseRequests()
+                    }
+                }
+            }
+        })
     }
 
     private fun initHeader() {

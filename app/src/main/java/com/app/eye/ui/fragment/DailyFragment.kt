@@ -2,6 +2,7 @@ package com.app.eye.ui.fragment
 
 import android.text.TextUtils
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
@@ -12,6 +13,7 @@ import com.app.eye.ui.mvp.model.entity.DailyEntity
 import com.app.eye.ui.mvp.presenter.DailyPresenter
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.blankj.utilcode.util.NetworkUtils
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_daily.*
 
@@ -38,6 +40,19 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
         recycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler.adapter = dailyAdapter
         dailyAdapter.loadMoreModule.setOnLoadMoreListener(this)
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!_mActivity.isFinishing) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        Glide.with(_mActivity)
+                            .resumeRequests()
+                    } else {
+                        Glide.with(_mActivity)
+                            .pauseRequests()
+                    }
+                }
+            }
+        })
     }
 
     override fun initData() {

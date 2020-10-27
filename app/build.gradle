@@ -58,5 +58,7 @@ dependencies {
     implementation ext.dependencies.itemdecoration
     implementation ext.dependencies.rxpermissions
     implementation ext.dependencies.agentweb
-//    implementation ext.dependencies.rxbinding
+    implementation (ext.dependencies.vlayout ){
+        transitive = true
+    }
 }

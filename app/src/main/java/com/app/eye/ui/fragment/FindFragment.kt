@@ -1,35 +1,18 @@
 package com.app.eye.ui.fragment
 
-import android.graphics.Color
-import android.graphics.Typeface
-import android.os.Bundle
-import android.view.Gravity
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseFragment
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.presenter.FindPresenter
-import com.app.eye.widgets.MultipleStatusView
-import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.blankj.utilcode.util.NetworkUtils
-import com.blankj.utilcode.util.SizeUtils
-import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.orhanobut.logger.Logger
-import kotlinx.android.synthetic.main.fragment_daily.*
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_find.*
-import kotlinx.android.synthetic.main.fragment_find.refresh_layout
-import kotlinx.android.synthetic.main.fragment_find.status_view
 
 class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(),
     FindContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -52,6 +35,19 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
         recycler_view.adapter = discoverAdapter
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!_mActivity.isFinishing) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        Glide.with(_mActivity)
+                            .resumeRequests()
+                    } else {
+                        Glide.with(_mActivity)
+                            .pauseRequests()
+                    }
+                }
+            }
+        })
     }
 
     override fun initData() {

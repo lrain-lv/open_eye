@@ -2,6 +2,7 @@ package com.app.eye.ui.fragment
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
@@ -13,6 +14,7 @@ import com.app.eye.ui.mvp.contract.PushContract
 import com.app.eye.ui.mvp.model.entity.PushEntity
 import com.app.eye.ui.mvp.presenter.PushPresenter
 import com.app.eye.widgets.MultipleStatusView
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
@@ -50,7 +52,19 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
         recycler_view.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler_view.adapter = pushMessageAdapter
-
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!_mActivity.isFinishing) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        Glide.with(_mActivity)
+                            .resumeRequests()
+                    } else {
+                        Glide.with(_mActivity)
+                            .pauseRequests()
+                    }
+                }
+            }
+        })
     }
 
     override fun initData() {
