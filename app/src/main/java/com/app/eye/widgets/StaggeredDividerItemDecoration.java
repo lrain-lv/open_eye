@@ -40,8 +40,10 @@ public class StaggeredDividerItemDecoration extends RecyclerView.ItemDecoration 
          * */
         if (spanIndex % spanCount == 0) {
             outRect.right = interval / 2;
+//            outRect.left = SizeUtils.dp2px(15f);
         } else {
             outRect.left = interval / 2;
+//            outRect.right = SizeUtils.dp2px(15f);
         }
 
         // 下方间隔
