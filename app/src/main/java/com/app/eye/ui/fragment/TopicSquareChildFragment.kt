@@ -3,7 +3,6 @@ package com.app.eye.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
@@ -14,7 +13,6 @@ import com.app.eye.ui.mvp.model.entity.TabChildEntity
 import com.app.eye.ui.mvp.model.entity.TagTabEntity
 import com.app.eye.ui.mvp.model.entity.TopicListEntity
 import com.app.eye.ui.mvp.presenter.TopicPresenter
-import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_rec.refresh_layout
@@ -70,19 +68,19 @@ class TopicSquareChildFragment : BaseMvpFragment<TopicContact.Presenter, TopicCo
         topicChildAdapter.loadMoreModule.isEnableLoadMore = false
         recycler.adapter = topicChildAdapter
         recycler.setHasFixedSize(true)
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!_mActivity.isFinishing) {
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                        Glide.with(_mActivity)
-                            .resumeRequests()
-                    } else {
-                        Glide.with(_mActivity)
-                            .pauseRequests()
-                    }
-                }
-            }
-        })
+//        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                if (!_mActivity.isFinishing) {
+//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+//                        Glide.with(_mActivity)
+//                            .resumeRequests()
+//                    } else {
+//                        Glide.with(_mActivity)
+//                            .pauseRequests()
+//                    }
+//                }
+//            }
+//        })
     }
 
     override fun initData() {

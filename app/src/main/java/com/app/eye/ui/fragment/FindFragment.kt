@@ -1,7 +1,6 @@
 package com.app.eye.ui.fragment
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
@@ -11,7 +10,6 @@ import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.blankj.utilcode.util.NetworkUtils
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_find.*
 
 class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(),
@@ -35,19 +33,19 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
         recycler_view.adapter = discoverAdapter
-        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!_mActivity.isFinishing) {
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                        Glide.with(_mActivity)
-                            .resumeRequests()
-                    } else {
-                        Glide.with(_mActivity)
-                            .pauseRequests()
-                    }
-                }
-            }
-        })
+//        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                if (!_mActivity.isFinishing) {
+//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+//                        Glide.with(_mActivity)
+//                            .resumeRequests()
+//                    } else {
+//                        Glide.with(_mActivity)
+//                            .pauseRequests()
+//                    }
+//                }
+//            }
+//        })
     }
 
     override fun initData() {
