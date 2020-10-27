@@ -78,13 +78,13 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
         when (isRefresh) {
             true -> {
                 pushMessageAdapter.loadMoreModule.isEnableLoadMore =
-                    !pushEntity!!.nextPageUrl.isNullOrEmpty()
-                pushMessageAdapter.setList(pushEntity.messageList)
+                    true
+                pushMessageAdapter.setList(pushEntity?.messageList)
             }
             false -> {
                 pushMessageAdapter.loadMoreModule.isEnableLoadMore =
-                    !pushEntity!!.nextPageUrl.isNullOrEmpty()
-                pushMessageAdapter.addData(pushEntity.messageList)
+                    true
+                pushMessageAdapter.addData(pushEntity?.messageList!!)
                 if (pushEntity.nextPageUrl.isNullOrEmpty()) pushMessageAdapter.loadMoreModule.loadMoreEnd()
                 else pushMessageAdapter.loadMoreModule.loadMoreComplete()
             }

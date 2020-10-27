@@ -17,7 +17,8 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.WebActivity"></activity>
+        <activity android:name=".ui.activity.TopicSquareActivity"></activity>
+        <activity android:name=".ui.activity.WebActivity" />
         <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".ui.activity.SearchActivity" />
         <activity

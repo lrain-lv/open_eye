@@ -40,4 +40,16 @@ interface ApiService {
 
     @GET(Constant.COM_REC)
     fun getCommunityRec(@QueryMap map: Map<String, String>): Observable<ComRecEntity>
+
+    @GET(Constant.TAG_TAB)
+    fun getTabTagList(): Observable<TagTabEntity>
+
+    @GET("${Constant.TAG_CHILDTAB}/{id}")
+    fun getTabChild(
+        @Path("id") id: Int,
+        @QueryMap map: Map<String, String>
+    ): Observable<TabChildEntity>
+
+    @GET(Constant.TOPIC_LIST)
+    fun getTopicList(@QueryMap map: Map<String, String>): Observable<TopicListEntity>
 }
