@@ -34,4 +34,17 @@ class TagVideoPresenter : BasePresenter<TagVideoContract.Model, TagVideoContract
             })
         addDisposable(subscribe)
     }
+
+    override fun getTagDynamicRequest(map: Map<String, String>) {
+        val subscribe = model.getTagDynamicRequest(map)
+            .compose(SchedulerUtils.ioToMain())
+            .subscribe({
+                view?.setTagDynamicResponse(it)
+                view?.hideLoading()
+            }, {
+                view?.hideLoading()
+                view?.setTagDynamicResponse(null)
+            })
+        addDisposable(subscribe)
+    }
 }

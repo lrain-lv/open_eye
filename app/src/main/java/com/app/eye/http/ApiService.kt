@@ -58,4 +58,7 @@ interface ApiService {
 
     @GET(Constant.TAG_VIDEO)
     fun getTagVideo(@QueryMap map: Map<String, String>): Observable<TagVideoEntity>
+
+    @GET(Constant.TAG_DYNAMIC)
+    fun getTagDynamic(@QueryMap map: Map<String, String>): Observable<TagVideoEntity>
 }

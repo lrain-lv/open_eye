@@ -35,7 +35,7 @@ class Item(
 
     override val itemType: Int
         get() = when (type) {
-            "horizontalScrollCard" -> DISCOVER_BANNER
+            "horizontalScrollCard","banner" -> DISCOVER_BANNER
             "specialSquareCardCollection" -> DISCOVER_SQUARE_CARD
             "columnCardList" -> DISCOVER_COLUMN_CARD_LIST
             "textCard" -> DISCOVER_TEXT_CARD
@@ -71,6 +71,8 @@ data class Data(
     val header: Header,
     val icon: String,
     val iconType: String,
+    val autoPlay: Boolean,
+    val image: String,
     val id: Int,
     val idx: Int,
     val ifLimitVideo: Boolean,
@@ -165,11 +167,8 @@ data class Header(
 )
 
 data class ItemX(
-    val adIndex: Int,
     val `data`: DataX,
     val id: Int,
-    val tag: Any,
-    val trackingData: Any,
     val type: String
 )
 
@@ -224,14 +223,13 @@ data class Shield(
 
 data class DataX(
     val actionUrl: String,
-    val adTrack: MutableList<AdTrack>,
     val autoPlay: Boolean,
     val dataType: String,
     val description: String,
-    val header: HeaderX,
+    val header: HeaderX?,
     val id: Int,
     val image: String,
-    val label: Label,
+    val label: Label?,
     val labelList: MutableList<LabelX>,
     val shade: Boolean,
     val title: String,

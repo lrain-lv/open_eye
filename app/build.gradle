@@ -59,7 +59,7 @@ dependencies {
     implementation ext.dependencies.rxpermissions
     implementation ext.dependencies.agentweb
     implementation ext.dependencies.material
-    implementation (ext.dependencies.vlayout ){
-        transitive = true
-    }
+//    implementation (ext.dependencies.vlayout ){
+//        transitive = true
+//    }
 }

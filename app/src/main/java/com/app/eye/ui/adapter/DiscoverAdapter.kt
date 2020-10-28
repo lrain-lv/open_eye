@@ -1,10 +1,12 @@
 package com.app.eye.ui.adapter
 
+import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
+import com.app.eye.ui.mvp.model.entity.DataX
 import com.app.eye.ui.mvp.model.entity.Item
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_BANNER
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_BRIEF_CARD
@@ -46,10 +48,25 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
         when (item.itemType) {
             DISCOVER_BANNER -> {
                 banner = holder.getView(R.id.banner)
-                banner.adapter = BannerItemAdapter(item.data.itemList)
+
+                val adapter = BannerItemAdapter(mutableListOf())
                 banner.apply {
+                    setAdapter(adapter)
                     setBannerGalleryEffect(10, 6, 1f)
                     setScrollTime(1000)
+                }
+                if (TextUtils.equals("banner", item.type)) {
+                    val itemX = ItemX(
+                        DataX(
+                            item.data.actionUrl, false, "", "", null,
+                            item.data.id, item.data.image, null, mutableListOf(), false, "", "", ""
+                        ), item.id, item.type
+                    )
+                    val itemList = mutableListOf<ItemX>()
+                    itemList.add(itemX)
+                    adapter.setDatas(itemList)
+                } else {
+                    adapter.setDatas(item.data.itemList)
                 }
             }
             DISCOVER_SQUARE_CARD -> {

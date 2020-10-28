@@ -12,15 +12,19 @@ interface TagVideoContract {
         fun setTagIndexResponse(entity: TagIndexEntity?)
 
         fun setTagVideoResponse(entity: TagVideoEntity?)
+
+        fun setTagDynamicResponse(entity: TagVideoEntity?)
     }
 
     interface Model : IModel {
         fun getTagIndexRequest(id: String): Observable<TagIndexEntity>
         fun getTagVideoRequest(map: Map<String, String>): Observable<TagVideoEntity>
+        fun getTagDynamicRequest(map: Map<String, String>): Observable<TagVideoEntity>
     }
 
     interface Presenter : IPresenter<View> {
         fun getTagIndexRequest(id: String)
         fun getTagVideoRequest(map: Map<String, String>)
+        fun getTagDynamicRequest(map: Map<String, String>)
     }
 }

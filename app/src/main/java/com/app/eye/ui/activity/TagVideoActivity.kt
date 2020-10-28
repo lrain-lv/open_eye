@@ -1,5 +1,6 @@
 package com.app.eye.ui.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.viewpager.widget.ViewPager
@@ -7,13 +8,14 @@ import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
 import com.app.eye.ui.adapter.TopicFragmentAdapter
 import com.app.eye.ui.fragment.TagVideoFragment
-import com.app.eye.ui.fragment.TopicDetailFragment
+import com.app.eye.ui.fragment.TagDynamicFragment
 import com.app.eye.ui.mvp.contract.TagVideoContract
 import com.app.eye.ui.mvp.model.entity.TabItem
 import com.app.eye.ui.mvp.model.entity.TagIndexEntity
 import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import com.app.eye.ui.mvp.presenter.TagVideoPresenter
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_tag_video.*
@@ -53,9 +55,10 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
             onBackPressedSupport()
         }
         iv_back.setOnClickListener(this)
+        iv_publish.setOnClickListener(this)
         fragmentList.apply {
             add(TagVideoFragment.newInstance(tabItem.data.id.toString()))
-            add(TopicDetailFragment.newInstance())
+            add(TagDynamicFragment.newInstance(tabItem.data.id.toString()))
         }
         val topicFragmentAdapter =
             TopicFragmentAdapter(supportFragmentManager, fragmentList, titleList)
@@ -103,6 +106,7 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
         tv_follow_count.text =
             "${entity!!.tagInfo.tagFollowCount}人关注 / ${entity!!.tagInfo.lookCount}人参与"
         tv_title_big.text = entity.tagInfo.name
+        tv_title.text = entity.tagInfo.name
         tv_dec.text = entity.tagInfo.description
         Glide.with(mContext)
             .load(entity.tagInfo.bgPicture)
@@ -112,6 +116,9 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
 
     override fun setTagVideoResponse(entity: TagVideoEntity?) {
 
+    }
+
+    override fun setTagDynamicResponse(entity: TagVideoEntity?) {
     }
 
     override fun hideLoading() {
@@ -130,6 +137,10 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
         when (v?.id) {
             R.id.iv_back -> {
                 onBackPressedSupport()
+            }
+            R.id.iv_publish -> {
+                ToastUtils.setBgColor(Color.RED)
+                ToastUtils.showShort("该功能暂未开放！")
             }
         }
     }

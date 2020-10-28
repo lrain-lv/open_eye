@@ -12,4 +12,7 @@ class TagVideoModel : TagVideoContract.Model {
 
     override fun getTagVideoRequest(map: Map<String, String>): Observable<TagVideoEntity> =
         RetrofitManager.service.getTagVideo(map)
+
+    override fun getTagDynamicRequest(map: Map<String, String>): Observable<TagVideoEntity> =
+        RetrofitManager.service.getTagDynamic(map)
 }

@@ -32,7 +32,7 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
         Glide.with(context)
             .load(header.icon)
             .circleCrop()
-            .override(SizeUtils.dp2px(45f), SizeUtils.dp2px(45f))
+            .override(SizeUtils.dp2px(40f), SizeUtils.dp2px(40f))
             .into(ivHeader)
         holder.setText(R.id.tv_name, header.issuerName)
             .setText(R.id.tv_date,
