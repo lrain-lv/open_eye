@@ -52,4 +52,10 @@ interface ApiService {
 
     @GET(Constant.TOPIC_LIST)
     fun getTopicList(@QueryMap map: Map<String, String>): Observable<TopicListEntity>
+
+    @GET(Constant.TAG_INDEX)
+    fun getTagIndex(@Query("id") id: String): Observable<TagIndexEntity>
+
+    @GET(Constant.TAG_VIDEO)
+    fun getTagVideo(@QueryMap map: Map<String, String>): Observable<TagVideoEntity>
 }

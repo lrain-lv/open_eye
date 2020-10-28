@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="15dp">
+
+    <include
+        android:id="@+id/layout_header"
+        layout="@layout/layout_tag_video_item_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_pic0"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/iv_pic1"
+        app:layout_constraintTop_toBottomOf="@id/layout_header" />
+
+    <ImageView
+        android:id="@+id/iv_pic2"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/iv_pic3"
+        app:layout_constraintTop_toBottomOf="@id/iv_pic0" />
+
+
+    <ImageView
+        android:id="@+id/iv_pic1"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="2dp"
+        app:layout_constraintLeft_toRightOf="@id/iv_pic0"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_header" />
+
+    <ImageView
+        android:id="@+id/iv_pic3"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintLeft_toRightOf="@id/iv_pic2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_pic1" />
+
+    <TextView
+        android:id="@+id/tv_more"
+        android:layout_width="0dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="#80000000"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@id/iv_pic2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_pic1" />
+
+    <include
+        android:id="@+id/layout_footer"
+        layout="@layout/layout_tag_video_item_footer"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_pic2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

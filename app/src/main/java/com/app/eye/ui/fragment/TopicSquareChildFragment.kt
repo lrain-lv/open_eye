@@ -3,16 +3,20 @@ package com.app.eye.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.urlToMap
+import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.adapter.TopicChildAdapter
 import com.app.eye.ui.mvp.contract.TopicContact
 import com.app.eye.ui.mvp.model.entity.TabChildEntity
 import com.app.eye.ui.mvp.model.entity.TagTabEntity
 import com.app.eye.ui.mvp.model.entity.TopicListEntity
 import com.app.eye.ui.mvp.presenter.TopicPresenter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_rec.refresh_layout
@@ -20,7 +24,8 @@ import kotlinx.android.synthetic.main.fragment_rec.status_view
 import kotlinx.android.synthetic.main.fragment_topic_square_child.*
 
 class TopicSquareChildFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact.View>(),
-    TopicContact.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
+    TopicContact.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
+    OnItemClickListener {
 
     companion object {
         @JvmStatic
@@ -68,19 +73,7 @@ class TopicSquareChildFragment : BaseMvpFragment<TopicContact.Presenter, TopicCo
         topicChildAdapter.loadMoreModule.isEnableLoadMore = false
         recycler.adapter = topicChildAdapter
         recycler.setHasFixedSize(true)
-//        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!_mActivity.isFinishing) {
-//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                        Glide.with(_mActivity)
-//                            .resumeRequests()
-//                    } else {
-//                        Glide.with(_mActivity)
-//                            .pauseRequests()
-//                    }
-//                }
-//            }
-//        })
+        topicChildAdapter.setOnItemClickListener(this)
     }
 
     override fun initData() {
@@ -139,5 +132,10 @@ class TopicSquareChildFragment : BaseMvpFragment<TopicContact.Presenter, TopicCo
             val map = nextPageUrl!!.urlToMap()
             mPresenter?.getTabChildRequest(urlId, map)
         }
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val item = topicChildAdapter.getItem(position)
+        TagVideoActivity.startActivity(item)
     }
 }

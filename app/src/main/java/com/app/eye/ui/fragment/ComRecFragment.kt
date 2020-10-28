@@ -91,10 +91,10 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
 
     private fun initBanner() {
         banner = headerView.findViewById(R.id.banner)
-        banner.addBannerLifecycleObserver(this)
         bannerItemAdapter = BannerItemAdapter(mutableListOf())
-        banner.setAdapter(bannerItemAdapter, false)
         banner.apply {
+            addBannerLifecycleObserver(this@ComRecFragment)
+            setAdapter(bannerItemAdapter, false)
             setBannerGalleryEffect(0, 6, 1f)
             setScrollTime(1000)
         }

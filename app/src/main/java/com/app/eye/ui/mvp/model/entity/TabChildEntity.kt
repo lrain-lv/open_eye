@@ -1,5 +1,7 @@
 package com.app.eye.ui.mvp.model.entity
 
+import java.io.Serializable
+
 data class TabChildEntity(
     val adExist: Boolean,
     val count: Int,
@@ -12,14 +14,11 @@ data class TabItem(
     val adIndex: Int,
     val `data`: TabData,
     val id: Int,
-    val tag: Any,
-    val trackingData: Any,
     val type: String
-)
+):Serializable
 
 data class TabData(
     val actionUrl: String,
-    val adTrack: Any,
     val dataType: String,
     val description: String,
     val expert: Boolean,
@@ -32,15 +31,14 @@ data class TabData(
     val ifPgc: Boolean,
     val ifShowNotificationIcon: Boolean,
     val medalIcon: Boolean,
-    val newestEndTime: Any,
-    val subTitle: Any,
+    val subTitle: String,
     val switchStatus: Boolean,
     val title: String,
     val uid: Int
-)
+):Serializable
 
 data class TabFollow(
     val followed: Boolean,
     val itemId: Int,
     val itemType: String
-)
+):Serializable

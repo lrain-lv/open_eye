@@ -66,7 +66,6 @@ class TopicSquareFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact
     }
 
     override fun setTopicListResponse(data: TopicListEntity?) {
-        TODO("Not yet implemented")
     }
 
     override fun showLoading() {

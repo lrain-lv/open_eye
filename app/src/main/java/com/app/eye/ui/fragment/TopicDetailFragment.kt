@@ -1,11 +1,13 @@
 package com.app.eye.ui.fragment
 
+import android.os.Bundle
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
 
-class InteractFragment : BaseFragment() {
+class TopicDetailFragment : BaseFragment() {
 
-    override fun getLayoutRes(): Int = R.layout.fragment_interact
+    override fun getLayoutRes(): Int = R.layout.fragment_topic_detail
+
     override fun reConnect() {
     }
 
@@ -18,7 +20,10 @@ class InteractFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            InteractFragment().apply {
+            TopicDetailFragment().apply {
+                arguments = Bundle().apply {
+
+                }
             }
     }
 }

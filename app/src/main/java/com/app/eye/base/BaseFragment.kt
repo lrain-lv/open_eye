@@ -1,21 +1,17 @@
 package com.app.eye.base
 
 import android.content.Context
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.mvp.IBaseView
-import com.app.eye.base.mvp.IPresenter
 import com.app.eye.event.NetworkEvent
 import com.app.eye.receiver.NetworkChangeReceiver
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
 import me.yokeyword.fragmentation.SupportFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

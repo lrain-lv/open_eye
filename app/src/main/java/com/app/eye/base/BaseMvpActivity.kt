@@ -1,13 +1,7 @@
 package com.app.eye.base
 
-import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import com.app.eye.base.mvp.BasePresenter
 import com.app.eye.base.mvp.IBaseView
-import com.app.eye.base.mvp.IModel
 import com.app.eye.base.mvp.IPresenter
-import com.orhanobut.logger.Logger
 
 abstract class BaseMvpActivity<P : IPresenter<V>, V : IBaseView> : BaseActivity(), IBaseView {
 
@@ -23,5 +17,11 @@ abstract class BaseMvpActivity<P : IPresenter<V>, V : IBaseView> : BaseActivity(
     override fun onDestroy() {
         super.onDestroy()
         mPresenter?.detach()
+    }
+
+    override fun showLoading() {
+    }
+
+    override fun hideLoading() {
     }
 }
