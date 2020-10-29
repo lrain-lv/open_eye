@@ -4,11 +4,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.ui.activity.CategoryActivity
+import com.app.eye.ui.activity.RankActivity
 import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.widgets.STATUS_NO_NETWORK
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
 import kotlinx.android.synthetic.main.fragment_find.*
 
@@ -32,6 +35,29 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
         recycler_view.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
+        discoverAdapter.addChildClickViewIds(R.id.tv_right_text)
+        discoverAdapter.setOnItemChildClickListener { _, view, position ->
+            val item = discoverAdapter.getItem(position)
+
+            val data = item.data
+            val header = item.data.header
+            var actionUrl: String? = if (!data.actionUrl.isNullOrEmpty()) data.actionUrl else if (
+                !header?.actionUrl.isNullOrEmpty()
+            ) header?.actionUrl else ""
+
+            actionUrl ?: return@setOnItemChildClickListener
+            when (view.id) {
+                R.id.tv_right_text -> {
+                    if (actionUrl.contains("ranklist")) {
+                        ActivityUtils.startActivity(RankActivity::class.java)
+                    } else {
+                        CategoryActivity.startActivity(header!!.title,
+                            if (actionUrl.contains("categories")) 0 else 1)
+                    }
+
+                }
+            }
+        }
         recycler_view.adapter = discoverAdapter
 //        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

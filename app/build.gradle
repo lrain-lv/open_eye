@@ -53,9 +53,8 @@ dependencies {
     implementation ext.dependencies.eventbus
     implementation ext.dependencies.utilCode
     implementation ext.dependencies.FlycoTabLayout
-    implementation ext.dependencies.itemdecoration
+//    implementation ext.dependencies.itemdecoration
     implementation ext.dependencies.banner
-    implementation ext.dependencies.itemdecoration
     implementation ext.dependencies.rxpermissions
     implementation ext.dependencies.agentweb
     implementation ext.dependencies.material

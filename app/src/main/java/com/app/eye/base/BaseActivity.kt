@@ -1,14 +1,11 @@
 package com.app.eye.base
 
-import android.app.Activity
 import android.content.Context
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import com.app.eye.base.mvp.BasePresenter
-import com.app.eye.base.mvp.IBaseView
-import com.app.eye.base.mvp.IPresenter
+import androidx.appcompat.widget.Toolbar
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.app.eye.R
 import com.app.eye.event.NetworkEvent
 import com.app.eye.receiver.NetworkChangeReceiver
 import com.blankj.utilcode.util.ActivityUtils
@@ -16,12 +13,10 @@ import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.Utils
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
 import me.yokeyword.fragmentation.SupportActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.prefs.Preferences
 
 abstract class BaseActivity : SupportActivity() {
 
@@ -46,6 +41,15 @@ abstract class BaseActivity : SupportActivity() {
         initData()
     }
 
+     fun initToolBar(bar: Toolbar) {
+        bar.setNavigationOnClickListener {
+            onBackPressedSupport()
+        }
+    }
+    open fun initSwipeRefreshLayout(refreshLayout: SwipeRefreshLayout) {
+        val intArray = resources.getIntArray(R.array.google_colors)
+        refreshLayout.setColorSchemeColors(*intArray)
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public fun onNetworkChangeEvent(event: NetworkEvent) {
         SPUtils.getInstance("eye").put("isLastConnect", event.isConnect)

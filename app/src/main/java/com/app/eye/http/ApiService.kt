@@ -61,4 +61,19 @@ interface ApiService {
 
     @GET(Constant.TAG_DYNAMIC)
     fun getTagDynamic(@QueryMap map: Map<String, String>): Observable<TagVideoEntity>
+
+    @GET(Constant.CATEGORY)
+    fun getCategories(): Observable<CategoryEntity>
+
+    @GET(Constant.SPECIAL_TOPIC)
+    fun getSpecialTopic(@QueryMap map: Map<String, String>): Observable<SpecialTopicEntity>
+
+    @GET(Constant.RANK_LIST)
+    fun getRankList(
+        @Query("strategy") strategy: String,
+        @QueryMap map: Map<String, String>
+    ): Observable<RankEntity>
+
+    @GET(Constant.INFORMATION_LIST)
+    fun getInformationList(@QueryMap map: Map<String, String>): Observable<InformationEntity>
 }

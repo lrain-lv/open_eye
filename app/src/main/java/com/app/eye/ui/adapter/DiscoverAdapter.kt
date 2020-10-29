@@ -16,6 +16,7 @@ import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_TEXT_CARD
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_VIDEO_SMALL_CARD
 import com.app.eye.ui.mvp.model.entity.Item.Companion.NONE
 import com.app.eye.ui.mvp.model.entity.ItemX
+import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -23,7 +24,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration
 import com.youth.banner.Banner
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import java.util.*
@@ -58,7 +58,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 if (TextUtils.equals("banner", item.type)) {
                     val itemX = ItemX(
                         DataX(
-                            item.data.actionUrl, false, "", "", null,
+                            item.data.actionUrl!!, false, "", "", null,
                             item.data.id, item.data.image, null, mutableListOf(), false, "", "", ""
                         ), item.id, item.type
                     )
@@ -70,7 +70,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 }
             }
             DISCOVER_SQUARE_CARD -> {
-                val header = item.data.header
+                val header = item.data.header!!
                 holder.setText(R.id.tv_title, header.title)
                     .setText(R.id.tv_right_text, header.rightText)
                 val squareRecycler = holder.getView<RecyclerView>(R.id.recycler)
@@ -84,7 +84,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 squareRecycler.adapter = adapter
             }
             DISCOVER_COLUMN_CARD_LIST -> {
-                val header = item.data.header
+                val header = item.data.header!!
                 holder.setText(R.id.tv_title, header.title)
                     .setText(R.id.tv_right_text, header.rightText)
                 val columnRecycler = holder.getView<RecyclerView>(R.id.recycler)

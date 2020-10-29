@@ -6,6 +6,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.urlToMap
+import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.adapter.DailyAdapter
 import com.app.eye.ui.mvp.contract.DailyContract
 import com.app.eye.ui.mvp.model.entity.DailyEntity
@@ -38,6 +39,16 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
         recycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler.adapter = dailyAdapter
         dailyAdapter.loadMoreModule.setOnLoadMoreListener(this)
+        dailyAdapter.addChildClickViewIds(R.id.tv_right_text)
+        dailyAdapter.setOnItemChildClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.tv_right_text -> {
+                    if (dailyAdapter.getItem(position).data.actionUrl?.contains("common")!!) {
+                        CategoryActivity.startActivity("全部资讯", 2)
+                    }
+                }
+            }
+        }
 //        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                if (!_mActivity.isFinishing) {
@@ -91,7 +102,7 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
         status_view.showContentView()
         refresh_layout.isRefreshing = false
     }
-    
+
     override fun useLazyLoad(): Boolean = true
     override fun reConnect() {
         if (status_view.getViewStatus() == STATUS_NO_NETWORK) {

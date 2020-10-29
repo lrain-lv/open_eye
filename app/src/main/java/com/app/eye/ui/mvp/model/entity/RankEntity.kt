@@ -1,83 +1,34 @@
 package com.app.eye.ui.mvp.model.entity
 
-import com.chad.library.adapter.base.entity.MultiItemEntity
-
-data class DailyEntity(
+data class RankEntity(
     val adExist: Boolean,
     val count: Int,
-    val itemList: MutableList<ItemDaily>,
+    val itemList: MutableList<RankItem>,
     val nextPageUrl: String,
     val total: Int
+)
 
-) {
-    override fun toString(): String {
-        return "DailyEntity(adExist=$adExist, count=$count, itemList=$itemList, nextPageUrl='$nextPageUrl', total=$total)"
-    }
-}
-
-data class ItemDaily(
+data class RankItem(
     val adIndex: Int,
-    val `data`: DataDaily,
+    val `data`: RankData,
     val id: Int,
-    val tag: Any,
-    val trackingData: Any,
     val type: String
-) : MultiItemEntity {
-    override val itemType: Int
-        get() = when (type) {
-            "textCard" -> DAILY_TEXT
-            "followCard" -> DAILY_VIDEO
-            "informationCard" -> DAILY_INFORMATION
-            else -> NONE
-        }
+)
 
-    companion object {
-        const val DAILY_TEXT = 0
-        const val DAILY_VIDEO = 1
-        const val DAILY_INFORMATION = 2
-        const val NONE = -1
-
-    }
-
-}
-
-data class DataDaily(
-    val actionUrl: String?,
-    val adTrack: Any,
-    val backgroundImage: String,
-    val bannerList: MutableList<Banner>,
-    val content: Content,
+data class RankData(
+    val content: RankContent,
     val dataType: String,
-    val follow: Any,
-    val header: HeaderDaily,
-    val headerType: String,
-    val id: Int,
-    val rightText: String?,
-    val startTime: Long,
-    val subTitle: Any,
-    val text: String,
-    val titleList: MutableList<String>,
-    val type: String
+    val header: RankHeader
 )
 
-data class Banner(
-    val background_image: String,
-    val link: String,
-    val poster_image: String,
-    val tag_name: String,
-    val title: String
-)
-
-data class Content(
+data class RankContent(
     val adIndex: Int,
-    val `data`: DataXDaily,
+    val `data`: RankDataX,
     val id: Int,
-    val tag: Any,
-    val trackingData: Any,
     val type: String
 )
 
-data class HeaderDaily(
+data class RankHeader(
     val actionUrl: String,
     val cover: Any,
     val description: String,
@@ -96,16 +47,14 @@ data class HeaderDaily(
     val title: String
 )
 
-data class DataXDaily(
+data class RankDataX(
     val ad: Boolean,
-    val adTrack: MutableList<Any>,
-    val author: AuthorDaily,
-    val brandWebsiteInfo: Any,
+    val author: RankAuthor,
     val campaign: Any,
     val category: String,
     val collected: Boolean,
-    val consumption: ConsumptionDaily,
-    val cover: CoverDaily,
+    val consumption: RankConsumption,
+    val cover: RankCover,
     val dataType: String,
     val date: Long,
     val description: String,
@@ -117,15 +66,14 @@ data class DataXDaily(
     val idx: Int,
     val ifLimitVideo: Boolean,
     val label: Any,
-    val labelList: MutableList<Any>,
     val lastViewTime: Any,
     val library: String,
-    val playInfo: MutableList<PlayInfoDaily>,
+    val playInfo: MutableList<RankPlayInfo>,
     val playUrl: String,
     val played: Boolean,
     val playlists: Any,
     val promotion: Any,
-    val provider: ProviderDaily,
+    val provider: RankProvider,
     val reallyCollected: Boolean,
     val recallSource: Any,
     val recall_source: Any,
@@ -137,7 +85,7 @@ data class DataXDaily(
     val slogan: Any,
     val src: Any,
     val subtitles: MutableList<Any>,
-    val tags: MutableList<TagDaily>,
+    val tags: MutableList<RankTag>,
     val thumbPlayUrl: Any,
     val title: String,
     val titlePgc: Any,
@@ -145,15 +93,15 @@ data class DataXDaily(
     val videoPosterBean: Any,
     val waterMarks: Any,
     val webAdTrack: Any,
-    val webUrl: WebUrlDaily
+    val webUrl: RankWebUrl
 )
 
-data class AuthorDaily(
+data class RankAuthor(
     val adTrack: Any,
     val approvedNotReadyVideoCount: Int,
     val description: String,
     val expert: Boolean,
-    val follow: FollowDaily,
+    val follow: RankFollow,
     val icon: String,
     val id: Int,
     val ifPgc: Boolean,
@@ -161,18 +109,18 @@ data class AuthorDaily(
     val link: String,
     val name: String,
     val recSort: Int,
-    val shield: ShieldDaily,
+    val shield: RankShield,
     val videoNum: Int
 )
 
-data class ConsumptionDaily(
+data class RankConsumption(
     val collectionCount: Int,
     val realCollectionCount: Int,
     val replyCount: Int,
     val shareCount: Int
 )
 
-data class CoverDaily(
+data class RankCover(
     val blurred: String,
     val detail: String,
     val feed: String,
@@ -180,29 +128,29 @@ data class CoverDaily(
     val sharing: Any
 )
 
-data class PlayInfoDaily(
+data class RankPlayInfo(
     val height: Int,
     val name: String,
     val type: String,
     val url: String,
-    val urlList: MutableList<UrlDaily>,
+    val urlList: MutableList<RankUrl>,
     val width: Int
 )
 
-data class ProviderDaily(
+data class RankProvider(
     val alias: String,
     val icon: String,
     val name: String
 )
 
-data class TagDaily(
+data class RankTag(
     val actionUrl: String,
     val adTrack: Any,
     val bgPicture: String,
     val childTagIdList: Any,
     val childTagList: Any,
     val communityIndex: Int,
-    val desc: String,
+    val desc: Any,
     val haveReward: Boolean,
     val headerImage: String,
     val id: Int,
@@ -212,24 +160,24 @@ data class TagDaily(
     val tagRecType: String
 )
 
-data class WebUrlDaily(
+data class RankWebUrl(
     val forWeibo: String,
     val raw: String
 )
 
-data class FollowDaily(
+data class RankFollow(
     val followed: Boolean,
     val itemId: Int,
     val itemType: String
 )
 
-data class ShieldDaily(
+data class RankShield(
     val itemId: Int,
     val itemType: String,
     val shielded: Boolean
 )
 
-data class UrlDaily(
+data class RankUrl(
     val name: String,
     val size: Int,
     val url: String

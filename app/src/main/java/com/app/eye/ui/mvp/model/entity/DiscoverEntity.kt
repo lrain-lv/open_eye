@@ -46,7 +46,7 @@ class Item(
 }
 
 data class Data(
-    val actionUrl: String,
+    val actionUrl: String?,
     val ad: Boolean,
     val adTrack: Any,
     val author: Author,
@@ -68,7 +68,7 @@ data class Data(
     val follow: Follow,
     val footer: Any,
     val haveReward: Boolean,
-    val header: Header,
+    val header: Header?,
     val icon: String,
     val iconType: String,
     val autoPlay: Boolean,

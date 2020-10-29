@@ -41,9 +41,9 @@ class TopicSquareChildFragment : BaseMvpFragment<TopicContact.Presenter, TopicCo
 
     private var nextPageUrl: String? = ""
 
+    private var isRefresh: Boolean = true
     private lateinit var topicChildAdapter: TopicChildAdapter
 
-    private var isRefresh: Boolean = true
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
