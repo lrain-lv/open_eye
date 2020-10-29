@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.orhanobut.logger.Logger
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class AttentionAdapter(data: MutableList<AttItem>) :
@@ -37,7 +38,7 @@ class AttentionAdapter(data: MutableList<AttItem>) :
             recyclerChild.adapter = adapter
         } else {
             val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-            val data = item.data.content.data
+            val data = item.data.content!!.data
             val header = item.data.header
             Glide.with(context)
                 .load(header.icon)
@@ -45,10 +46,12 @@ class AttentionAdapter(data: MutableList<AttItem>) :
                 .override(SizeUtils.dp2px(40f), SizeUtils.dp2px(40f))
                 .into(ivHeader)
             holder.setText(R.id.tv_name, header.issuerName)
-                .setText(R.id.tv_date,
-                    if (data.area.isNullOrEmpty()) "${TimeUtils.getFriendlyTimeSpanByNow(item.data.content.data.createTime)}发布："
-                    else "${TimeUtils.getFriendlyTimeSpanByNow(item.data.content.data.createTime)}在${data.area}发布：")
-                .setText(R.id.tv_tag, data.tags[0].name)
+                .setText(
+                    R.id.tv_date,
+                    if (data.area.isNullOrEmpty()) "${TimeUtils.getFriendlyTimeSpanByNow(data.createTime)}发布："
+                    else "${TimeUtils.getFriendlyTimeSpanByNow(data.createTime)}在${data.area}发布："
+                )
+                .setGone(R.id.tv_tag, true)
                 .setText(R.id.tv_content, data.description)
                 .setGone(R.id.tv_content, data.description.isNullOrEmpty())
                 .setText(R.id.tv_like_count, data.consumption.collectionCount.toString())
@@ -60,8 +63,10 @@ class AttentionAdapter(data: MutableList<AttItem>) :
                     val ivVideo = holder.getView<ImageView>(R.id.iv_video)
                     Glide.with(context)
                         .load(data.cover.feed)
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f), 0)
+                        )
                         .into(ivVideo)
                 }
                 TagVideoItem.TYPE_PIC2 -> {
@@ -69,17 +74,25 @@ class AttentionAdapter(data: MutableList<AttItem>) :
                     val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                     Glide.with(context)
                         .load(data.urls[0])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.LEFT))
+                                RoundedCornersTransformation.CornerType.LEFT
+                            )
+                        )
                         .into(pic1)
                     Glide.with(context)
                         .load(data.urls[1])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.RIGHT))
+                                RoundedCornersTransformation.CornerType.RIGHT
+                            )
+                        )
                         .into(pic2)
                 }
                 TagVideoItem.TYPE_PIC3 -> {
@@ -88,61 +101,91 @@ class AttentionAdapter(data: MutableList<AttItem>) :
                     val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
                     Glide.with(context)
                         .load(data.urls[0])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.LEFT))
+                                RoundedCornersTransformation.CornerType.LEFT
+                            )
+                        )
                         .into(pic1)
                     Glide.with(context)
                         .load(data.urls[1])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.TOP_RIGHT))
+                                RoundedCornersTransformation.CornerType.TOP_RIGHT
+                            )
+                        )
                         .into(pic2)
                     Glide.with(context)
                         .load(data.urls[2])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
+                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT
+                            )
+                        )
                         .into(pic3)
                 }
                 TagVideoItem.TYPE_PIC4 -> {
                     holder.setGone(R.id.tv_more, data.urls.size == 4)
-                        .setText(R.id.tv_more,
-                            if (data.urls.size > 4) "+${data.urls.size - 4}" else "")
+                        .setText(
+                            R.id.tv_more,
+                            if (data.urls.size > 4) "+${data.urls.size - 4}" else ""
+                        )
                     val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                     val pic0 = holder.getView<ImageView>(R.id.iv_pic0)
                     val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                     val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
                     Glide.with(context)
                         .load(data.urls[0])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.TOP_LEFT))
+                                RoundedCornersTransformation.CornerType.TOP_LEFT
+                            )
+                        )
                         .into(pic0)
                     Glide.with(context)
                         .load(data.urls[1])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.TOP_RIGHT))
+                                RoundedCornersTransformation.CornerType.TOP_RIGHT
+                            )
+                        )
                         .into(pic1)
                     Glide.with(context)
                         .load(data.urls[2])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.BOTTOM_LEFT))
+                                RoundedCornersTransformation.CornerType.BOTTOM_LEFT
+                            )
+                        )
                         .into(pic2)
                     Glide.with(context)
                         .load(data.urls[3])
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(
+                                SizeUtils.dp2px(5f),
                                 0,
-                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
+                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT
+                            )
+                        )
                         .into(pic3)
                 }
             }

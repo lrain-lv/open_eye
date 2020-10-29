@@ -29,23 +29,31 @@ data class AttItem(
     }
 
     override val itemType: Int
-        get() = when {
-            TextUtils.equals("video", data.content.type) -> TYPE_VIDEO
-            StringUtils.equalsIgnoreCase("userListCard", type) -> TYPE_USER
-            else -> when (data.content.data.urls.size) {
-                1 -> TYPE_VIDEO
-                2 -> TYPE_PIC2
-                3 -> TYPE_PIC3
-                4 -> TYPE_PIC4
+        get() =
+            when {
+                StringUtils.equalsIgnoreCase("userListCard", type) -> TYPE_USER
+                data.content != null -> {
+                    when {
+                        TextUtils.equals("video", data.content.type) -> TYPE_VIDEO
+                        StringUtils.equalsIgnoreCase("userListCard", type) -> TYPE_USER
+                        else -> when (data.content.data.urls.size) {
+                            1 -> TYPE_VIDEO
+                            2 -> TYPE_PIC2
+                            3 -> TYPE_PIC3
+                            4 -> TYPE_PIC4
+                            else -> TYPE_NONE
+                        }
+                    }
+                }
                 else -> TYPE_NONE
             }
-        }
+
 
 }
 
 data class AttData(
     val actionUrl: String,
-    val content: AttContent,
+    val content: AttContent?,
     val count: Int,
     val dataType: String,
     val header: AttHeader,

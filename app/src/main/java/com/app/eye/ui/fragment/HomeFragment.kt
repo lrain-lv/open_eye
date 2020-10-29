@@ -15,10 +15,9 @@ class HomeFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initView() {
-        val titleList = mutableListOf<String>("发现", "推荐", "日报")
+        val titleList = mutableListOf<String>("发现", "日报")
         val fragmentList = listOf<SupportFragment>(
             FindFragment.newInstance(),
-            RecommendFragment.newInstance(),
             DailyFragment.newInstance()
         )
         val tabFragmentAdapter =

@@ -16,7 +16,7 @@ class AttentionChildAdapter(data: MutableList<AttUser>) : BaseQuickAdapter<AttUs
         Glide.with(context)
             .load(item.avatar)
             .circleCrop()
-            .override(SizeUtils.dp2px(55f), SizeUtils.dp2px(55f))
+            .override(SizeUtils.dp2px(40f), SizeUtils.dp2px(40f))
             .into(img)
     }
 }

@@ -157,4 +157,14 @@ object Constant {
     //https://baobab.kaiyanapp.com/api/v2/video/556911?resourceType=ugc_picture&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786
     //评论列表
     //http://baobab.kaiyanapp.com/api/v2/replies/video?videoId=572211&type=ugc_picture&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //查看对话
+    //http://baobab.kaiyanapp.com/api/v2/replies/conversation?replyId=1319796687916498944&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //专题策划
+    //http://baobab.kaiyanapp.com/api/v3/lightTopics/internal/531?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //策划点击视频
+    //http://baobab.kaiyanapp.com/api/v2/video/107172?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v2/replies/video?videoId=107172&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v4/video/related?id=107172&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+
+
 }

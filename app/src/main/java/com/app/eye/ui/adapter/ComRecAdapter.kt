@@ -23,6 +23,12 @@ class ComRecAdapter(dataList: MutableList<ComItem>) : BaseQuickAdapter<ComItem, 
         item ?: return
         holder.setText(R.id.tv_dec, item.data.content.data.description)
             .setText(R.id.tv_name, item.data.header.issuerName)
+            .setGone(R.id.iv_video, !item.data.content.type.contains("video"))
+            .setGone(
+                R.id.iv_muti, if (item.data.content.data.urls.isNullOrEmpty()) true else
+                    item.data.content.data.urls.size <= 1
+            )
+            .setGone(R.id.tv_dec,item.data.content.data.description.isNullOrEmpty())
             .setText(R.id.tv_count, item.data.content.data.consumption.collectionCount.toString())
         val ivHeader = holder.getView<ImageView>(R.id.iv_header)
         Glide.with(context)
