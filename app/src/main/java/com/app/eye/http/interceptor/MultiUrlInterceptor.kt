@@ -29,7 +29,6 @@ class MultiUrlInterceptor : Interceptor {
                 .scheme(baseUrl.scheme())
                 .host(baseUrl.host())
                 .port(baseUrl.port())
-                .removePathSegment(0)
                 .build()
             builder.addHeader("X-THEFAIR-APPID", "ahpagrcrf2p7m6rg")
                 .addHeader(
@@ -48,8 +47,9 @@ class MultiUrlInterceptor : Interceptor {
                 )
                 .addHeader(
                     "Cookie",
-                    "ky_auth=;ky_udid=7a5bd452383b40a1804972422eef008361cf87b8;APPID=ahpagrcrf2p7m6rg; expires=Wed, 21-Oct-2020 13:10:16 GMT; Max-Age=86400; path=/; HttpOnly;PHPSESSID=1d87de8a092b3fa86b0f19ba0f015309; expires=Wed, 21-Oct-2020 13:10:16 GMT; Max-Age=86400; path=/; HttpOnly"
+                    "ky_auth=_V1MTU3NTEzMjAxOTU6MTYxMTc0MjEyODkxMTo0ZmE0ZmEwZGFmOGQ5MDZiNmUwMGYzOTIyNDE2Yjg1OA; expires=Wed, 27-Jan-2021 06:08:48 GMT; path=/account-api; domain=account.kaiyanapp.com; HttpOnly"
                 )
+
             val newRequest = builder.url(newUrl).build()
             return chain.proceed(newRequest)
         } else {

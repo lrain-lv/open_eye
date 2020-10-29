@@ -7,6 +7,7 @@ import com.app.eye.ui.fragment.*
 import com.app.eye.ui.mvp.model.entity.TabEntity
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.flyco.tablayout.listener.CustomTabEntity
 import com.flyco.tablayout.listener.OnTabSelectListener
@@ -57,8 +58,13 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         initStatusBar()
-        iv_add.setOnClickListener { ToastUtils.showShort("ImageView added") }
-        var firstFragment = findFragment(HomeFragment::class.java)
+        iv_add.setOnClickListener {
+            if (!SPUtils.getInstance("eye").getBoolean("isLogin", false)) {
+                ActivityUtils.startActivity(LoginActivity::class.java)
+            }
+//            ToastUtils.showShort("ImageView added")
+        }
+        val firstFragment = findFragment(HomeFragment::class.java)
         if (firstFragment == null) {
             initFragment()
             loadMultipleRootFragment(R.id.container, 0, *fragments)

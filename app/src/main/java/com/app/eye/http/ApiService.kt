@@ -76,4 +76,8 @@ interface ApiService {
 
     @GET(Constant.INFORMATION_LIST)
     fun getInformationList(@QueryMap map: Map<String, String>): Observable<InformationEntity>
+
+    @Headers("hostName: common")
+    @GET(Constant.COM_ATTENTION)
+    fun getComFollow(@QueryMap map: Map<String, String>): Observable<ComAttentionEntity>
 }

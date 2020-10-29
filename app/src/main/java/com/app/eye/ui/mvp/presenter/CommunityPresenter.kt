@@ -34,4 +34,18 @@ class CommunityPresenter : BasePresenter<CommunityContract.Model, CommunityContr
             })
         addDisposable(subscribe)
     }
+
+    override fun getComAttentionRequest(map: Map<String, String>) {
+        val subscribe = model.getComAttentionRequest(map)
+            .compose(SchedulerUtils.ioToMain())
+            .subscribe({
+                view?.hideLoading()
+                view?.setComAttentionResponse(it)
+            }, {
+                view?.hideLoading()
+                view?.setComAttentionResponse(null)
+                ToastUtils.showShort(it.message ?: "请求失败")
+            })
+        addDisposable(subscribe)
+    }
 }

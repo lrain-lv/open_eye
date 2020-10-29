@@ -18,7 +18,6 @@ import com.app.eye.ui.mvp.presenter.TopicPresenter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_rec.refresh_layout
 import kotlinx.android.synthetic.main.fragment_rec.status_view
 import kotlinx.android.synthetic.main.fragment_topic_square_child.*
@@ -93,7 +92,6 @@ class TopicSquareChildFragment : BaseMvpFragment<TopicContact.Presenter, TopicCo
     override fun setTabChildResponse(data: TabChildEntity?) {
         data ?: status_view.showEmptyView()
         nextPageUrl = data?.nextPageUrl
-        Logger.e("ddd$nextPageUrl")
         if (isRefresh) {
             topicChildAdapter.loadMoreModule.isEnableLoadMore = true
             topicChildAdapter.setList(data?.itemList)

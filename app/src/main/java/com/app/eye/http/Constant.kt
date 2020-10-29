@@ -2,28 +2,28 @@ package com.app.eye.http
 
 object Constant {
 
-    const val COMMON_BASE_URL = "http://baobab.kaiyanapp.com/api/"
+    const val COMMON_BASE_URL = "http://baobab.kaiyanapp.com/"
     const val RECOMMEND_BASE_URL = "http://api.eyepetizer.net/"
     const val ACCOUNT_BASE_URL = "https://account.kaiyanapp.com/"
 
     const val LOGIN = "v1/api/login"
 
     const val CONFIGS =
-        "v2/configs?model=Android&deviceTypeOs=29&deviceImsi=0&deviceBrand=HUAWEI&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v2/configs?model=Android&deviceTypeOs=29&deviceImsi=0&deviceBrand=HUAWEI&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val RECOMMEND = "http://api.eyepetizer.net/v1/card/page/get_page"
     const val DISCOVERY =
-        "v7/index/tab/discovery?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v7/index/tab/discovery?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val DAILY =
-        "v5/index/tab/feed?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v5/index/tab/feed?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
     const val HOT =
-        "v3/queries/hot?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v3/queries/hot?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val PRE_SEARCH =
-        "v3/search/preSearch?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
+        "api/v3/search/preSearch?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
     const val SEARCH =
-        "v3/search?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
+        "api/v3/search?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
 
     const val USER_AGREEMENT = "http://www.eyepetizer.net/agreement.html"
 
@@ -33,41 +33,44 @@ object Constant {
     const val GET_PAGE = "v1/card/page/get_page"
 
     const val MESSAGE =
-        "v3/messages?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v3/messages?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val TOPIC_DETAIL =
-        "v7/topic/detail?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
+        "api/v7/topic/detail?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
 
     const val COM_REC =
-        "v7/community/tab/rec?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v7/community/tab/rec?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val TAG_TAB =
-        "v7/tag/tabList?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v7/tag/tabList?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
-    const val TAG_CHILDTAB = "v7/tag/childTab"
+    const val TAG_CHILDTAB = "api/v7/tag/childTab"
     const val TOPIC_LIST =
-        "v7/topic/list?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v7/topic/list?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val TAG_INDEX =
-        "v6/tag/index?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v6/tag/index?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val TAG_VIDEO =
-        "v1/tag/videos?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v1/tag/videos?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val TAG_DYNAMIC =
-        "v6/tag/dynamics?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v6/tag/dynamics?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val CATEGORY =
-        "v4/categories/all?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v4/categories/all?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val SPECIAL_TOPIC =
-        "v3/specialTopics?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v3/specialTopics?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val RANK_LIST =
-        "v4/rankList/videos?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v4/rankList/videos?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     const val INFORMATION_LIST =
-        "v7/information/list?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+        "api/v7/information/list?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+
+    const val COM_ATTENTION =
+        "api/v6/community/tab/follow?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     //全部分类
     //http://baobab.kaiyanapp.com/api/v4/categories/all?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29

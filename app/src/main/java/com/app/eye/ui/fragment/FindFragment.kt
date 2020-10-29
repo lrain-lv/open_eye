@@ -6,6 +6,7 @@ import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.RankActivity
+import com.app.eye.ui.activity.TopicSquareActivity
 import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
@@ -50,11 +51,12 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
                 R.id.tv_right_text -> {
                     if (actionUrl.contains("ranklist")) {
                         ActivityUtils.startActivity(RankActivity::class.java)
+                    } else if (actionUrl.contains("community")) {
+                        TopicSquareActivity.startTopicSquareActivity("主题")
                     } else {
                         CategoryActivity.startActivity(header!!.title,
                             if (actionUrl.contains("categories")) 0 else 1)
                     }
-
                 }
             }
         }

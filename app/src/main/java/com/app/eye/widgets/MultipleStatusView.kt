@@ -91,6 +91,8 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
      */
 
     fun showEmptyView() {
+        if (getViewStatus() == STATUS_EMPTY)
+            return
         visibility = View.VISIBLE
         showEmptyView(emptyViewResId, layoutParams)
     }
@@ -119,6 +121,8 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
      */
 
     fun showErrorView() {
+        if (getViewStatus() == STATUS_ERROR)
+            return
         visibility = View.VISIBLE
         showErrorView(errorViewResId, layoutParams)
     }
@@ -147,6 +151,8 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
      */
 
     fun showNoNetworkView() {
+        if (getViewStatus() == STATUS_NO_NETWORK)
+            return
         visibility = View.VISIBLE
         showNoNetworkView(noNetworkViewResId, layoutParams)
     }
@@ -177,6 +183,8 @@ class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(con
      */
 
     fun showLoadingView() {
+        if (getViewStatus() == STATUS_LOADING)
+            return
         visibility = View.VISIBLE
         showLoadingView(loadingViewResId, layoutParams)
     }

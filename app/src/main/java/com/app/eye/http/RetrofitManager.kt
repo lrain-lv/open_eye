@@ -2,8 +2,8 @@ package com.app.eye.http
 
 import com.app.eye.MainApp
 import com.app.eye.http.cookie.PersistentCookieJar
-import com.app.eye.http.cookie.SetCookieCache
 import com.app.eye.http.cookie.SharedPrefsCookiePersistor
+import com.app.eye.http.cookie.cache.SetCookieCache
 import com.app.eye.http.interceptor.LoggingInterceptor
 import com.app.eye.http.interceptor.MultiUrlInterceptor
 import com.google.gson.Gson

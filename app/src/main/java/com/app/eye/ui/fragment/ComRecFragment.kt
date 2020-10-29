@@ -13,6 +13,7 @@ import com.app.eye.ui.adapter.BannerItemAdapter
 import com.app.eye.ui.adapter.ComRecAdapter
 import com.app.eye.ui.adapter.SquareCardAdapter
 import com.app.eye.ui.mvp.contract.CommunityContract
+import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
 import com.app.eye.ui.mvp.model.entity.ComRecEntity
 import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
@@ -151,9 +152,9 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
         refresh_layout.isEnabled = true
     }
 
-    override fun setComAttentionResponse() {
-    }
+    override fun setComAttentionResponse(entity: ComAttentionEntity?) {
 
+    }
     override fun showLoading() {
     }
 

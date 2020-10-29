@@ -1,10 +1,6 @@
 package com.app.eye.ui.fragment
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
 import com.app.eye.event.LoginEvent
@@ -13,9 +9,7 @@ import com.app.eye.ui.activity.LoginActivity
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.SPUtils
-import com.blankj.utilcode.util.ScreenUtils
 import com.bumptech.glide.Glide
-import com.orhanobut.logger.Logger
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_mine.*
@@ -86,6 +80,7 @@ class MineFragment : BaseFragment(), View.OnClickListener {
         Observable.just(loginEntity)
             .observeOn(Schedulers.io())
             .subscribe {
+                SPUtils.getInstance("eye").put("isLogin", true)
                 SPUtils.getInstance("eye")
                     .put("avatar", loginEntity.member?.avatar)
                 SPUtils.getInstance("eye")
