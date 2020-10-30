@@ -1,7 +1,14 @@
 <resources>
-    <string name="app_name">OpenEye</string>
+    <string name="app_name">eyepetizer</string>
     <bool name="is_right_to_left">false</bool>
     <string name="splash_intro">每日精选视频推介，让你大开眼界</string>
     <string name="splash_intro_en">Daily appelizers for your eyes,Bon eyepetit</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tips_not_wifi">You are currently using the mobile network, the player will continue to consume traffic</string>
+    <string name="tips_not_wifi_confirm">Resume</string>
+    <string name="tips_not_wifi_cancel">Stop play</string>
+    <string name="no_url">No url</string>
+    <string name="replay">Replay</string>
+    <string name="click_to_restart">Click to try again</string>
+    <string name="video_loading_failed">Video loading failed</string>
 </resources>

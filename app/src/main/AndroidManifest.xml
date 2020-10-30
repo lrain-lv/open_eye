@@ -17,7 +17,9 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.RankActivity"></activity>
+        <activity android:name=".ui.activity.TopicDetailActivity"></activity>
+        <activity android:name=".ui.activity.LightTopicActivity" />
+        <activity android:name=".ui.activity.RankActivity" />
         <activity android:name=".ui.activity.CategoryActivity" />
         <activity android:name=".ui.activity.TagVideoActivity" />
         <activity android:name=".ui.activity.TopicSquareActivity" />

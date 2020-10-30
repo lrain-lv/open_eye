@@ -80,4 +80,15 @@ interface ApiService {
     @Headers("hostName: common")
     @GET(Constant.COM_ATTENTION)
     fun getComFollow(@QueryMap map: Map<String, String>): Observable<ComAttentionEntity>
+
+    @GET("${Constant.LIGHT_TOPIC_INTERNAL}/{id}?${Constant.PARAMS}")
+    fun getLightTopicInternal(@Path("id") id: Int): Observable<LightTopicInternalEntity>
+
+    @GET(Constant.TOPIC_DETAIL)
+    fun getTopicDetailRequest(@Query("id") id: String): Observable<TopicDetailEntity>
+
+    @GET(Constant.REPLY_VIDEO)
+    fun getReplyVideoRequest(
+      @QueryMap map: Map<String, String>
+    ): Observable<ReplyVideoEntity>
 }

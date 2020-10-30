@@ -87,6 +87,10 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
                     loadMoreModule.setOnLoadMoreListener(this@CategoryActivity)
                     loadMoreModule.isEnableLoadMore = false
                 }
+                specialTopicAdapter.setOnItemClickListener { adapter, view, position ->
+                    val item = specialTopicAdapter.getItem(position)
+                    LightTopicActivity.startActivity(item.data.title,item.data.id)
+                }
                 recycler_view.layoutManager =
                     LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
                 recycler_view.adapter = specialTopicAdapter

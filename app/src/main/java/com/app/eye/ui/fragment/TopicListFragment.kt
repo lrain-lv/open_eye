@@ -6,6 +6,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.urlToMap
+import com.app.eye.ui.activity.TopicDetailActivity
 import com.app.eye.ui.adapter.TopicListAdapter
 import com.app.eye.ui.mvp.contract.TopicContact
 import com.app.eye.ui.mvp.model.entity.TabChildEntity
@@ -59,6 +60,13 @@ class TopicListFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact.V
         topicListAdapter.loadMoreModule.setOnLoadMoreListener(this)
         topicListAdapter.loadMoreModule.isEnableLoadMore = false
         recycler.adapter = topicListAdapter
+        topicListAdapter.setOnItemClickListener { adapter, view, position ->
+            val item = topicListAdapter.getItem(position)
+            val actionUrl = item.data.actionUrl
+            if (actionUrl.contains("topic/detail")) {
+                TopicDetailActivity.startActivity(item.data.id.toString())
+            }
+        }
         recycler.setHasFixedSize(true)
     }
 

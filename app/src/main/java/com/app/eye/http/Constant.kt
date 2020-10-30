@@ -38,6 +38,9 @@ object Constant {
     const val TOPIC_DETAIL =
         "api/v7/topic/detail?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&size=1080X1920&first_channel=huawei&last_channel=huawei&system_version_code=29&token=c75802a844a5c786"
 
+    const val REPLY_VIDEO =
+        "api/v2/replies/video?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+
     const val COM_REC =
         "api/v7/community/tab/rec?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
@@ -71,6 +74,12 @@ object Constant {
 
     const val COM_ATTENTION =
         "api/v6/community/tab/follow?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+
+    const val LIGHT_TOPIC_INTERNAL =
+        "api/v3/lightTopics/internal"
+
+    const val PARAMS =
+        "udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
     //全部分类
     //http://baobab.kaiyanapp.com/api/v4/categories/all?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29

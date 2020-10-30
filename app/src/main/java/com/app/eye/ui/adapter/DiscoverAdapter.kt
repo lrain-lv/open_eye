@@ -6,6 +6,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
+import com.app.eye.rx.actionUrlToMap
+import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.mvp.model.entity.DataX
 import com.app.eye.ui.mvp.model.entity.Item
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_BANNER
@@ -18,6 +20,7 @@ import com.app.eye.ui.mvp.model.entity.Item.Companion.NONE
 import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
 import com.blankj.utilcode.util.SizeUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -48,12 +51,23 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
         when (item.itemType) {
             DISCOVER_BANNER -> {
                 banner = holder.getView(R.id.banner)
-
                 val adapter = BannerItemAdapter(mutableListOf())
                 banner.apply {
                     setAdapter(adapter)
                     setBannerGalleryEffect(10, 6, 1f)
                     setScrollTime(1000)
+                }
+                banner.setOnBannerListener { _, position ->
+                    val itemX = adapter.getData(position)
+                    val actionUrl = itemX.data.actionUrl
+                    if (actionUrl.contains("webview")) {
+                        WebActivity.startWebActivity(
+                            url = actionUrl.actionUrlToMap()["url"] ?: error(""),
+                            title = actionUrl.actionUrlToMap()["title"] ?: error("")
+                        )
+                    }else{
+                        ToastUtils.showShort(actionUrl)
+                    }
                 }
                 if (TextUtils.equals("banner", item.type)) {
                     val itemX = ItemX(

@@ -4,9 +4,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.RankActivity
 import com.app.eye.ui.activity.TopicSquareActivity
+import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
@@ -27,35 +29,45 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
 
     override fun getLayoutRes(): Int = R.layout.fragment_find
 
-    lateinit var discoverAdapter: DiscoverAdapter
+    private lateinit var discoverAdapter: DiscoverAdapter
     override fun initView() {
-
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
         discoverAdapter = DiscoverAdapter(mutableListOf())
         recycler_view.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
+        discoverAdapter.setOnItemClickListener { adapter, view, position ->
+
+        }
         discoverAdapter.addChildClickViewIds(R.id.tv_right_text)
         discoverAdapter.setOnItemChildClickListener { _, view, position ->
             val item = discoverAdapter.getItem(position)
-
             val data = item.data
             val header = item.data.header
-            var actionUrl: String? = if (!data.actionUrl.isNullOrEmpty()) data.actionUrl else if (
+            val actionUrl: String? = if (!data.actionUrl.isNullOrEmpty()) data.actionUrl else if (
                 !header?.actionUrl.isNullOrEmpty()
             ) header?.actionUrl else ""
-
             actionUrl ?: return@setOnItemChildClickListener
             when (view.id) {
                 R.id.tv_right_text -> {
-                    if (actionUrl.contains("ranklist")) {
-                        ActivityUtils.startActivity(RankActivity::class.java)
-                    } else if (actionUrl.contains("community")) {
-                        TopicSquareActivity.startTopicSquareActivity("主题")
-                    } else {
-                        CategoryActivity.startActivity(header!!.title,
-                            if (actionUrl.contains("categories")) 0 else 1)
+                    when {
+                        actionUrl.contains("ranklist") -> {
+                            ActivityUtils.startActivity(RankActivity::class.java)
+                        }
+                        actionUrl.contains("community") -> {
+                            TopicSquareActivity.startTopicSquareActivity("主题")
+                        }
+                        actionUrl.contains("webview") -> {
+                            WebActivity.startWebActivity(
+                                url = actionUrl.actionUrlToMap()["url"] ?: error(""),
+                                title = actionUrl.actionUrlToMap()["title"] ?: error("")
+                            )
+                        }
+                        else -> {
+                            CategoryActivity.startActivity(header!!.title,
+                                if (actionUrl.contains("categories")) 0 else 1)
+                        }
                     }
                 }
             }

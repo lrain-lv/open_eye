@@ -29,6 +29,12 @@ fun String.urlToMap(): Map<String, String> {
     return map
 }
 
+fun String.actionUrlToMap(): Map<String, String> {
+    val indexOf = this.indexOf("?")
+    val substring = this.substring(indexOf + 1)
+    return substring.formToMap()
+}
+
 fun String.formToMap(): Map<String, String> {
     val map = hashMapOf<String, String>()
     val split = this.split("&")

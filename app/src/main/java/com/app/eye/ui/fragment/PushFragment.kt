@@ -6,7 +6,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.event.ChangeTabEvent
-import com.app.eye.rx.formToMap
+import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.PushMessageAdapter
 import com.app.eye.ui.mvp.contract.PushContract
@@ -118,12 +118,9 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
         if (item.actionUrl.contains("homepage")) {
             EventBus.getDefault().post(ChangeTabEvent())
         } else if (item.actionUrl.contains("webview")) {
-            val indexOf = item.actionUrl.indexOf("?")
-            val substring = item.actionUrl.substring(indexOf + 1)
-            val urlToMap = substring.formToMap()
             WebActivity.startWebActivity(
-                url = urlToMap["url"] ?: error(""),
-                title = urlToMap["title"] ?: error("")
+                url = item.actionUrl.actionUrlToMap()["url"] ?: error(""),
+                title = item.actionUrl.actionUrlToMap()["title"] ?: error("")
             )
         }
     }

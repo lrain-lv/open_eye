@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginEnd="15dp"
+        android:textStyle="bold"
         android:drawableRight="@mipmap/ic_arrow_right"
         android:drawablePadding="6dp"
         android:gravity="center"
