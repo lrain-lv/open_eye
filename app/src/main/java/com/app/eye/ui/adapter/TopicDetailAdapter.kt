@@ -23,7 +23,11 @@ class TopicDetailAdapter(data: MutableList<ReplyItem>) :
     override fun convert(holder: BaseViewHolder, item: ReplyItem) {
         when (item.itemType) {
             ReplyItem.TYPE_TEXT -> {
-                holder.setGone(R.id.tv_right_text, true)
+                holder.setGone(R.id.tv_right_text, item.data.actionUrl.isNullOrEmpty())
+                    .setText(
+                        R.id.tv_right_text,
+                        if (!item.data.actionUrl.isNullOrEmpty()) "查看全部" else ""
+                    )
                     .setText(R.id.tv_title, item.data.text)
             }
 
@@ -34,18 +38,28 @@ class TopicDetailAdapter(data: MutableList<ReplyItem>) :
                     .setGone(R.id.iv_main, data.imageUrl.isNullOrEmpty())
                     .setGone(R.id.layout_reply, data.parentReply == null)
                     .setGone(R.id.tv_get_converse, data.parentReply == null)
-                    .setGone(R.id.iv_reply,
-                        data.parentReply == null || data.parentReply.imageUrl.isNullOrEmpty())
+                    .setGone(
+                        R.id.iv_reply,
+                        data.parentReply == null || data.parentReply.imageUrl.isNullOrEmpty()
+                    )
                     .setText(R.id.tv_name, data.user.nickname)
-                    .setText(R.id.tv_reply_name,
-                        if (data.parentReply == null) "" else "回复 @${data.parentReply.user.nickname}")
+                    .setText(
+                        R.id.tv_reply_name,
+                        if (data.parentReply == null) "" else "回复 @${data.parentReply.user.nickname}"
+                    )
                     .setText(R.id.tv_content, data.message)
-                    .setText(R.id.tv_name_reply,
-                        if (data.parentReply == null) "" else data.parentReply.user.nickname)
-                    .setText(R.id.tv_content_reply,
-                        if (data.parentReply == null) "" else data.parentReply.message)
-                    .setText(R.id.tv_time,
-                        com.blankj.utilcode.util.TimeUtils.getFriendlyTimeSpanByNow(data.createTime))
+                    .setText(
+                        R.id.tv_name_reply,
+                        if (data.parentReply == null) "" else data.parentReply.user.nickname
+                    )
+                    .setText(
+                        R.id.tv_content_reply,
+                        if (data.parentReply == null) "" else data.parentReply.message
+                    )
+                    .setText(
+                        R.id.tv_time,
+                        com.blankj.utilcode.util.TimeUtils.getFriendlyTimeSpanByNow(data.createTime)
+                    )
                 val headerBig = holder.getView<ImageView>(R.id.iv_header_big)
                 Glide.with(context)
                     .load(data.user.avatar)
@@ -56,8 +70,10 @@ class TopicDetailAdapter(data: MutableList<ReplyItem>) :
                 if (!data.imageUrl.isNullOrEmpty()) {
                     Glide.with(context)
                         .load(data.imageUrl)
-                        .transform(CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
+                        .transform(
+                            CenterCrop(),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f), 0)
+                        )
                         .into(ivMain)
                 }
                 if (data.parentReply != null) {
@@ -73,8 +89,10 @@ class TopicDetailAdapter(data: MutableList<ReplyItem>) :
                     if (!data.parentReply.imageUrl.isNullOrEmpty()) {
                         Glide.with(context)
                             .load(data.parentReply.imageUrl)
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
+                            .transform(
+                                CenterCrop(),
+                                RoundedCornersTransformation(SizeUtils.dp2px(5f), 0)
+                            )
                             .into(ivReply)
                     }
                 }

@@ -22,16 +22,41 @@ class TopicDetailPresenter : BasePresenter<TopicDetailContract.Model, TopicDetai
         addDisposable(subscribe)
     }
 
-    override fun getReplyVideoRequest(map: Map<String,String>) {
+    override fun getReplyVideoRequest(map: Map<String, String>) {
         val subscribe = model.getReplyVideoRequest(map)
             .compose(SchedulerUtils.ioToMain())
             .subscribe({
                 view?.setReplyVideoResponse(it)
                 view?.hideLoading()
             }, {
-                Logger.e(it.message.toString())
                 view?.hideLoading()
                 view?.setReplyVideoResponse(null)
+            })
+        addDisposable(subscribe)
+    }
+
+    override fun getReplyConversationRequest(map: Map<String, String>) {
+        val subscribe = model.getReplyConversationRequest(map)
+            .compose(SchedulerUtils.ioToMain())
+            .subscribe({
+                view?.setReplyConversationResponse(it)
+                view?.hideLoading()
+            }, {
+                view?.hideLoading()
+                view?.setReplyConversationResponse(null)
+            })
+        addDisposable(subscribe)
+    }
+
+    override fun getReplyHotRequest(map: Map<String, String>) {
+        val subscribe = model.getReplyHotRequest(map)
+            .compose(SchedulerUtils.ioToMain())
+            .subscribe({
+                view?.setReplyHotResponse(it)
+                view?.hideLoading()
+            }, {
+                view?.hideLoading()
+                view?.setReplyHotResponse(null)
             })
         addDisposable(subscribe)
     }

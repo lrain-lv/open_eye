@@ -17,7 +17,11 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.TopicDetailActivity"></activity>
+        <activity android:name=".ui.activity.TopicReplyActivity"></activity>
+        <activity
+            android:name=".ui.activity.TopicDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".ui.activity.LightTopicActivity" />
         <activity android:name=".ui.activity.RankActivity" />
         <activity android:name=".ui.activity.CategoryActivity" />

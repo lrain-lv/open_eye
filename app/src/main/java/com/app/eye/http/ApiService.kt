@@ -89,6 +89,12 @@ interface ApiService {
 
     @GET(Constant.REPLY_VIDEO)
     fun getReplyVideoRequest(
-      @QueryMap map: Map<String, String>
+        @QueryMap map: Map<String, String>
     ): Observable<ReplyVideoEntity>
+
+    @GET(Constant.REPLY_CONVERSATION)
+    fun getReplyConversation(@QueryMap map: Map<String, String>): Observable<ReplyVideoEntity>
+
+    @GET(Constant.REPLY_HOT)
+    fun getReplyHot(@QueryMap map: Map<String, String>): Observable<ReplyVideoEntity>
 }

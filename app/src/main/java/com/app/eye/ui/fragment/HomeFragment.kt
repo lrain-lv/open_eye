@@ -1,8 +1,10 @@
 package com.app.eye.ui.fragment
 
+import android.content.Intent
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
+import com.app.eye.ui.activity.MainActivity
 import com.app.eye.ui.activity.SearchActivity
 import com.app.eye.ui.adapter.TabFragmentAdapter
 import com.blankj.utilcode.util.ActivityUtils
@@ -42,7 +44,10 @@ class HomeFragment : BaseFragment() {
             }
         })
         iv_search.setOnClickListener {
-            ActivityUtils.startActivity(SearchActivity::class.java)
+            ActivityUtils.startActivity(
+                SearchActivity::class.java, R.anim.in_from_top,
+                R.anim.top_slient
+            )
         }
     }
 

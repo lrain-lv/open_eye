@@ -10,7 +10,13 @@ class TopicDetailModel : TopicDetailContract.Model {
     override fun getTopicDetailRequest(id: String): Observable<TopicDetailEntity> =
         RetrofitManager.service.getTopicDetailRequest(id)
 
-    override fun getReplyVideoRequest(map: Map<String,String>): Observable<ReplyVideoEntity> =
+    override fun getReplyVideoRequest(map: Map<String, String>): Observable<ReplyVideoEntity> =
         RetrofitManager.service.getReplyVideoRequest(map)
+
+    override fun getReplyConversationRequest(map: Map<String, String>): Observable<ReplyVideoEntity> =
+        RetrofitManager.service.getReplyConversation(map)
+
+    override fun getReplyHotRequest(map: Map<String, String>): Observable<ReplyVideoEntity> =
+        RetrofitManager.service.getReplyHot(map)
 
 }

@@ -1,5 +1,6 @@
 package com.app.eye.ui.activity
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
@@ -16,15 +17,23 @@ import com.app.eye.ui.mvp.contract.TopicDetailContract
 import com.app.eye.ui.mvp.model.entity.ReplyVideoEntity
 import com.app.eye.ui.mvp.model.entity.TopicDetailEntity
 import com.app.eye.ui.mvp.presenter.TopicDetailPresenter
+import com.app.eye.widgets.BottomDialog
+import com.app.eye.widgets.EyeCommentDialog
+import com.app.eye.widgets.KeyboardChangeListener
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.KeyboardUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_topic_detail.*
 
 class TopicDetailActivity :
     BaseMvpActivity<TopicDetailContract.Presenter, TopicDetailContract.View>(),
-    TopicDetailContract.View, OnLoadMoreListener {
+    TopicDetailContract.View, OnLoadMoreListener, View.OnClickListener {
 
     companion object {
         fun startActivity(id: String) {
@@ -51,9 +60,34 @@ class TopicDetailActivity :
             .statusBarColor(R.color.black).init()
         iv_back.setOnClickListener { onBackPressedSupport() }
         initHeaderView()
+        iv_publish.setOnClickListener(this)
         topicDetailAdapter.loadMoreModule.setOnLoadMoreListener(this)
         topicDetailAdapter.loadMoreModule.isEnableLoadMore = false
         recycler_view.adapter = topicDetailAdapter
+        topicDetailAdapter.addChildClickViewIds(
+            R.id.tv_get_converse,
+            R.id.tv_reply,
+            R.id.tv_right_text
+        )
+        topicDetailAdapter.setOnItemChildClickListener { _, view, position ->
+            val item = topicDetailAdapter.getItem(position)
+            when (view.id) {
+                R.id.tv_reply -> {
+                    EyeCommentDialog.createCommentDialog(item.data.user.nickname)
+                        .showDialog(supportFragmentManager)
+                }
+                R.id.tv_get_converse -> {
+                    TopicReplyActivity.startActivity(
+                        1, replyId = item.data.id
+                    )
+                }
+                R.id.tv_right_text -> {
+                    TopicReplyActivity.startActivity(
+                        0, videoId = id.toInt()
+                    )
+                }
+            }
+        }
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 mDistance += dy
@@ -95,8 +129,10 @@ class TopicDetailActivity :
             val tv = TextView(mContext)
             tv.text = "#${it.name}"
             tv.setTextColor(Color.WHITE)
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             params.setMargins(SizeUtils.dp2px(15f), 0, 0, 0)
             tv.layoutParams = params
             layout.addView(tv)
@@ -126,6 +162,12 @@ class TopicDetailActivity :
         }
     }
 
+    override fun setReplyConversationResponse(entity: ReplyVideoEntity?) {
+    }
+
+    override fun setReplyHotResponse(entity: ReplyVideoEntity?) {
+    }
+
     override fun hideLoading() {
         status_view.showContentView()
     }
@@ -135,6 +177,21 @@ class TopicDetailActivity :
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
             mPresenter?.getReplyVideoRequest(map)
+        }
+    }
+
+    override fun onDestroy() {
+        KeyboardUtils.fixAndroidBug5497(this)
+        KeyboardUtils.fixSoftInputLeaks(this)
+        super.onDestroy()
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.iv_publish -> {
+                EyeCommentDialog.createCommentDialog()
+                    .showDialog(supportFragmentManager)
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ data class ReplyItem(
 }
 
 data class ReplyData(
-    val actionUrl: String,
+    val actionUrl: String?,
     val adTrack: Any,
     val cover: Any,
     val createTime: Long,

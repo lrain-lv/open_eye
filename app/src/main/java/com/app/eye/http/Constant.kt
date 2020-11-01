@@ -41,6 +41,12 @@ object Constant {
     const val REPLY_VIDEO =
         "api/v2/replies/video?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
+    const val REPLY_HOT =
+        "api/v2/replies/hot?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+
+    const val REPLY_CONVERSATION =
+        "api/v2/replies/conversation?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+
     const val COM_REC =
         "api/v7/community/tab/rec?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
@@ -80,18 +86,6 @@ object Constant {
 
     const val PARAMS =
         "udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
-
-    //全部分类
-    //http://baobab.kaiyanapp.com/api/v4/categories/all?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
-    //专题策划
-    //http://baobab.kaiyanapp.com/api/v3/specialTopics?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
-    //本周榜单
-    //周排行
-    //http://baobab.kaiyanapp.com/api/v4/rankList/videos?strategy=weekly&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
-    //月排行
-    //http://baobab.kaiyanapp.com/api/v4/rankList/videos?strategy=monthly&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
-    //总排行
-//http://baobab.kaiyanapp.com/api/v4/rankList/videos?strategy=historical&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 
     //排行点击
     //http://baobab.kaiyanapp.com/api/v2/replies/video?videoId=220005&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
@@ -173,7 +167,17 @@ object Constant {
     //策划点击视频
     //http://baobab.kaiyanapp.com/api/v2/video/107172?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v2/replies/video?videoId=107172&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v2/replies/hot?videoId=106821&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v4/video/related?id=107172&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+
+    //热门分类点击
+    //http://baobab.kaiyanapp.com/api/v1/tag/videos?id=16&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v6/tag/index?id=16&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v6/tag/dynamics?id=16&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //近期热门
+    //http://baobab.kaiyanapp.com/api/v1/tag/popular/tab?id=16&tabIndex=0&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v1/tag/videos?id=16&strategy=recentReleaseShareCount&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
+    //http://baobab.kaiyanapp.com/api/v1/tag/videos?id=16&strategy=shareCount&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 
 
 }

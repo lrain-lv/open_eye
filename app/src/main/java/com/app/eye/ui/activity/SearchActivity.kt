@@ -166,4 +166,9 @@ class SearchActivity : BaseMvpActivity<SearchContract.Presenter, SearchContract.
 
     override fun onLoadMore() {
     }
+
+    override fun onBackPressedSupport() {
+        super.onBackPressedSupport()
+        overridePendingTransition(R.anim.top_slient,R.anim.out_from_top)
+    }
 }

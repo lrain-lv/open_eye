@@ -43,4 +43,6 @@
     <color name="container_bg">#F8F8F8</color>
     <color name="info_bg">#EAEAEA</color>
     <color name="btn_un_enable">#BFC8C8C8</color>
+    <color name="dialog_bg">#262626</color>
+
 </resources>
