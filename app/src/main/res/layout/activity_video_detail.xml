@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
   >
     <com.app.eye.widgets.videoplayer.JzvdStd
         android:id="@+id/jzvd"

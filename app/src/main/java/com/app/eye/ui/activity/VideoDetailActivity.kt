@@ -143,7 +143,6 @@ class VideoDetailActivity :
         tautDec = headerView.findViewById<TextView>(R.id.tv_auth_dec)
         tvAuthTitle = headerView.findViewById<TextView>(R.id.tv_auth_title)
         recHeader = headerView.findViewById<RecyclerView>(R.id.recycler_video_header)
-        recHeader.isFocusableInTouchMode = false
         headerView.findViewById<TextView>(R.id.tv_more).setOnClickListener {
             if (!videoDetailHeaderAdapter.isShow) {
                 videoDetailHeaderAdapter.setList(totalList)
