@@ -40,6 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintBottom_toTopOf="@id/line1"
         app:layout_constraintLeft_toRightOf="@id/iv_header"
         app:layout_constraintRight_toRightOf="parent"

@@ -87,6 +87,13 @@ object Constant {
     const val PARAMS =
         "udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 
+
+    const val VIDEO_RELATED =
+        "api/v4/video/related?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
+
+    const val VIDEO_INDEX = "api/v2/video"
+
+
     //排行点击
     //http://baobab.kaiyanapp.com/api/v2/replies/video?videoId=220005&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v4/video/related?id=220005&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
@@ -178,6 +185,5 @@ object Constant {
     //http://baobab.kaiyanapp.com/api/v1/tag/popular/tab?id=16&tabIndex=0&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v1/tag/videos?id=16&strategy=recentReleaseShareCount&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v1/tag/videos?id=16&strategy=shareCount&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
-
 
 }

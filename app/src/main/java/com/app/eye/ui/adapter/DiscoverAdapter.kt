@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.rx.actionUrlToMap
+import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.mvp.model.entity.DataX
 import com.app.eye.ui.mvp.model.entity.Item
@@ -65,7 +66,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                             url = actionUrl.actionUrlToMap()["url"] ?: error(""),
                             title = actionUrl.actionUrlToMap()["title"] ?: error("")
                         )
-                    }else{
+                    } else {
                         ToastUtils.showShort(actionUrl)
                     }
                 }
@@ -93,6 +94,19 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                     GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
                 if (squareRecycler.itemDecorationCount == 0) {
                     squareRecycler.addItemDecoration(LayoutMarginDecoration(2, SizeUtils.dp2px(5f)))
+                }
+                adapter.setOnItemClickListener { _, view, position ->
+                    val item = adapter.getItem(position)
+                    val actionUrl = item.data.actionUrl
+                    if (actionUrl.contains("tag")) {
+                        val s = actionUrl.substring(17)
+                        val id = s.substring(0, s.indexOf("/"))
+                        TagVideoActivity.startActivity(
+                            id,
+                            item.data.title,
+                            item.data.image,
+                            item.data.description ?: "")
+                    }
                 }
                 squareRecycler.setHasFixedSize(true)
                 squareRecycler.adapter = adapter

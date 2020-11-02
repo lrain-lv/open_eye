@@ -1,9 +1,9 @@
 package com.app.eye.ui.mvp.model
 
+import TagVideoEntity
 import com.app.eye.http.RetrofitManager
 import com.app.eye.ui.mvp.contract.TagVideoContract
 import com.app.eye.ui.mvp.model.entity.TagIndexEntity
-import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import io.reactivex.rxjava3.core.Observable
 
 class TagVideoModel : TagVideoContract.Model {

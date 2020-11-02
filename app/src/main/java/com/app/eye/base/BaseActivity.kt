@@ -72,6 +72,8 @@ abstract class BaseActivity : SupportActivity() {
     abstract fun getLayoutRes(): Int
     abstract fun initView()
     abstract fun initData()
-    abstract fun reConnect()
+    open fun reConnect(){}
     open fun isUseEventBus(): Boolean = false
+
+
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:navigationIcon="@mipmap/icon_back_black">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="热门内容"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:tl_indicator_color="@color/tab_bar_selected"
+        app:tl_indicator_corner_radius="3dp"
+        app:tl_indicator_height="3dp"
+        app:tl_indicator_margin_bottom="5dp"
+        app:tl_indicator_width="12dp"
+        app:tl_tab_space_equal="true"
+        app:tl_textBold="SELECT"
+        app:tl_textSelectColor="@color/tab_bar_selected"
+        app:tl_textUnselectColor="@color/tab_bar_unselected"
+        app:tl_textsize="14dp" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

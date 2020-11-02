@@ -1,6 +1,5 @@
 package com.app.eye.ui.activity
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
@@ -17,18 +16,12 @@ import com.app.eye.ui.mvp.contract.TopicDetailContract
 import com.app.eye.ui.mvp.model.entity.ReplyVideoEntity
 import com.app.eye.ui.mvp.model.entity.TopicDetailEntity
 import com.app.eye.ui.mvp.presenter.TopicDetailPresenter
-import com.app.eye.widgets.BottomDialog
 import com.app.eye.widgets.EyeCommentDialog
-import com.app.eye.widgets.KeyboardChangeListener
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.KeyboardUtils
-import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_topic_detail.*
 
 class TopicDetailActivity :
@@ -78,12 +71,12 @@ class TopicDetailActivity :
                 }
                 R.id.tv_get_converse -> {
                     TopicReplyActivity.startActivity(
-                        1, replyId = item.data.id
+                        1, replyId = item.data.id,replyType = "topic"
                     )
                 }
                 R.id.tv_right_text -> {
                     TopicReplyActivity.startActivity(
-                        0, videoId = id.toInt()
+                        0, videoId = id.toInt(),replyType = "topic"
                     )
                 }
             }

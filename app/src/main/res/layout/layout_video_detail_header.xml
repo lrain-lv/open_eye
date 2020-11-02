@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+>
+
+    <TextView
+        android:id="@+id/tv_header_title"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingHorizontal="15dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_header_tag"
+        android:layout_width="0dp"
+        android:layout_height="26dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="15dp"
+        android:textSize="12dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_header_title" />
+
+    <TextView
+        android:id="@+id/tv_header_dec"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_header_tag" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_header_dec" />
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/space">
+
+        <ImageView
+            android:id="@+id/iv_header_heart"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/ic_action_like_heart_black" />
+
+        <TextView
+            android:id="@+id/tv_like_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="3746" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/icon_share_grey" />
+
+        <TextView
+            android:id="@+id/tv_share_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="3746" />
+
+        <ImageView
+            android:id="@+id/iv_cache"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/icon_download" />
+
+        <TextView
+            android:id="@+id/tv_cache"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="缓存" />
+
+        <ImageView
+            android:id="@+id/iv_collect"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/icon_collect" />
+
+        <TextView
+            android:id="@+id/tv_collect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="收藏" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_header_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toTopOf="@id/space2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout" />
+
+    <TextView
+        android:id="@+id/tv_header_attention"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/selector_attention"
+        android:gravity="center"
+        android:paddingHorizontal="6dp"
+        android:text="+关注"
+        android:textColor="@color/selector_attention"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@id/space2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout" />
+
+    <TextView
+        android:id="@+id/tv_auth_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/tv_auth_dec"
+        app:layout_constraintLeft_toRightOf="@id/iv_header_icon"
+        app:layout_constraintRight_toLeftOf="@id/tv_header_attention"
+        app:layout_constraintTop_toBottomOf="@id/layout"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tv_auth_dec"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@id/space2"
+        app:layout_constraintLeft_toRightOf="@id/iv_header_icon"
+        app:layout_constraintRight_toLeftOf="@id/tv_header_attention"
+        app:layout_constraintTop_toBottomOf="@id/tv_auth_title" />
+
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="0dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_video_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/space2" />
+
+    <TextView
+        android:id="@+id/tv_more"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="查看更多"
+        android:textColor="@color/cancelColor"
+        android:textSize="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_video_header" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

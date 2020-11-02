@@ -1,5 +1,3 @@
-package com.app.eye.ui.mvp.model.entity
-
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
@@ -25,28 +23,115 @@ data class TagVideoItem(
         const val TYPE_PIC2 = 2
         const val TYPE_PIC3 = 3
         const val TYPE_PIC4 = 4
+        const val TYPE_TEXT_CARD = 5
+        const val TYPE_FOLLOW_CARD = 6
+        const val TYPE_VIDEO_SMALL_CARD = 7
     }
 
     override val itemType: Int
         get() {
-            return if (TextUtils.equals("video", data.content.type))
-                TYPE_VIDEO
-            else
-                when (data.content.data.urls.size) {
+            return when {
+                TextUtils.equals("textCard", type) -> TYPE_TEXT_CARD
+                TextUtils.equals("followCard", type) -> TYPE_FOLLOW_CARD
+                TextUtils.equals("videoSmallCard", type) -> TYPE_VIDEO_SMALL_CARD
+                TextUtils.equals("video", data.content?.type) -> TYPE_VIDEO
+                else -> when (data.content?.data?.urls?.size) {
                     1 -> TYPE_VIDEO
                     2 -> TYPE_PIC2
                     3 -> TYPE_PIC3
                     4 -> TYPE_PIC4
                     else -> TYPE_NONE
                 }
+            }
         }
 }
 
 data class TagVideoData(
-    val adTrack: Any,
-    val content: TagVideoContent,
+    val actionUrl: String?,
+    val ad: Boolean,
+    val author: TagVideoAuthor,
+    val candidateId: Int,
+    val category: String,
+    val collected: Boolean,
+    val consumption: TagVideoConsumption,
+    val content: TagVideoContent?,
+    val cover: TagVideoCoverX,
+    val createTime: Long,
     val dataType: String,
-    val header: TagVideoHeader
+    val date: Long,
+    val description: String,
+    val descriptionEditor: String,
+    val descriptionPgc: String,
+    val duration: Int,
+    val follow: Any,
+    val header: TagVideoHeader,
+    val id: Int,
+    val idx: Int,
+    val ifLimitVideo: Boolean,
+    val infoStatus: String,
+    val label: Any,
+    val library: String,
+    val playInfo: MutableList<TagVideoPlayInfoX>,
+    val playUrl: String,
+    val played: Boolean,
+    val provider: TagVideoProviderX,
+    val reallyCollected: Boolean,
+    val recallSource: String,
+    val recall_source: String,
+    val releaseTime: Long,
+    val resourceType: String,
+    val searchWeight: Int,
+    val showLabel: Boolean,
+    val slogan: Any,
+    val sourceUrl: String,
+    val src: Int,
+    val status: String,
+    val subTitle: Any,
+    val subtitleStatus: String,
+    val tags: MutableList<TagVideoTagX>,
+    val tailTimePoint: Int,
+    val text: String,
+    val thumbPlayUrl: Any,
+    val title: String,
+    val titlePgc: String,
+    val translateStatus: String,
+    val type: String,
+    val updateTime: Long,
+    val videoPosterBean: Any,
+    val waterMarks: Any,
+    val webAdTrack: Any,
+    val webUrl: TagVideoWebUrlX
+)
+
+data class TagVideoAuthor(
+    val adTrack: Any,
+    val amplifiedLevelId: Any,
+    val approvedNotReadyVideoCount: Int,
+    val authorStatus: String,
+    val authorType: String,
+    val cover: String,
+    val description: String,
+    val expert: Boolean,
+    val follow: TagVideoFollow,
+    val icon: String,
+    val id: Int,
+    val ifPgc: Boolean,
+    val latestReleaseTime: Long,
+    val library: String,
+    val link: String,
+    val name: String,
+    val pendingVideoCount: Int,
+    val recSort: Int,
+    val shield: TagVideoShield,
+    val videoNum: Int
+)
+
+data class TagVideoConsumption(
+    val collectionCount: Int,
+    val playCount: Int,
+    val realCollectionCount: Int,
+    val replyCount: Int,
+    val shareCount: Int
 )
 
 data class TagVideoContent(
@@ -58,111 +143,62 @@ data class TagVideoContent(
     val type: String
 )
 
-data class TagVideoHeader(
-    val actionUrl: String,
-    val followType: String,
-    val icon: String,
-    val iconType: String,
-    val id: Int,
-    val issuerName: String,
-    val labelList: Any,
-    val showHateVideo: Boolean,
-    val tagId: Int,
-    val tagName: Any,
-    val time: Long,
-    val topShow: Boolean
-)
-
-data class TagVideoDataX(
-    val addWatermark: Boolean,
-    val area: String?,
-    val checkStatus: String,
-    val city: String,
-    val collected: Boolean,
-    val consumption: TagVideoConsumption,
-    val cover: TagVideoCover,
-    val createTime: Long,
-    val dataType: String,
-    val description: String?,
-    val duration: Int,
-    val height: Int,
-    val id: Int,
-    val ifMock: Boolean,
-    val latitude: Double,
-    val library: String,
-    val longitude: Double,
-    val owner: TagVideoOwner,
-    val playUrl: String,
-    val playUrlWatermark: String,
-    val privateMessageActionUrl: String,
-    val reallyCollected: Boolean,
-    val recentOnceReply: Any,
-    val releaseTime: Long,
-    val resourceType: String,
-    val selectedTime: Any,
-    val status: Any,
-    val tags: MutableList<TagVideoTag>,
-    val title: String,
-    val transId: Any,
-    val type: String,
-    val uid: Int,
-    val updateTime: Long,
-    val url: String,
-    val urls: MutableList<String>,
-    val urlsWithWatermark: MutableList<String>,
-    val validateResult: String,
-    val validateStatus: String,
-    val validateTaskId: String,
-    val width: Int
-)
-
-data class TagVideoConsumption(
-    val collectionCount: Int,
-    val playCount: Int,
-    val realCollectionCount: Int,
-    val replyCount: Int,
-    val shareCount: Int
-)
-
-data class TagVideoCover(
-    val blurred: Any,
+data class TagVideoCoverX(
+    val blurred: String,
     val detail: String,
     val feed: String,
     val homepage: Any,
     val sharing: Any
 )
 
-data class TagVideoOwner(
+data class TagVideoHeader(
     val actionUrl: String,
-    val area: Any,
-    val avatar: String,
-    val bannedDate: Any,
-    val bannedDays: Any,
-    val birthday: Any,
-    val city: Any,
-    val country: Any,
     val cover: Any,
-    val description: Any,
-    val expert: Boolean,
-    val followed: Boolean,
-    val gender: Any,
-    val ifPgc: Boolean,
-    val job: Any,
-    val library: String,
-    val limitVideoOpen: Boolean,
-    val nickname: String,
-    val registDate: Long,
-    val releaseDate: Long,
-    val tagIds: Any,
-    val uid: Int,
-    val university: Any,
-    val uploadStatus: String,
-    val userMedalBeanList: Any,
-    val userType: String,
-    val username: String
+    val description: String,
+    val followType: String,
+    val font: Any,
+    val icon: String,
+    val iconType: String,
+    val id: Int,
+    val issuerName: String,
+    val label: Any,
+    val labelList: Any,
+    val rightText: Any,
+    val showHateVideo: Boolean,
+    val subTitle: Any,
+    val subTitleFont: Any,
+    val tagId: Int,
+    val tagName: Any,
+    val textAlign: String,
+    val time: Long,
+    val title: String,
+    val topShow: Boolean
 )
 
-data class TagVideoTag(
+data class TagVideoPlayInfoX(
+    val bitRate: Int,
+    val dimension: String,
+    val duration: Int,
+    val height: Int,
+    val id: Int,
+    val name: String,
+    val size: Int,
+    val type: String,
+    val url: String,
+    val urlList: MutableList<TagVideoUrlX>,
+    val videoId: Int,
+    val width: Int
+)
+
+data class TagVideoProviderX(
+    val alias: String,
+    val icon: String,
+    val id: Int,
+    val name: String,
+    val status: String
+)
+
+data class TagVideoTagX(
     val actionUrl: String,
     val adTrack: Any,
     val alias: Any,
@@ -170,7 +206,7 @@ data class TagVideoTag(
     val childTagIdList: Any,
     val childTagList: Any,
     val communityIndex: Int,
-    val desc: String,
+    val desc: Any,
     val haveReward: Boolean,
     val headerImage: String,
     val id: Int,
@@ -186,4 +222,201 @@ data class TagVideoTag(
     val tagStatus: String,
     val top: Int,
     val type: String
+)
+
+data class TagVideoWebUrlX(
+    val forWeibo: String,
+    val raw: String
+)
+
+data class TagVideoFollow(
+    val followed: Boolean,
+    val itemId: Int,
+    val itemType: String
+)
+
+data class TagVideoShield(
+    val itemId: Int,
+    val itemType: String,
+    val shielded: Boolean
+)
+
+data class TagVideoDataX(
+    val ad: Boolean,
+    val author: TagVideoAuthorX,
+    val area: String?,
+    val city: String?,
+    val brandWebsiteInfo: Any,
+    val campaign: Any,
+    val candidateId: Int,
+    val category: String,
+    val collected: Boolean,
+    val consumption: TagVideoConsumptionX,
+    val cover: TagVideoCover,
+    val createTime: Long,
+    val dataType: String,
+    val date: Long,
+    val description: String?,
+    val descriptionEditor: String,
+    val descriptionPgc: String,
+    val duration: Int,
+    val favoriteAdTrack: Any,
+    val id: Int,
+    val idx: Int,
+    val ifLimitVideo: Boolean,
+    val infoStatus: String,
+    val label: Any,
+    val lastViewTime: Any,
+    val library: String,
+    val playInfo: MutableList<TagVideoPlayInfo>,
+    val playUrl: String,
+    val played: Boolean,
+    val playlists: Any,
+    val premiereDate: Any,
+    val promotion: Any,
+    val provider: TagVideoProvider,
+    val reallyCollected: Boolean,
+    val recallSource: String,
+    val recall_source: String,
+    val releaseTime: Long,
+    val remark: Any,
+    val resourceType: String,
+    val searchWeight: Int,
+    val shareAdTrack: Any,
+    val showLabel: Boolean,
+    val slogan: Any,
+    val sourceUrl: String,
+    val src: Int,
+    val status: String,
+    val subtitleStatus: String,
+    val tags: MutableList<TagVideoTag>,
+    val tailTimePoint: Int,
+    val thumbPlayUrl: Any,
+    val title: String,
+    val titlePgc: String,
+    val translateStatus: String,
+    val type: String,
+    val updateTime: Any,
+    val urls: MutableList<String>?,
+    val videoPosterBean: Any,
+    val waterMarks: Any,
+    val webAdTrack: Any,
+    val webUrl: TagVideoWebUrl
+)
+
+data class TagVideoAuthorX(
+    val adTrack: Any,
+    val amplifiedLevelId: Any,
+    val approvedNotReadyVideoCount: Int,
+    val authorStatus: String,
+    val authorType: String,
+    val cover: String,
+    val description: String,
+    val expert: Boolean,
+    val follow: TagVideoFollowX,
+    val icon: String,
+    val id: Int,
+    val ifPgc: Boolean,
+    val latestReleaseTime: Long,
+    val library: String,
+    val link: String,
+    val name: String,
+    val pendingVideoCount: Int,
+    val recSort: Int,
+    val shield: TagVideoShieldX,
+    val videoNum: Int
+)
+
+data class TagVideoConsumptionX(
+    val collectionCount: Int,
+    val playCount: Int,
+    val realCollectionCount: Int,
+    val replyCount: Int,
+    val shareCount: Int
+)
+
+data class TagVideoCover(
+    val blurred: String,
+    val detail: String,
+    val feed: String,
+    val homepage: Any,
+    val sharing: Any
+)
+
+data class TagVideoPlayInfo(
+    val bitRate: Int,
+    val dimension: String,
+    val duration: Int,
+    val height: Int,
+    val id: Int,
+    val name: String,
+    val size: Int,
+    val type: String,
+    val url: String,
+    val urlList: MutableList<TagVideoUrl>,
+    val videoId: Int,
+    val width: Int
+)
+
+data class TagVideoProvider(
+    val alias: String,
+    val icon: String,
+    val id: Int,
+    val name: String,
+    val status: String
+)
+
+data class TagVideoTag(
+    val actionUrl: String,
+    val adTrack: Any,
+    val alias: Any,
+    val bgPicture: String,
+    val childTagIdList: Any,
+    val childTagList: Any,
+    val communityIndex: Int,
+    val desc: Any,
+    val haveReward: Boolean,
+    val headerImage: String,
+    val id: Int,
+    val ifNewest: Boolean,
+    val ifShow: Boolean,
+    val level: Int,
+    val name: String,
+    val newestEndTime: Any,
+    val parentId: Int,
+    val recWeight: Double,
+    val relationType: Int,
+    val tagRecType: String,
+    val tagStatus: String,
+    val top: Int,
+    val type: String
+)
+
+data class TagVideoWebUrl(
+    val forWeibo: String,
+    val raw: String
+)
+
+data class TagVideoFollowX(
+    val followed: Boolean,
+    val itemId: Int,
+    val itemType: String
+)
+
+data class TagVideoShieldX(
+    val itemId: Int,
+    val itemType: String,
+    val shielded: Boolean
+)
+
+data class TagVideoUrl(
+    val name: String,
+    val size: Int,
+    val url: String
+)
+
+data class TagVideoUrlX(
+    val name: String,
+    val size: Int,
+    val url: String
 )

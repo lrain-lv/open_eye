@@ -1,5 +1,6 @@
 package com.app.eye.http
 
+import TagVideoEntity
 import com.app.eye.ui.mvp.model.entity.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.ResponseBody
@@ -97,4 +98,13 @@ interface ApiService {
 
     @GET(Constant.REPLY_HOT)
     fun getReplyHot(@QueryMap map: Map<String, String>): Observable<ReplyVideoEntity>
+
+    @GET(Constant.TAG_VIDEO)
+    fun getShareCount(@QueryMap map: Map<String, String>): Observable<RecentPopularEntity>
+
+    @GET(Constant.VIDEO_RELATED)
+    fun getVideoRelated(@Query("id") id: String): Observable<VideoRelatedEntity>
+
+    @GET("${Constant.VIDEO_INDEX}/{id}?${Constant.PARAMS}")
+    fun getVideoIndex(@Path("id") id: String): Observable<VideoIndexEntity>
 }

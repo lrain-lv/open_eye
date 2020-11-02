@@ -16,9 +16,9 @@ data class CategoryItem(
 )
 
 data class CategoryData(
-    val actionUrl: String,
+    val actionUrl: String?,
     val dataType: String,
-    val description: Any,
+    val description: String?,
     val id: Int,
     val image: String,
     val shade: Boolean,

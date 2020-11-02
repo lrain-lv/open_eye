@@ -17,7 +17,9 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.TopicReplyActivity"></activity>
+        <activity android:name=".ui.activity.VideoDetailActivity"></activity>
+        <activity android:name=".ui.activity.PopularActivity" />
+        <activity android:name=".ui.activity.TopicReplyActivity" />
         <activity
             android:name=".ui.activity.TopicDetailActivity"
             android:screenOrientation="portrait"

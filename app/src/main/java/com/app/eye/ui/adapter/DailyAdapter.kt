@@ -35,10 +35,10 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
             }
             ItemDaily.DAILY_VIDEO -> {
                 val data = item.data.content.data
-                var video_duration = data.duration
+                val video_duration = data.duration
                 var time: String = ""
                 if (video_duration < 60) {
-                    var time = String.format(Locale.getDefault(), "00:%02d", video_duration % 60)
+                     time = String.format(Locale.getDefault(), "00:%02d", video_duration % 60)
                 } else if (video_duration < 3600) {
                     time = String.format(
                         Locale.getDefault(),
@@ -71,7 +71,7 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
             ItemDaily.DAILY_INFORMATION -> {
                 val data = item.data
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
-                var recycler = holder.getView<RecyclerView>(R.id.recycler)
+                val recycler = holder.getView<RecyclerView>(R.id.recycler)
                 Glide.with(context)
                     .load(data.backgroundImage)
                     .transform(
@@ -82,7 +82,7 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
                             RoundedCornersTransformation.CornerType.TOP
                         )
                     ).into(ivCover)
-                var adapter = DailyInfoAdapter(data.titleList)
+                val adapter = DailyInfoAdapter(data.titleList)
                 recycler.layoutManager = NoScrollLinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
                 recycler.adapter = adapter
             }

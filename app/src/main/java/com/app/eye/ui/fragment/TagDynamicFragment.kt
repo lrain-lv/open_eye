@@ -1,18 +1,17 @@
 package com.app.eye.ui.fragment
 
+import TagVideoEntity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseFragment
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TagVideoAdapter
 import com.app.eye.ui.mvp.contract.TagVideoContract
 import com.app.eye.ui.mvp.model.entity.TagIndexEntity
-import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import com.app.eye.ui.mvp.presenter.TagVideoPresenter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener

@@ -1,6 +1,5 @@
 package com.app.eye.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -9,9 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
 import com.app.eye.rx.urlToMap
-import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.adapter.TopicReplyAdapter
-import com.app.eye.ui.mvp.contract.TopicContact
 import com.app.eye.ui.mvp.contract.TopicDetailContract
 import com.app.eye.ui.mvp.model.entity.ReplyVideoEntity
 import com.app.eye.ui.mvp.model.entity.TopicDetailEntity
@@ -19,8 +16,6 @@ import com.app.eye.ui.mvp.presenter.TopicDetailPresenter
 import com.blankj.utilcode.util.ActivityUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_topic_reply.*
-import kotlinx.android.synthetic.main.activity_topic_reply.refresh_layout
-import kotlinx.android.synthetic.main.activity_topic_reply.status_view
 
 class TopicReplyActivity :
     BaseMvpActivity<TopicDetailContract.Presenter, TopicDetailContract.View>(),
@@ -28,11 +23,17 @@ class TopicReplyActivity :
     SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
-        fun startActivity(type: Int = 0, videoId: Int = -1, replyId: Long = -1) {
+        fun startActivity(
+            type: Int = 0,
+            videoId: Int = -1,
+            replyId: Long = -1,
+            replyType: String
+        ) {
             val bundle = Bundle().apply {
                 putInt("type", type) //0 查看hot 1 查看对话
                 putInt("videoId", videoId)
                 putLong("replyId", replyId)
+                putString("replyType", replyType)
             }
             ActivityUtils.startActivity(
                 bundle, TopicReplyActivity::class.java,
@@ -44,6 +45,7 @@ class TopicReplyActivity :
     private var type = 0
     private var videoId = -1
     private var replyId = -1L
+    private var replyType = ""
 
     private var nextPageUrl: String? = ""
 
@@ -61,6 +63,7 @@ class TopicReplyActivity :
         type = intent?.extras!!.getInt("type", 0)
         videoId = intent?.extras!!.getInt("videoId", -1)
         replyId = intent?.extras!!.getLong("replyId", -1)
+        replyType = intent?.extras!!.getString("replyId", "")
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
         tv_title.text = if (type == 0) "查看热门评论" else "查看全部对话"
@@ -82,12 +85,13 @@ class TopicReplyActivity :
                     mPresenter?.getReplyHotRequest(
                         hashMapOf(
                             "videoId" to videoId.toString(),
-                            "type" to "topic"
+                            "type" to replyType
                         )
                     )
                 }
                 1 -> {
-                    mPresenter?.getReplyConversationRequest(hashMapOf("replyId" to replyId.toString()))
+                    mPresenter?.getReplyConversationRequest(hashMapOf("replyId" to replyId.toString(),
+                        "type" to replyType))
                 }
             }
 
@@ -181,12 +185,13 @@ class TopicReplyActivity :
                 mPresenter?.getReplyHotRequest(
                     hashMapOf(
                         "videoId" to videoId.toString(),
-                        "type" to "topic"
+                        "type" to replyType
                     )
                 )
             }
             1 -> {
-                mPresenter?.getReplyConversationRequest(hashMapOf("replyId" to replyId.toString()))
+                mPresenter?.getReplyConversationRequest(hashMapOf("replyId" to replyId.toString(),
+                    "type" to replyType))
             }
         }
     }

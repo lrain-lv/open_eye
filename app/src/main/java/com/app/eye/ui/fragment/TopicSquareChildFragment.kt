@@ -134,6 +134,9 @@ class TopicSquareChildFragment : BaseMvpFragment<TopicContact.Presenter, TopicCo
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val item = topicChildAdapter.getItem(position)
-        TagVideoActivity.startActivity(item)
+        TagVideoActivity.startActivity(item.data.id.toString(),
+            item.data.title,
+            item.data.icon,
+            item.data.description)
     }
 }

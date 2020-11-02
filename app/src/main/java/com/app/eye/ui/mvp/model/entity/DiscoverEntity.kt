@@ -225,7 +225,7 @@ data class DataX(
     val actionUrl: String,
     val autoPlay: Boolean,
     val dataType: String,
-    val description: String,
+    val description: String?,
     val header: HeaderX?,
     val id: Int,
     val image: String,

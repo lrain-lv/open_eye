@@ -1,5 +1,6 @@
 package com.app.eye.ui.activity
 
+import TagVideoEntity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -7,12 +8,10 @@ import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
 import com.app.eye.ui.adapter.TopicFragmentAdapter
-import com.app.eye.ui.fragment.TagVideoFragment
 import com.app.eye.ui.fragment.TagDynamicFragment
+import com.app.eye.ui.fragment.TagVideoFragment
 import com.app.eye.ui.mvp.contract.TagVideoContract
-import com.app.eye.ui.mvp.model.entity.TabItem
 import com.app.eye.ui.mvp.model.entity.TagIndexEntity
-import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import com.app.eye.ui.mvp.presenter.TagVideoPresenter
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -26,9 +25,12 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
     TagVideoContract.View, AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
 
     companion object {
-        fun startActivity(data: TabItem) {
+        fun startActivity(id: String, title: String, icon: String, dec: String) {
             val bundle = Bundle().apply {
-                putSerializable("data", data)
+                putSerializable("id", id)
+                putSerializable("title", title)
+                putSerializable("icon", icon)
+                putSerializable("dec", dec)
             }
             ActivityUtils.startActivity(bundle, TagVideoActivity::class.java)
         }
@@ -37,18 +39,25 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
     private val fragmentList = mutableListOf<SupportFragment>()
     private val titleList = mutableListOf<String>("推荐", "广场")
 
-    private lateinit var tabItem: TabItem
+    private var id: String = ""
+    private var title: String = ""
+    private var icon: String = ""
+    private var dec: String = ""
 
     override fun getLayoutRes(): Int = R.layout.activity_tag_video
 
     override fun initView() {
         immersionBar.statusBarDarkFont(false).statusBarColor(R.color.black).init()
-        tabItem = intent.extras?.getSerializable("data") as TabItem
-        tv_title.text = tabItem.data.title
-        tv_title_big.text = tabItem.data.title
-        tv_dec.text = tabItem.data.description
+        val extras = intent.extras!!
+        id = extras.getString("id", "")
+        title = extras.getString("title", "")
+        icon = extras.getString("icon", "")
+        dec = extras.getString("dec", "")
+        tv_title.text = title
+        tv_title_big.text = title
+        tv_dec.text = dec
         Glide.with(mContext)
-            .load(tabItem.data.icon)
+            .load(icon)
             .centerCrop()
             .into(iv_bg)
         tool_bar.setNavigationOnClickListener {
@@ -57,8 +66,8 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
         iv_back.setOnClickListener(this)
         iv_publish.setOnClickListener(this)
         fragmentList.apply {
-            add(TagVideoFragment.newInstance(tabItem.data.id.toString()))
-            add(TagDynamicFragment.newInstance(tabItem.data.id.toString()))
+            add(TagVideoFragment.newInstance(id))
+            add(TagDynamicFragment.newInstance(id))
         }
         val topicFragmentAdapter =
             TopicFragmentAdapter(supportFragmentManager, fragmentList, titleList)
@@ -92,7 +101,7 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
 
     override fun initData() {
         tv_follow_count.post {
-            mPresenter?.getTagIndexRequest(tabItem.data.id.toString())
+            mPresenter?.getTagIndexRequest(id)
         }
     }
 

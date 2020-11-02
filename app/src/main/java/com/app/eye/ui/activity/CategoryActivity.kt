@@ -80,6 +80,27 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
                 recycler_view.layoutManager = manager
                 recycler_view.addItemDecoration(LayoutMarginDecoration(2, SizeUtils.dp2px(2f)))
                 recycler_view.adapter = categoryAdapter
+                categoryAdapter.setOnItemClickListener { adapter, view, position ->
+                    val item = categoryAdapter.getItem(position)
+                    val actionUrl = item.data.actionUrl!!
+                    when {
+                        actionUrl.contains("ranklist") -> {
+                            ActivityUtils.startActivity(RankActivity::class.java)
+                        }
+                        actionUrl.contains("campaign") -> {
+                            startActivity("专题", 1)
+                        }
+                        actionUrl.contains("tag") -> {
+                            val s = actionUrl.substring(17)
+                            val id = s.substring(0, s.indexOf("/"))
+                            TagVideoActivity.startActivity(
+                                id,
+                                item.data.title,
+                                item.data.image,
+                                item.data.description ?: "")
+                        }
+                    }
+                }
             }
             1 -> {
                 specialTopicAdapter = SpecialTopicAdapter(mutableListOf())
@@ -89,7 +110,7 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
                 }
                 specialTopicAdapter.setOnItemClickListener { adapter, view, position ->
                     val item = specialTopicAdapter.getItem(position)
-                    LightTopicActivity.startActivity(item.data.title,item.data.id)
+                    LightTopicActivity.startActivity(item.data.title, item.data.id)
                 }
                 recycler_view.layoutManager =
                     LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
