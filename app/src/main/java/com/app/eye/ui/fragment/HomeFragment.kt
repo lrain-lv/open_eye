@@ -1,12 +1,11 @@
 package com.app.eye.ui.fragment
 
-import android.content.Intent
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
-import com.app.eye.ui.activity.MainActivity
 import com.app.eye.ui.activity.SearchActivity
 import com.app.eye.ui.adapter.TabFragmentAdapter
+import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.yokeyword.fragmentation.SupportFragment
@@ -17,9 +16,10 @@ class HomeFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initView() {
-        val titleList = mutableListOf<String>("发现", "日报")
+        val titleList = mutableListOf<String>("发现","推荐" ,"日报")
         val fragmentList = listOf<SupportFragment>(
             FindFragment.newInstance(),
+            RecommendFragment.newInstance(),
             DailyFragment.newInstance()
         )
         val tabFragmentAdapter =
@@ -53,6 +53,11 @@ class HomeFragment : BaseFragment() {
 
     override fun initData() {
 
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        Jzvd.releaseAllVideos()
     }
 
     override fun useLazyLoad(): Boolean = true

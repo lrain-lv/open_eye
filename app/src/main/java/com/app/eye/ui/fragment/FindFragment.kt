@@ -1,6 +1,8 @@
 package com.app.eye.ui.fragment
 
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
@@ -14,6 +16,8 @@ import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.widgets.STATUS_NO_NETWORK
+import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
+import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
 import kotlinx.android.synthetic.main.fragment_find.*
@@ -73,6 +77,21 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             }
         }
         recycler_view.adapter = discoverAdapter
+        recycler_view.addOnChildAttachStateChangeListener(object :
+            RecyclerView.OnChildAttachStateChangeListener {
+            override fun onChildViewAttachedToWindow(view: View) {}
+            override fun onChildViewDetachedFromWindow(view: View) {
+                val jzvd: Jzvd? = view.findViewById(R.id.jzvd)
+                if (jzvd != null && Jzvd.CURRENT_JZVD != null && jzvd.jzDataSource.containsTheUrl(
+                        Jzvd.CURRENT_JZVD.jzDataSource.currentUrl)
+                ) {
+                    if (Jzvd.CURRENT_JZVD != null && (Jzvd.CURRENT_JZVD.screen != Jzvd.SCREEN_FULLSCREEN)) {
+                        Jzvd.releaseAllVideos()
+                    }
+                }
+            }
+        })
+        recycler_view.addOnScrollListener(AutoPlayScrollListener())
 //        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                if (!_mActivity.isFinishing) {
@@ -88,14 +107,20 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
 //        })
     }
 
+
+
     override fun initData() {
         if (!NetworkUtils.isConnected()) {
             status_view.showNoNetworkView()
-
         } else {
             status_view.showLoadingView()
             recycler_view.post { mPresenter?.getDiscoveryData() }
         }
+    }
+
+    override fun onSupportInvisible() {
+        super.onSupportInvisible()
+        Jzvd.releaseAllVideos()
     }
 
     override fun onRefresh() {
@@ -130,5 +155,10 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             status_view.showLoadingView()
             mPresenter?.getDiscoveryData()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Jzvd.releaseAllVideos();
     }
 }

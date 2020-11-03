@@ -1,6 +1,7 @@
 package com.app.eye.ui.mvp.model.entity
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import java.io.Serializable
 
 
 data class DiscoverEntity(
@@ -30,17 +31,19 @@ class Item(
         const val DISCOVER_TEXT_CARD = 3
         const val DISCOVER_VIDEO_SMALL_CARD = 4
         const val DISCOVER_BRIEF_CARD = 5
+        const val DISCOVER_AUTO_PLAY = 6
         const val NONE = -1
     }
 
     override val itemType: Int
         get() = when (type) {
-            "horizontalScrollCard","banner" -> DISCOVER_BANNER
+            "horizontalScrollCard", "banner" -> DISCOVER_BANNER
             "specialSquareCardCollection" -> DISCOVER_SQUARE_CARD
             "columnCardList" -> DISCOVER_COLUMN_CARD_LIST
             "textCard" -> DISCOVER_TEXT_CARD
             "videoSmallCard" -> DISCOVER_VIDEO_SMALL_CARD
             "briefCard" -> DISCOVER_BRIEF_CARD
+            "autoPlayVideoAd" -> DISCOVER_AUTO_PLAY
             else -> NONE
         }
 }
@@ -58,6 +61,7 @@ data class Data(
     val count: Int,
     val cover: Cover,
     val dataType: String,
+    val detail: Detail,
     val date: Long,
     val description: String,
     val descriptionEditor: String,
@@ -119,6 +123,35 @@ data class Data(
     val webUrl: WebUrl
 )
 
+data class Detail(
+    val actionUrl: String,
+    val adaptiveImageUrls: String,
+    val adaptiveUrls: String,
+    val canSkip: Boolean,
+    val categoryId: Int,
+    val countdown: Boolean,
+    val cycleCount: Int,
+    val description: String,
+    val displayCount: Int,
+    val displayTimeDuration: Int,
+    val icon: String,
+    val id: Int,
+    val ifLinkage: Boolean,
+    val imageUrl: String,
+    val iosActionUrl: String,
+    val linkageAdId: Int,
+    val loadingMode: Int,
+    val openSound: Boolean,
+    val position: Int,
+    val showActionButton: Boolean,
+    val showImage: Boolean,
+    val showImageTime: Int,
+    val timeBeforeSkip: Int,
+    val title: String,
+    val url: String,
+    val videoAdType: String,
+    val videoType: String
+)
 
 data class Author(
     val adTrack: Any,
@@ -170,7 +203,7 @@ data class ItemX(
     val `data`: DataX,
     val id: Int,
     val type: String
-)
+): Serializable
 
 data class PlayInfo(
     val height: Int,
@@ -235,7 +268,7 @@ data class DataX(
     val title: String,
     val subTitle: String,
     val bgPicture: String
-)
+): Serializable
 
 data class AdTrack(
     val clickUrl: String,
@@ -248,31 +281,19 @@ data class AdTrack(
 )
 
 data class HeaderX(
-    val actionUrl: Any,
-    val cover: Any,
-    val description: Any,
-    val font: Any,
-    val icon: Any,
     val id: Int,
-    val label: Any,
-    val labelList: Any,
-    val rightText: Any,
-    val subTitle: Any,
-    val subTitleFont: Any,
-    val textAlign: String,
-    val title: Any
-)
+    val textAlign: String
+): Serializable
 
 data class Label(
     val card: String,
-    val detail: Any,
     val text: String
-)
+): Serializable
 
 data class LabelX(
-    val actionUrl: Any,
+    val actionUrl: String?,
     val text: String
-)
+): Serializable
 
 data class Url(
     val name: String,

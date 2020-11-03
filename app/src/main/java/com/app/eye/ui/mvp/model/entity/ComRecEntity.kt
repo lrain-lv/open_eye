@@ -1,12 +1,14 @@
 package com.app.eye.ui.mvp.model.entity
 
+import java.io.Serializable
+
 data class ComRecEntity(
     val adExist: Boolean,
     val count: Int,
     var itemList: MutableList<ComItem>,
-    val nextPageUrl: String?,
+    var nextPageUrl: String?,
     val total: Int
-){
+) : Serializable {
     override fun toString(): String {
         return "ComRecEntity(adExist=$adExist, count=$count, itemList=$itemList, nextPageUrl='$nextPageUrl', total=$total)"
     }
@@ -16,25 +18,20 @@ data class ComItem(
     val adIndex: Int,
     val `data`: ComData,
     val id: Int,
-    val tag: Any,
-    val trackingData: Any,
     val type: String
-){
+): Serializable{
 //    override fun toString(): String {
 //        return "ComItem(adIndex=$adIndex, `data`=$`data`, id=$id, tag=$tag, trackingData=$trackingData, type='$type')"
 //    }
 }
 
 data class ComData(
-    val adTrack: Any,
     val content: ComContent,
     val count: Int,
     val dataType: String,
-    val footer: Any,
     val header: RecHeader,
     val itemList: MutableList<ItemX>
-){
-}
+): Serializable
 
 data class RecHeader(
     val actionUrl: String,
@@ -43,25 +40,19 @@ data class RecHeader(
     val iconType: String,
     val id: Int,
     val issuerName: String,
-    val labelList: Any,
     val showHateVideo: Boolean,
     val tagId: Int,
-    val tagName: Any,
     val time: Long,
     val topShow: Boolean
-)
+): Serializable
 
 data class ComContent(
     val adIndex: Int,
     val `data`: ComDataX,
     val id: Int,
-    val tag: Any,
-    val trackingData: Any,
     val type: String
-){
-    override fun toString(): String {
-        return "ComContent(adIndex=$adIndex, `data`=$`data`, id=$id, tag=$tag, trackingData=$trackingData, type='$type')"
-    }
+): Serializable{
+
 }
 
 //data class ItemX(
@@ -108,61 +99,48 @@ data class ComDataX(
     val validateResult: String,
     val validateStatus: String,
     val width: Int
-)
+): Serializable
 
 data class ComConsumption(
     val collectionCount: Int,
     val realCollectionCount: Int,
     val replyCount: Int,
     val shareCount: Int
-)
+): Serializable
 
 data class ComCover(
-    val blurred: Any,
     val detail: String,
-    val feed: String,
-    val homepage: Any,
-    val sharing: Any
-)
+    val feed: String
+):Serializable
 
 data class ComOwner(
     val actionUrl: String,
-    val area: Any,
     val avatar: String,
-    val birthday: Any,
-    val city: Any,
-    val country: Any,
     val cover: String,
     val description: String,
     val expert: Boolean,
     val followed: Boolean,
     val gender: String,
     val ifPgc: Boolean,
-    val job: Any,
     val library: String,
     val limitVideoOpen: Boolean,
     val nickname: String,
     val registDate: Long,
     val releaseDate: Long,
     val uid: Int,
-    val university: Any,
     val userType: String
-)
+): Serializable
 
 data class ComRecentOnceReply(
     val actionUrl: String,
-    val contentType: Any,
     val dataType: String,
     val message: String,
     val nickname: String
-)
+): Serializable
 
 data class ComTag(
     val actionUrl: String,
-    val adTrack: Any,
     val bgPicture: String,
-    val childTagIdList: Any,
-    val childTagList: Any,
     val communityIndex: Int,
     val desc: String,
     val haveReward: Boolean,
@@ -170,9 +148,8 @@ data class ComTag(
     val id: Int,
     val ifNewest: Boolean,
     val name: String,
-    val newestEndTime: Any,
     val tagRecType: String
-)
+): Serializable
 
 data class ComDataXX(
     val actionUrl: String,
@@ -189,7 +166,7 @@ data class ComDataXX(
     val shade: Boolean,
     val subTitle: String,
     val title: String
-)
+): Serializable
 
 data class ComAdTrack(
     val clickUrl: String,
@@ -199,31 +176,19 @@ data class ComAdTrack(
     val organization: String,
     val playUrl: String,
     val viewUrl: String
-)
+): Serializable
 
 data class ComHeader(
-    val actionUrl: Any,
-    val cover: Any,
-    val description: Any,
-    val font: Any,
-    val icon: Any,
     val id: Int,
-    val label: Any,
-    val labelList: Any,
-    val rightText: Any,
-    val subTitle: Any,
-    val subTitleFont: Any,
-    val textAlign: String,
-    val title: Any
-)
+    val textAlign: String
+): Serializable
 
 data class ComLabel(
     val card: String,
-    val detail: Any,
     val text: String
-)
+): Serializable
 
 data class ComLabelX(
-    val actionUrl: Any,
+    val actionUrl: String?,
     val text: String
-)
+): Serializable

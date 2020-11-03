@@ -1,13 +1,15 @@
 package com.app.eye.ui.fragment
 
+import android.text.TextUtils
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.urlToMap
+import com.app.eye.ui.activity.GalleryActivity
 import com.app.eye.ui.activity.TopicSquareActivity
 import com.app.eye.ui.adapter.BannerItemAdapter
 import com.app.eye.ui.adapter.ComRecAdapter
@@ -19,6 +21,8 @@ import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.app.eye.widgets.MultipleStatusView
 import com.app.eye.widgets.StaggeredDividerItemDecoration
+import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
+import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.youth.banner.Banner
 import kotlinx.android.synthetic.main.fragment_rec.*
@@ -46,6 +50,8 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
 
     private var isRefresh: Boolean = true
 
+    private var data: ComRecEntity? = null
+
     override fun getLayoutRes(): Int = R.layout.fragment_rec
 
     override fun reConnect() {
@@ -68,6 +74,14 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
         initHeader()
         recycler_view.adapter = comRecAdapter
         comRecAdapter.loadMoreModule.setOnLoadMoreListener(this)
+        comRecAdapter.setOnItemClickListener { adapter, view, position ->
+            val newList = data!!.itemList.filter {
+                TextUtils.equals("communityColumnsCard", it.type)
+            }
+            data!!.itemList.clear()
+            data!!.itemList.addAll(newList)
+            GalleryActivity.startGalleryActivity(data!!, position)
+        }
 //        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                if (!_mActivity.isFinishing) {
@@ -104,9 +118,12 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
     private fun initTopic() {
         recyclerHeader = headerView.findViewById(R.id.recycler_header)
         recyclerHeader.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
+            GridLayoutManager(mContext, 2)
         squareCardAdapter = SquareCardAdapter(mutableListOf())
         recyclerHeader.adapter = squareCardAdapter
+        if (recyclerHeader.itemDecorationCount == 0) {
+            recyclerHeader.addItemDecoration(LayoutMarginDecoration(2, SizeUtils.dp2px(5f)))
+        }
         squareCardAdapter.setOnItemClickListener { adapter, view, position ->
             val item = squareCardAdapter.getItem(position)
             val title = item.data.title
@@ -128,7 +145,7 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
         if (isRefresh) {
             if (!comRecAdapter.hasHeaderLayout()) {
                 val squareItem = comRecEntity?.itemList?.get(0)
-                squareCardAdapter.setList(squareItem!!.data.itemList)
+                squareCardAdapter.setList(squareItem!!.data.itemList.take(2))
                 val bannerItem = comRecEntity.itemList[1]
                 bannerItemAdapter.setDatas(bannerItem.data.itemList)
                 comRecAdapter.addHeaderView(headerView)
@@ -138,6 +155,7 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
             val itemList = comRecEntity.itemList.filter { it.type == "communityColumnsCard" }
             comRecAdapter.loadMoreModule.isEnableLoadMore =
                 true
+            data = comRecEntity
             comRecAdapter.setList(itemList)
             if (nextPageUrl.isNullOrEmpty()) comRecAdapter.loadMoreModule.loadMoreEnd()
         } else {
@@ -145,6 +163,8 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
             map = nextPageUrl?.urlToMap() as HashMap<String, String>
             comRecAdapter.loadMoreModule.isEnableLoadMore = true
             comRecAdapter.addData(comRecEntity.itemList)
+            data?.itemList?.addAll(comRecEntity.itemList)
+            data?.nextPageUrl = comRecEntity.nextPageUrl
             if (nextPageUrl.isNullOrEmpty()) comRecAdapter.loadMoreModule.loadMoreEnd()
             else comRecAdapter.loadMoreModule.loadMoreComplete()
         }
@@ -155,6 +175,7 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
     override fun setComAttentionResponse(entity: ComAttentionEntity?) {
 
     }
+
     override fun showLoading() {
     }
 

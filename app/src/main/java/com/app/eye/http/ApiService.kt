@@ -15,6 +15,9 @@ interface ApiService {
     @FormUrlEncoded
     fun getPage(@FieldMap map: Map<String, String>): Observable<ResponseBody>
 
+    @GET(Constant.HOME_REC)
+    fun getHomeRec(@QueryMap map: Map<String, String>): Observable<HomeRecEntity>
+
     @GET(Constant.DISCOVERY)
     fun getDiscovery(): Observable<DiscoverEntity>
 

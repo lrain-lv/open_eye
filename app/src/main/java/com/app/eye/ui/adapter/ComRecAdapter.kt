@@ -28,7 +28,9 @@ class ComRecAdapter(dataList: MutableList<ComItem>) : BaseQuickAdapter<ComItem, 
                 R.id.iv_muti, if (item.data.content.data.urls.isNullOrEmpty()) true else
                     item.data.content.data.urls.size <= 1
             )
-            .setGone(R.id.tv_dec,item.data.content.data.description.isNullOrEmpty())
+            .setGone(R.id.tv_choose,
+                !(holder.adapterPosition == 1 || holder.adapterPosition == 2 || holder.adapterPosition == 3))
+            .setGone(R.id.tv_dec, item.data.content.data.description.isNullOrEmpty())
             .setText(R.id.tv_count, item.data.content.data.consumption.collectionCount.toString())
         val ivHeader = holder.getView<ImageView>(R.id.iv_header)
         Glide.with(context)

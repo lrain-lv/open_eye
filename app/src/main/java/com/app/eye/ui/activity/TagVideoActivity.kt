@@ -27,10 +27,10 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
     companion object {
         fun startActivity(id: String, title: String, icon: String, dec: String) {
             val bundle = Bundle().apply {
-                putSerializable("id", id)
-                putSerializable("title", title)
-                putSerializable("icon", icon)
-                putSerializable("dec", dec)
+                putString("id", id)
+                putString("title", title)
+                putString("icon", icon)
+                putString("dec", dec)
             }
             ActivityUtils.startActivity(bundle, TagVideoActivity::class.java)
         }

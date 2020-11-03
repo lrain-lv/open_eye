@@ -8,6 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.urlToMap
+import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.RankAdapter
 import com.app.eye.ui.mvp.contract.RankContract
 import com.app.eye.ui.mvp.model.entity.RankEntity
@@ -119,6 +120,7 @@ class RankListFragment : BaseMvpFragment<RankContract.Presenter, RankContract.Vi
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-
+        val item = rankAdapter.getItem(position)
+        VideoDetailActivity.startActivity(item.data.content.data.id.toString())
     }
 }

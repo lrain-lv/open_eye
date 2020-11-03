@@ -59,6 +59,8 @@ dependencies {
     implementation ext.dependencies.agentweb
     implementation ext.dependencies.material
     implementation ext.dependencies.matisse
+    implementation ext.dependencies.photoView
+    implementation ext.dependencies.viewpager2
 //    implementation (ext.dependencies.vlayout ){
 //        transitive = true
 //    }

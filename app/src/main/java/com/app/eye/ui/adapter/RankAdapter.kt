@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import java.util.*
 
 class RankAdapter(data: MutableList<RankItem>) :
     BaseQuickAdapter<RankItem, BaseViewHolder>(data = data, layoutResId = R
@@ -17,9 +18,22 @@ class RankAdapter(data: MutableList<RankItem>) :
     override fun convert(holder: BaseViewHolder, item: RankItem) {
         val header = holder.getView<ImageView>(R.id.iv_header)
         val img = holder.getView<ImageView>(R.id.iv_img)
+
+        val videoDuration = item.data.content.data.duration
+        var time: String = ""
+        if (videoDuration < 60) {
+            time = String.format(Locale.getDefault(), "00:%02d", videoDuration % 60)
+        } else if (videoDuration < 3600) {
+            time = String.format(
+                Locale.getDefault(),
+                "%02d:%02d",
+                videoDuration / 60,
+                videoDuration % 60
+            )
+        }
         holder.setText(R.id.tv_title, item.data.header.title)
             .setText(R.id.tv_dec, item.data.header.description)
-
+            .setText(R.id.tv_duration, time)
         Glide.with(context)
             .load(item.data.header.icon)
             .circleCrop()

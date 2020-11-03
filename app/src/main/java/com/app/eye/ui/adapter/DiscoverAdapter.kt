@@ -1,6 +1,7 @@
 package com.app.eye.ui.adapter
 
 import android.text.TextUtils
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,6 +12,7 @@ import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.mvp.model.entity.DataX
 import com.app.eye.ui.mvp.model.entity.Item
+import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_AUTO_PLAY
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_BANNER
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_BRIEF_CARD
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_COLUMN_CARD_LIST
@@ -20,6 +22,8 @@ import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_VIDEO_SMALL_CARD
 import com.app.eye.ui.mvp.model.entity.Item.Companion.NONE
 import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
+import com.app.eye.widgets.videoplayer.EyeVideoPlayer
+import com.app.eye.widgets.videoplayer.JzViewOutlineProvider
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
@@ -30,6 +34,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.youth.banner.Banner
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import kotlinx.android.synthetic.main.jz_layout_std.view.*
 import java.util.*
 
 
@@ -45,11 +50,32 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
         addItemType(DISCOVER_TEXT_CARD, R.layout.layout_discover_text_card)
         addItemType(DISCOVER_VIDEO_SMALL_CARD, R.layout.layout_discover_video_card)
         addItemType(DISCOVER_BRIEF_CARD, R.layout.layout_discover_brief_card)
+        addItemType(DISCOVER_AUTO_PLAY, R.layout.layout_discover_video)
         addItemType(NONE, R.layout.layout_none)
     }
 
     override fun convert(holder: BaseViewHolder, item: Item) {
         when (item.itemType) {
+            DISCOVER_AUTO_PLAY -> {
+                val detail = item.data.detail
+                holder.setText(R.id.tv_title, detail.title)
+                    .setText(R.id.tv_dec, detail.description)
+                val ivHeader = holder.getView<ImageView>(R.id.iv_header)
+                Glide.with(context)
+                    .load(detail.icon)
+                    .circleCrop()
+                    .override(SizeUtils.dp2px(36f), SizeUtils.dp2px(36f))
+                    .into(ivHeader)
+                val player = holder.getView<EyeVideoPlayer>(R.id.player)
+                player.start_layout.visibility = View.GONE
+                player.outlineProvider = JzViewOutlineProvider(SizeUtils.dp2px(5f).toFloat())
+                player.clipToOutline = true
+                Glide.with(context)
+                    .load(detail.imageUrl)
+                    .centerCrop()
+                    .into(player.thumbImageView)
+                player.setUp(detail.url, "")
+            }
             DISCOVER_BANNER -> {
                 banner = holder.getView(R.id.banner)
                 val adapter = BannerItemAdapter(mutableListOf())
@@ -130,16 +156,16 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                     .setText(R.id.tv_right_text, item.data.rightText)
             }
             DISCOVER_VIDEO_SMALL_CARD -> {
-                var video_duration = item.data.duration
+                val videoDuration = item.data.duration
                 var time: String = ""
-                if (video_duration < 60) {
-                    var time = String.format(Locale.getDefault(), "00:%02d", video_duration % 60)
-                } else if (video_duration < 3600) {
+                if (videoDuration < 60) {
+                    time = String.format(Locale.getDefault(), "00:%02d", videoDuration % 60)
+                } else if (videoDuration < 3600) {
                     time = String.format(
                         Locale.getDefault(),
                         "%02d:%02d",
-                        video_duration / 60,
-                        video_duration % 60
+                        videoDuration / 60,
+                        videoDuration % 60
                     )
                 }
                 var img = holder.getView<ImageView>(R.id.iv_pic)
