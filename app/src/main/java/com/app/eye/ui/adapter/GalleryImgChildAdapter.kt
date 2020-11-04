@@ -10,9 +10,10 @@ class GalleryImgChildAdapter(data: MutableList<String>) :
     BaseQuickAdapter<String, BaseViewHolder>(data = data,
         layoutResId = R.layout.layout_gallery_child_img) {
     override fun convert(holder: BaseViewHolder, item: String) {
-        var photoView = holder.getView<PhotoView>(R.id.iv_img)
+        val photoView = holder.getView<PhotoView>(R.id.iv_img)
         Glide.with(context)
             .load(item)
+            .error(R.mipmap.icon_splash)
             .into(photoView)
     }
 

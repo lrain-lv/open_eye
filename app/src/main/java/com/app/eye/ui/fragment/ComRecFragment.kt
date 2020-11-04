@@ -16,6 +16,7 @@ import com.app.eye.ui.adapter.ComRecAdapter
 import com.app.eye.ui.adapter.SquareCardAdapter
 import com.app.eye.ui.mvp.contract.CommunityContract
 import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
+import com.app.eye.ui.mvp.model.entity.ComItem
 import com.app.eye.ui.mvp.model.entity.ComRecEntity
 import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
@@ -23,6 +24,7 @@ import com.app.eye.widgets.MultipleStatusView
 import com.app.eye.widgets.StaggeredDividerItemDecoration
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
 import com.blankj.utilcode.util.SizeUtils
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.youth.banner.Banner
 import kotlinx.android.synthetic.main.fragment_rec.*
@@ -75,26 +77,29 @@ class ComRecFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityCon
         recycler_view.adapter = comRecAdapter
         comRecAdapter.loadMoreModule.setOnLoadMoreListener(this)
         comRecAdapter.setOnItemClickListener { adapter, view, position ->
-            val newList = data!!.itemList.filter {
+            val entity: ComRecEntity? = data!!.copy()
+            val list = mutableListOf<ComItem>()
+            list.addAll(entity!!.itemList)
+            val newList = list.filter {
                 TextUtils.equals("communityColumnsCard", it.type)
             }
-            data!!.itemList.clear()
-            data!!.itemList.addAll(newList)
-            GalleryActivity.startGalleryActivity(data!!, position)
+            entity.itemList.clear()
+            entity.itemList.addAll(newList)
+            GalleryActivity.startGalleryActivity(entity, position)
         }
-//        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!_mActivity.isFinishing) {
-//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                        Glide.with(_mActivity)
-//                            .resumeRequests()
-//                    } else {
-//                        Glide.with(_mActivity)
-//                            .pauseRequests()
-//                    }
-//                }
-//            }
-//        })
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!_mActivity.isFinishing) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        Glide.with(_mActivity)
+                            .resumeRequests()
+                    } else {
+                        Glide.with(_mActivity)
+                            .pauseRequests()
+                    }
+                }
+            }
+        })
     }
 
     private fun initHeader() {

@@ -3,14 +3,16 @@ package com.app.eye.ui.adapter
 import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.app.eye.R
+import com.app.eye.event.callback.OnItemClickCallback
 import com.app.eye.ui.mvp.model.entity.ComItem
 import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-class GalleryAdapter(data: MutableList<ComItem>) :
+class GalleryAdapter(data: MutableList<ComItem>,var onItemCallback : OnItemClickCallback) :
     BaseQuickAdapter<ComItem, BaseViewHolder>(data = data, layoutResId =
-    R.layout.layout_gallery_pic_item) {
+    R.layout.layout_gallery_pic_item),LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: ComItem) {
         val viewPager = holder.getView<ViewPager2>(R.id.view_pager)
@@ -24,6 +26,10 @@ class GalleryAdapter(data: MutableList<ComItem>) :
             holder.setGone(R.id.tv_count, urls.size == 1)
                 .setText(R.id.tv_count, "1/${urls.size}")
             val imgAdapter = GalleryImgChildAdapter(urls)
+            imgAdapter.addChildClickViewIds(R.id.iv_img)
+            imgAdapter.setOnItemChildClickListener { adapter, view, position ->
+                onItemCallback.onClick()
+            }
             viewPager.offscreenPageLimit = 1
             viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

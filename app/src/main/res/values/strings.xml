@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">eyepetizer</string>
+    <string name="app_name">Eyepetizer</string>
     <bool name="is_right_to_left">false</bool>
     <string name="splash_intro">每日精选视频推介，让你大开眼界</string>
     <string name="splash_intro_en">Daily appelizers for your eyes,Bon eyepetit</string>
