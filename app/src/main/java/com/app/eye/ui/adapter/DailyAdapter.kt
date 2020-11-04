@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.ui.mvp.model.entity.ItemDaily
 import com.app.eye.widgets.NoScrollLinearLayoutManager
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 import java.util.*
 
 class DailyAdapter(dataList: MutableList<ItemDaily>) :

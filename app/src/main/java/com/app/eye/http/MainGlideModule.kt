@@ -32,7 +32,6 @@ class MainGlideModule : AppGlideModule() {
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         // Apply options to the builder here.
-
         // Apply options to the builder here.
         val options = RequestOptions().format(DecodeFormat.PREFER_RGB_565)
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

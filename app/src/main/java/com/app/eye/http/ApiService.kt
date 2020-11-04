@@ -1,6 +1,5 @@
 package com.app.eye.http
 
-import TagVideoEntity
 import com.app.eye.ui.mvp.model.entity.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.ResponseBody

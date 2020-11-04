@@ -14,18 +14,20 @@ import com.app.eye.ui.mvp.model.entity.HomeRecItem.Companion.HOME_TOPIC_BRIEF_CA
 import com.app.eye.ui.mvp.model.entity.HomeRecItem.Companion.HOME_UGC_SELECT_CARD
 import com.app.eye.ui.mvp.model.entity.HomeRecItem.Companion.HOME_VIDEO_SMALL_CARD
 import com.app.eye.widgets.NoScrollLinearLayoutManager
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 import java.util.*
 
 
 class HomeRecAdapter(data: MutableList<HomeRecItem>) :
-    BaseMultiItemQuickAdapter<HomeRecItem, BaseViewHolder>(data = data) {
+    BaseMultiItemQuickAdapter<HomeRecItem, BaseViewHolder>(data = data),LoadMoreModule {
     init {
         addItemType(HomeRecItem.NONE, R.layout.layout_none)
         addItemType(HomeRecItem.HOME_TEXT_CARD, R.layout.layout_discover_text_card)
@@ -59,7 +61,7 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                     )
                 }
                 holder.setText(R.id.tv_title, data.title)
-                    .setText(R.id.tv_category, "${data.author.name} / #${data.category}")
+                    .setText(R.id.tv_category, item.data.header?.description)
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 Glide.with(context)
@@ -74,7 +76,7 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                     ).into(ivCover)
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
                 Glide.with(context)
-                    .load(data.author.icon)
+                    .load(item.data.header?.icon)
                     .override(SizeUtils.dp2px(36f), SizeUtils.dp2px(36f))
                     .circleCrop()
                     .into(ivHeader)
@@ -111,7 +113,7 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                         videoDuration % 60
                     )
                 }
-                var img = holder.getView<ImageView>(R.id.iv_pic)
+                val img = holder.getView<ImageView>(R.id.iv_pic)
                 holder.setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
                     .setText(R.id.tv_duration, time)
@@ -129,24 +131,18 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                             val imgleft = holder.getView<ImageView>(R.id.img_left)
                             Glide.with(context)
                                 .load(homeRecItemX.data.cover.feed)
-                                .transform(CenterCrop(),
-                                    RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
                                 .into(imgleft)
                         }
                         1 -> {
                             val imgtop = holder.getView<ImageView>(R.id.img_top)
                             Glide.with(context)
                                 .load(homeRecItemX.data.cover.feed)
-                                .transform(CenterCrop(),
-                                    RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
                                 .into(imgtop)
                         }
                         2 -> {
                             val imgbottom = holder.getView<ImageView>(R.id.img_bottom)
                             Glide.with(context)
                                 .load(homeRecItemX.data.cover.feed)
-                                .transform(CenterCrop(),
-                                    RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
                                 .into(imgbottom)
                         }
                     }

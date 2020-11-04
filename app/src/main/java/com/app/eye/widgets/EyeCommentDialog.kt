@@ -4,16 +4,14 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.app.eye.R
-import com.blankj.utilcode.util.BarUtils
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
@@ -21,9 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.layout_comment.*
-import kotlin.math.abs
 
 
 class EyeCommentDialog() : DialogFragment(),

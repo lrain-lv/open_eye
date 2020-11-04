@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.app.eye.R
 import com.app.eye.ui.mvp.model.entity.ItemX
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
@@ -11,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 
 class ColumnItemAdapter(var dataList: MutableList<ItemX>) : BaseQuickAdapter<ItemX, BaseViewHolder>(
     data = dataList,

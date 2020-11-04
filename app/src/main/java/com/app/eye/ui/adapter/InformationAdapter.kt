@@ -8,13 +8,14 @@ import com.app.eye.ui.mvp.model.entity.InfoItem
 import com.app.eye.ui.mvp.model.entity.ItemDaily.Companion.DAILY_INFORMATION
 import com.app.eye.ui.mvp.model.entity.ItemDaily.Companion.DAILY_TEXT
 import com.app.eye.widgets.NoScrollLinearLayoutManager
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 
 class InformationAdapter(data: MutableList<InfoItem>) :
     BaseMultiItemQuickAdapter<InfoItem, BaseViewHolder>(data), LoadMoreModule {

@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.app.eye.R
 import com.app.eye.ui.mvp.model.entity.LightItem
 import com.app.eye.ui.mvp.model.entity.LightTag
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.app.eye.widgets.videoplayer.EyeVideoPlayer
 import com.app.eye.widgets.videoplayer.JzViewOutlineProvider
 import com.blankj.utilcode.util.SizeUtils
@@ -17,7 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 import java.util.*
 
 class LightTopicAdapter(data: MutableList<LightItem>) :

@@ -1,6 +1,6 @@
 package com.app.eye.ui.activity
 
-import TagVideoEntity
+import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View

@@ -22,6 +22,7 @@ import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_VIDEO_SMALL_CARD
 import com.app.eye.ui.mvp.model.entity.Item.Companion.NONE
 import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.app.eye.widgets.videoplayer.EyeVideoPlayer
 import com.app.eye.widgets.videoplayer.JzViewOutlineProvider
 import com.blankj.utilcode.util.SizeUtils
@@ -33,7 +34,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.youth.banner.Banner
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 import kotlinx.android.synthetic.main.jz_layout_std.view.*
 import java.util.*
 

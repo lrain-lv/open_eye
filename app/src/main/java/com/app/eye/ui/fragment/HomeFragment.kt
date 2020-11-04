@@ -16,7 +16,7 @@ class HomeFragment : BaseFragment() {
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
     override fun initView() {
-        val titleList = mutableListOf<String>("发现","推荐" ,"日报")
+        val titleList = mutableListOf<String>("发现", "推荐", "日报")
         val fragmentList = listOf<SupportFragment>(
             FindFragment.newInstance(),
             RecommendFragment.newInstance(),
@@ -24,10 +24,15 @@ class HomeFragment : BaseFragment() {
         )
         val tabFragmentAdapter =
             TabFragmentAdapter(requireFragmentManager(), fragmentList, titleList)
-        view_pager.adapter = tabFragmentAdapter
-        view_pager.offscreenPageLimit = 3
-        tab_layout.setViewPager(view_pager)
-        tab_layout.currentTab = 0
+        view_pager.apply {
+            adapter = tabFragmentAdapter
+            offscreenPageLimit = titleList.size
+        }
+        tab_layout.apply {
+            setViewPager(view_pager)
+            currentTab = 1
+        }
+//        tab_layout.getTitleView(1).paint.isFakeBoldText = true
         view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }

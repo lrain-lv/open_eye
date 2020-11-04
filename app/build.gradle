@@ -20,10 +20,24 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    signingConfigs {
+        releaseConfig {
+            storeFile file('D:\\projects\\open-eye\\openeye.jks')
+            storePassword '123456'
+            keyAlias 'openeye'
+            keyPassword '123456'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.releaseConfig
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -39,10 +53,11 @@ dependencies {
     implementation ext.dependencies.converter_gson
     implementation ext.dependencies.adapter_rxjava
     implementation ext.dependencies.glide
+    implementation ext.dependencies.glide_annotations
     implementation ext.dependencies.okhttp3_integration
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    annotationProcessor ext.dependencies.glide_compiler
-    implementation ext.dependencies.glide_transformations
+//    annotationProcessor  ext.dependencies.glide_compiler
+    kapt ext.dependencies.glide_compiler
     implementation ext.dependencies.adapterHelper
     implementation ext.dependencies.logger
     implementation ext.dependencies.immersionbar
@@ -61,6 +76,7 @@ dependencies {
     implementation ext.dependencies.matisse
     implementation ext.dependencies.photoView
     implementation ext.dependencies.viewpager2
+    implementation ext.dependencies.gpuimage
 //    implementation (ext.dependencies.vlayout ){
 //        transitive = true
 //    }

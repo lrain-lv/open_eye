@@ -5,13 +5,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.app.eye.R
 import com.app.eye.ui.mvp.model.entity.SearchItem
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 import java.util.*
 
 class SearchAdapter(dataList: MutableList<SearchItem>) :

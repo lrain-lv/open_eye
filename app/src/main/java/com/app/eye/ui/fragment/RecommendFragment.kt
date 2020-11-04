@@ -1,33 +1,27 @@
 package com.app.eye.ui.fragment
 
 import android.os.Bundle
-import android.view.View
+import android.text.TextUtils
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
-import com.app.eye.rx.actionUrlToMap
+import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.RankActivity
+import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.activity.TopicSquareActivity
-import com.app.eye.ui.activity.WebActivity
-import com.app.eye.ui.adapter.DiscoverAdapter
-import com.app.eye.ui.mvp.contract.FindContract
+import com.app.eye.ui.adapter.HomeRecAdapter
 import com.app.eye.ui.mvp.contract.HomeRecContract
-import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.model.entity.HomeRecEntity
-import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.ui.mvp.presenter.HomeRecPresenter
-import com.app.eye.widgets.STATUS_NO_NETWORK
-import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
-import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
+import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_recommend.*
 
 class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecContract.View>(),
-    HomeRecContract.View, SwipeRefreshLayout.OnRefreshListener{
+    HomeRecContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
 
     companion object {
         @JvmStatic
@@ -40,20 +34,25 @@ class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecCont
 
     override fun getLayoutRes(): Int = R.layout.fragment_recommend
 
-    private lateinit var discoverAdapter: DiscoverAdapter
+    private var nextPageUrl: String? = ""
+
+    private var isRefresh: Boolean = true
+
+    private lateinit var homeRecAdapter: HomeRecAdapter
     override fun initView() {
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
-        discoverAdapter = DiscoverAdapter(mutableListOf())
+        homeRecAdapter = HomeRecAdapter(mutableListOf())
         recycler_view.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-        discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
-        discoverAdapter.setOnItemClickListener { adapter, view, position ->
+        homeRecAdapter.loadMoreModule.setOnLoadMoreListener(this)
+        homeRecAdapter.loadMoreModule.isEnableLoadMore = false
+        homeRecAdapter.setOnItemClickListener { adapter, view, position ->
 
         }
-        discoverAdapter.addChildClickViewIds(R.id.tv_right_text)
-        discoverAdapter.setOnItemChildClickListener { _, view, position ->
-            val item = discoverAdapter.getItem(position)
+        homeRecAdapter.addChildClickViewIds(R.id.tv_right_text)
+        homeRecAdapter.setOnItemChildClickListener { _, view, position ->
+            val item = homeRecAdapter.getItem(position)
             val data = item.data
             val header = item.data.header
             val actionUrl: String? = if (!data.actionUrl.isNullOrEmpty()) data.actionUrl else if (
@@ -63,57 +62,44 @@ class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecCont
             when (view.id) {
                 R.id.tv_right_text -> {
                     when {
-                        actionUrl.contains("ranklist") -> {
+                        actionUrl.contains("common/") -> {
+                            CategoryActivity.startActivity("全部资讯", 2)
+                        }
+                        actionUrl.contains("tag/") -> {
+                            val s = actionUrl.substring(17)
+                            val id = s.substring(0, s.indexOf("/"))
+                            TagVideoActivity.startActivity(
+                                id,
+                                item.data.title,
+                                "",
+                                item.data.description ?: "")
+                        }
+                        actionUrl.contains("ranklist/") -> {
                             ActivityUtils.startActivity(RankActivity::class.java)
                         }
-                        actionUrl.contains("community") -> {
+                        actionUrl.contains("community/") -> {
                             TopicSquareActivity.startTopicSquareActivity("主题")
                         }
-                        actionUrl.contains("webview") -> {
-                            WebActivity.startWebActivity(
-                                url = actionUrl.actionUrlToMap()["url"] ?: error(""),
-                                title = actionUrl.actionUrlToMap()["title"] ?: error("")
-                            )
-                        }
                         else -> {
-                            CategoryActivity.startActivity(header!!.title,
-                                if (actionUrl.contains("categories")) 0 else 1)
+
                         }
+//                        actionUrl.contains("webview") -> {
+//                            WebActivity.startWebActivity(
+//                                url = actionUrl.actionUrlToMap()["url"] ?: error(""),
+//                                title = actionUrl.actionUrlToMap()["title"] ?: error("")
+//                            )
+//                        }
+//                        else -> {
+//                            CategoryActivity.startActivity(header!!.title,
+//                                if (actionUrl.contains("categories")) 0 else 1)
+//                        }
                     }
                 }
             }
         }
-        recycler_view.adapter = discoverAdapter
-        recycler_view.addOnChildAttachStateChangeListener(object :
-            RecyclerView.OnChildAttachStateChangeListener {
-            override fun onChildViewAttachedToWindow(view: View) {}
-            override fun onChildViewDetachedFromWindow(view: View) {
-                val jzvd: Jzvd? = view.findViewById(R.id.jzvd)
-                if (jzvd != null && Jzvd.CURRENT_JZVD != null && jzvd.jzDataSource.containsTheUrl(
-                        Jzvd.CURRENT_JZVD.jzDataSource.currentUrl)
-                ) {
-                    if (Jzvd.CURRENT_JZVD != null && (Jzvd.CURRENT_JZVD.screen != Jzvd.SCREEN_FULLSCREEN)) {
-                        Jzvd.releaseAllVideos()
-                    }
-                }
-            }
-        })
-        recycler_view.addOnScrollListener(AutoPlayScrollListener())
-//        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!_mActivity.isFinishing) {
-//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                        Glide.with(_mActivity)
-//                            .resumeRequests()
-//                    } else {
-//                        Glide.with(_mActivity)
-//                            .pauseRequests()
-//                    }
-//                }
-//            }
-//        })
-    }
+        recycler_view.adapter = homeRecAdapter
 
+    }
 
 
     override fun initData() {
@@ -121,29 +107,35 @@ class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecCont
             status_view.showNoNetworkView()
         } else {
             status_view.showLoadingView()
-            recycler_view.post { mPresenter?.getDiscoveryData() }
+            recycler_view.post { mPresenter?.getRecData(mapOf("page" to "0")) }
         }
     }
 
     override fun onRefresh() {
+        homeRecAdapter.loadMoreModule.isEnableLoadMore = false
         refresh_layout.isRefreshing = true
-        mPresenter?.getDiscoveryData()
+        mPresenter?.getRecData(mapOf("page" to "0"))
     }
 
     override fun createPresenter(): HomeRecContract.Presenter? = HomeRecPresenter()
 
     override fun setResponse(entity: HomeRecEntity?) {
-        if (entity.itemList.isEmpty()) {
-            status_view.showEmptyView()
+        entity ?: status_view.showEmptyView()
+        nextPageUrl = entity?.nextPageUrl
+        if (isRefresh) {
+            homeRecAdapter.loadMoreModule.isEnableLoadMore = true
+            homeRecAdapter.setList(entity?.itemList)
+            if (TextUtils.isEmpty(nextPageUrl)) homeRecAdapter.loadMoreModule.loadMoreEnd()
         } else {
-            status_view.showContentView()
-            discoverAdapter.setList(entity.itemList)
-            discoverAdapter.loadMoreModule.loadMoreEnd(gone = false)
-            discoverAdapter.banner.addBannerLifecycleObserver(this)
+            homeRecAdapter.loadMoreModule.isEnableLoadMore = true
+            homeRecAdapter.addData(entity?.itemList!!)
+            if (TextUtils.isEmpty(nextPageUrl)) {
+                homeRecAdapter.loadMoreModule.loadMoreEnd()
+            } else {
+                homeRecAdapter.loadMoreModule.loadMoreComplete()
+            }
         }
-    }
-
-    override fun showLoading() {
+        refresh_layout.isEnabled = true
     }
 
     override fun hideLoading() {
@@ -151,15 +143,13 @@ class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecCont
         refresh_layout.isRefreshing = false
     }
 
-    override fun reConnect() {
-        if (status_view.getViewStatus() == STATUS_NO_NETWORK) {
-            status_view.showLoadingView()
-            mPresenter?.getDiscoveryData()
+    override fun onLoadMore() {
+        if (!nextPageUrl.isNullOrEmpty()) {
+            refresh_layout.isEnabled = false
+            isRefresh = false
+            val map = nextPageUrl!!.urlToMap()
+            mPresenter?.getRecData(map)
         }
-    }
 
-    override fun onPause() {
-        super.onPause()
-        Jzvd.releaseAllVideos();
     }
 }

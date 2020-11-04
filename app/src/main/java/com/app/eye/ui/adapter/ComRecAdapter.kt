@@ -3,6 +3,7 @@ package com.app.eye.ui.adapter
 import android.widget.ImageView
 import com.app.eye.R
 import com.app.eye.ui.mvp.model.entity.ComItem
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
@@ -12,7 +13,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 
 class ComRecAdapter(dataList: MutableList<ComItem>) : BaseQuickAdapter<ComItem, BaseViewHolder>(
     data = dataList,

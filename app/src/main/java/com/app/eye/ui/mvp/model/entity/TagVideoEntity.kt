@@ -1,3 +1,5 @@
+package com.app.eye.ui.mvp.model.entity
+
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 

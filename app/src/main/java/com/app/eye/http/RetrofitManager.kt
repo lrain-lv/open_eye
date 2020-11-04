@@ -31,6 +31,7 @@ class RetrofitManager {
 
     companion object {
 
+        @JvmStatic
         val sInstance: RetrofitManager by lazy {
             RetrofitManagerHolder.sInstance
         }

@@ -86,7 +86,7 @@ abstract class BaseFragment : SupportFragment() {
 
     open fun useLazyLoad(): Boolean = true
     open fun init() {}
-    abstract fun reConnect()
+    open fun reConnect(){}
     abstract fun initView()
     abstract fun initData()
 

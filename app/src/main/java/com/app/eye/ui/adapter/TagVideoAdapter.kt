@@ -1,13 +1,14 @@
 package com.app.eye.ui.adapter
 
 
-import TagVideoItem
+import com.app.eye.ui.mvp.model.entity.TagVideoItem
 import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.app.eye.R
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.TimeUtils
@@ -17,7 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 import java.util.*
 
 class TagVideoAdapter(data: MutableList<TagVideoItem>) :

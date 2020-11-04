@@ -1,6 +1,6 @@
 package com.app.eye.ui.fragment
 
-import TagVideoEntity
+import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View

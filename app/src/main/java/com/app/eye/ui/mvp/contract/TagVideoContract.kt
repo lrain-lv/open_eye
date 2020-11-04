@@ -1,6 +1,6 @@
 package com.app.eye.ui.mvp.contract
 
-import TagVideoEntity
+import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import com.app.eye.base.mvp.IBaseView
 import com.app.eye.base.mvp.IModel
 import com.app.eye.base.mvp.IPresenter

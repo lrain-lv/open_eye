@@ -7,7 +7,7 @@ data class HomeRecEntity(
     val adExist: Boolean,
     val count: Int,
     val itemList: MutableList<HomeRecItem>,
-    val nextPageUrl: String,
+    val nextPageUrl: String?,
     val total: Int
 )
 
@@ -52,7 +52,7 @@ data class HomeRecItem(
 }
 
 data class HomeRecData(
-    val actionUrl: String,
+    val actionUrl: String?,
     val ad: Boolean,
     val author: HomeRecAuthor,
     val backgroundImage: String,
@@ -67,7 +67,7 @@ data class HomeRecData(
     val cover: HomeRecCoverX,
     val dataType: String,
     val date: Long,
-    val description: String,
+    val description: String?,
     val descriptionEditor: String,
     val descriptionPgc: String,
     val duration: Int,
@@ -75,7 +75,7 @@ data class HomeRecData(
     val follow: Any,
     val footer: Any,
     val haveReward: Boolean,
-    val header: HomeRecHeader,
+    val header: HomeRecHeader?,
     val headerType: String,
     val icon: String,
     val iconType: String,
@@ -170,7 +170,7 @@ data class HomeRecCoverX(
 )
 
 data class HomeRecHeader(
-    val actionUrl: String,
+    val actionUrl: String?,
     val cover: Any,
     val description: String,
     val font: Any,

@@ -4,14 +4,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.ui.mvp.model.entity.ItemX
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerAdapter
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 
 class BannerItemAdapter(dataList: MutableList<ItemX>) :
     BannerAdapter<ItemX, BannerItemAdapter.MyHolder>(dataList) {

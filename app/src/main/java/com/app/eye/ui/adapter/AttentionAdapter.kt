@@ -1,12 +1,13 @@
 package com.app.eye.ui.adapter
 
-import TagVideoItem
+import com.app.eye.ui.mvp.model.entity.TagVideoItem
 import android.text.TextUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.ui.mvp.model.entity.AttItem
+import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.bumptech.glide.Glide
@@ -14,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
 
 class AttentionAdapter(data: MutableList<AttItem>) :
     BaseMultiItemQuickAdapter<AttItem, BaseViewHolder>(data), LoadMoreModule {
