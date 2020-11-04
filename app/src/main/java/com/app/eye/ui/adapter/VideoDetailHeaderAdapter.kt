@@ -2,15 +2,10 @@ package com.app.eye.ui.adapter
 
 import android.widget.ImageView
 import com.app.eye.R
+import com.app.eye.rx.loadImageRound
 import com.app.eye.ui.mvp.model.entity.VrItem
-import com.app.eye.widgets.transformations.RoundedCornersTransformation
-import com.blankj.utilcode.util.SizeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-
 import java.util.*
 
 class VideoDetailHeaderAdapter(data: MutableList<VrItem>) :
@@ -36,10 +31,6 @@ class VideoDetailHeaderAdapter(data: MutableList<VrItem>) :
         holder.setText(R.id.tv_video_title, item.data.title)
             .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
             .setText(R.id.tv_duration, time)
-        Glide.with(context)
-            .load(item.data.cover.feed)
-            .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .into(img)
+        img.loadImageRound(context, item.data.cover.feed)
     }
 }

@@ -5,20 +5,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.app.eye.R
+import com.app.eye.rx.loadImageCircle
+import com.app.eye.rx.loadImageRound
 import com.app.eye.ui.mvp.model.entity.LightItem
 import com.app.eye.ui.mvp.model.entity.LightTag
-import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.app.eye.widgets.videoplayer.EyeVideoPlayer
 import com.app.eye.widgets.videoplayer.JzViewOutlineProvider
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.TimeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-
 import java.util.*
 
 class LightTopicAdapter(data: MutableList<LightItem>) :
@@ -68,18 +66,11 @@ class LightTopicAdapter(data: MutableList<LightItem>) :
                 tagLayout.addView(tv)
             }
         }
-        Glide.with(context)
-            .load(item.data.header.icon)
-            .circleCrop()
-            .override(SizeUtils.dp2px(45f), SizeUtils.dp2px(45f))
-            .into(header)
+        header.loadImageCircle(context, item.data.header.icon, 45f)
         val jzvdStd = holder.getView<EyeVideoPlayer>(R.id.jzvd)
         jzvdStd.outlineProvider = JzViewOutlineProvider(SizeUtils.dp2px(5f).toFloat())
         jzvdStd.clipToOutline = true
         jzvdStd.setUp(data.playUrl, "")
-        Glide.with(context)
-            .load(data.cover.feed)
-            .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-            .into(jzvdStd.thumbImageView)
+        jzvdStd.thumbImageView.loadImageRound(context, data.cover.feed)
     }
 }

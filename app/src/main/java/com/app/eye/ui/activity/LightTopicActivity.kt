@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.LightTopicAdapter
 import com.app.eye.ui.mvp.contract.LightTopicContract
 import com.app.eye.ui.mvp.model.entity.LightTopicInternalEntity
@@ -15,7 +16,6 @@ import com.app.eye.ui.mvp.presenter.LightTopicPresenter
 import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
 import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_light_topic_internal.*
 
 class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTopicContract.View>(),
@@ -107,9 +107,7 @@ class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTo
 
     override fun setLightTopicResponse(entity: LightTopicInternalEntity?) {
         entity ?: status_view.showEmptyView()
-        Glide.with(mContext)
-            .load(entity?.headerImage)
-            .into(imgBg)
+        imgBg.loadImageCommon(mContext, entity?.headerImage)
         tvDec.text = entity?.text
         tvTitleSm.text = entity?.brief
         adapter.setList(entity?.itemList)

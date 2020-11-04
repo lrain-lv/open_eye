@@ -15,6 +15,7 @@ class GalleryImgChildAdapter(data: MutableList<String>) :
             .load(item)
             .error(R.mipmap.icon_splash)
             .into(photoView)
+
     }
 
 }

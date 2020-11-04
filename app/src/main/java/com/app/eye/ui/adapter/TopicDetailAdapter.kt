@@ -2,11 +2,9 @@ package com.app.eye.ui.adapter
 
 import android.widget.ImageView
 import com.app.eye.R
+import com.app.eye.rx.loadImageCircle
+import com.app.eye.rx.loadImageRound
 import com.app.eye.ui.mvp.model.entity.ReplyItem
-import com.app.eye.widgets.transformations.RoundedCornersTransformation
-import com.blankj.utilcode.util.SizeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -62,39 +60,22 @@ class TopicDetailAdapter(data: MutableList<ReplyItem>) :
                         com.blankj.utilcode.util.TimeUtils.getFriendlyTimeSpanByNow(data.createTime)
                     )
                 val headerBig = holder.getView<ImageView>(R.id.iv_header_big)
-                Glide.with(context)
-                    .load(data.user.avatar)
-                    .circleCrop()
-                    .override(SizeUtils.dp2px(36f), SizeUtils.dp2px(36f))
-                    .into(headerBig)
+
+                headerBig.loadImageCircle(context, data.user.avatar, 36f)
                 val ivMain = holder.getView<ImageView>(R.id.iv_main)
                 if (!data.imageUrl.isNullOrEmpty()) {
-                    Glide.with(context)
-                        .load(data.imageUrl)
-                        .transform(
-                            CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f), 0)
-                        )
-                        .into(ivMain)
+
+                    ivMain.loadImageRound(context, data.imageUrl)
                 }
                 if (data.parentReply != null) {
                     val headerSm = holder.getView<ImageView>(R.id.iv_header_sm)
                     val ivReply = holder.getView<ImageView>(R.id.iv_reply)
-                    Glide.with(context)
-                        .load(data.parentReply.user.avatar)
-                        .circleCrop()
-                        .override(SizeUtils.dp2px(26f), SizeUtils.dp2px(26f))
-                        .into(headerSm)
+
+                    headerSm.loadImageCircle(context, data.parentReply.user.avatar, 26f)
                     holder.setText(R.id.tv_name_reply, data.parentReply.user.nickname)
                         .setText(R.id.tv_content_reply, data.parentReply.message)
                     if (!data.parentReply.imageUrl.isNullOrEmpty()) {
-                        Glide.with(context)
-                            .load(data.parentReply.imageUrl)
-                            .transform(
-                                CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f), 0)
-                            )
-                            .into(ivReply)
+                        ivReply.loadImageRound(context, data.parentReply.imageUrl)
                     }
                 }
 

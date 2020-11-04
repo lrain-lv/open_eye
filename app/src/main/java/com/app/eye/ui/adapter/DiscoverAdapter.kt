@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
-import com.app.eye.rx.actionUrlToMap
+import com.app.eye.rx.*
 import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.mvp.model.entity.DataX
@@ -22,19 +22,14 @@ import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_VIDEO_SMALL_CARD
 import com.app.eye.ui.mvp.model.entity.Item.Companion.NONE
 import com.app.eye.ui.mvp.model.entity.ItemX
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
-import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.app.eye.widgets.videoplayer.EyeVideoPlayer
 import com.app.eye.widgets.videoplayer.JzViewOutlineProvider
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.youth.banner.Banner
-
 import kotlinx.android.synthetic.main.jz_layout_std.view.*
 import java.util.*
 
@@ -62,19 +57,13 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 holder.setText(R.id.tv_title, detail.title)
                     .setText(R.id.tv_dec, detail.description)
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-                Glide.with(context)
-                    .load(detail.icon)
-                    .circleCrop()
-                    .override(SizeUtils.dp2px(36f), SizeUtils.dp2px(36f))
-                    .into(ivHeader)
+
+                ivHeader.loadImageCircle(context, detail.icon, 36f)
                 val player = holder.getView<EyeVideoPlayer>(R.id.player)
                 player.start_layout.visibility = View.GONE
                 player.outlineProvider = JzViewOutlineProvider(SizeUtils.dp2px(5f).toFloat())
                 player.clipToOutline = true
-                Glide.with(context)
-                    .load(detail.imageUrl)
-                    .centerCrop()
-                    .into(player.thumbImageView)
+                player.thumbImageView.loadImageCommon(context, detail.imageUrl)
                 player.setUp(detail.url, "")
             }
             DISCOVER_BANNER -> {
@@ -169,15 +158,11 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                         videoDuration % 60
                     )
                 }
-                var img = holder.getView<ImageView>(R.id.iv_pic)
+                val img = holder.getView<ImageView>(R.id.iv_pic)
                 holder.setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
                     .setText(R.id.tv_duration, time)
-                Glide.with(context)
-                    .load(item.data.cover.feed)
-                    .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img)
+                img.loadImageRound(context, item.data.cover.feed)
             }
             DISCOVER_BRIEF_CARD -> {
                 var img = holder.getView<ImageView>(R.id.iv_icon)
@@ -191,12 +176,8 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 }
                 holder.setText(R.id.tv_brief_title, item.data.title)
                     .setText(R.id.tv_dec, item.data.description)
-                Glide.with(context)
-                    .load(item.data.icon)
-                    .override(SizeUtils.dp2px(70f), SizeUtils.dp2px(70f))
-                    .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img)
+
+                img.loadImageRoundWithSize(context, item.data.icon, 70f)
             }
 
 

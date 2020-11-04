@@ -1,24 +1,23 @@
 package com.app.eye.ui.adapter
 
 
-import com.app.eye.ui.mvp.model.entity.TagVideoItem
 import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.app.eye.R
+import com.app.eye.rx.loadImageCircle
+import com.app.eye.rx.loadImageRound
+import com.app.eye.rx.loadImageWithTransform
+import com.app.eye.ui.mvp.model.entity.TagVideoItem
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.TimeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-
 import java.util.*
 
 class TagVideoAdapter(data: MutableList<TagVideoItem>) :
@@ -62,22 +61,16 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
                     .setText(R.id.tv_category, "${data.author.name} / #${data.category}")
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
-                Glide.with(context)
-                    .load(data.cover.feed)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCornersTransformation(
-                            SizeUtils.dp2px(5f),
-                            0,
-                            RoundedCornersTransformation.CornerType.TOP
-                        )
-                    ).into(ivCover)
+
+                ivCover.loadImageWithTransform(context,
+                    data.cover.feed,
+                    RoundedCornersTransformation(
+                        SizeUtils.dp2px(5f),
+                        0,
+                        RoundedCornersTransformation.CornerType.TOP
+                    ))
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-                Glide.with(context)
-                    .load(data.author.icon)
-                    .override(SizeUtils.dp2px(36f), SizeUtils.dp2px(36f))
-                    .circleCrop()
-                    .into(ivHeader)
+                ivHeader.loadImageCircle(context, data.author.icon, 36f)
             }
             TagVideoItem.TYPE_VIDEO_SMALL_CARD -> {
                 val video_duration = item.data.duration
@@ -96,21 +89,13 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
                 holder.setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
                     .setText(R.id.tv_duration, time)
-                Glide.with(context)
-                    .load(item.data.cover.feed)
-                    .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img)
+                img.loadImageRound(context, item.data.cover.feed)
             }
             else -> {
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
                 val data = item.data.content!!.data
                 val header = item.data.header
-                Glide.with(context)
-                    .load(header.icon)
-                    .circleCrop()
-                    .override(SizeUtils.dp2px(40f), SizeUtils.dp2px(40f))
-                    .into(ivHeader)
+                ivHeader.loadImageCircle(context, header.icon, 40f)
                 val tvDate = holder.getView<TextView>(R.id.tv_date)
                 var create: SpannableStringBuilder? = null
                 if (data.area.isNullOrEmpty()) {
@@ -140,55 +125,45 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
                         holder.setGone(R.id.iv_play,
                             !TextUtils.equals("video", item.data.content.type))
                         val ivVideo = holder.getView<ImageView>(R.id.iv_video)
-                        Glide.with(context)
-                            .load(data.cover.feed)
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                            .into(ivVideo)
+
+                        ivVideo.loadImageRound(context, data.cover.feed)
                     }
                     TagVideoItem.TYPE_PIC2 -> {
                         val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                         val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
-                        Glide.with(context)
-                            .load(data.urls?.get(0))
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.LEFT))
-                            .into(pic1)
-                        Glide.with(context)
-                            .load(data.urls?.get(1))
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.RIGHT))
-                            .into(pic2)
+
+                        pic1.loadImageWithTransform(context,
+                            data.urls?.get(0),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.LEFT))
+                        pic2.loadImageWithTransform(context,
+                            data.urls?.get(0),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.RIGHT))
                     }
                     TagVideoItem.TYPE_PIC3 -> {
                         val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                         val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                         val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
-                        Glide.with(context)
-                            .load(data.urls!![0])
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.LEFT))
-                            .into(pic1)
-                        Glide.with(context)
-                            .load(data.urls[1])
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.TOP_RIGHT))
-                            .into(pic2)
-                        Glide.with(context)
-                            .load(data.urls[2])
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
-                            .into(pic3)
+
+                        pic1.loadImageWithTransform(context,
+                            data.urls?.get(0),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.LEFT))
+                        pic2.loadImageWithTransform(context,
+                            data.urls?.get(1),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.TOP_RIGHT))
+
+                        pic3.loadImageWithTransform(context,
+                            data.urls?.get(2),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
                     }
                     TagVideoItem.TYPE_PIC4 -> {
                         holder.setGone(R.id.tv_more, data.urls!!.size == 4)
@@ -198,35 +173,28 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
                         val pic0 = holder.getView<ImageView>(R.id.iv_pic0)
                         val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                         val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
-                        Glide.with(context)
-                            .load(data.urls[0])
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.TOP_LEFT))
-                            .into(pic0)
-                        Glide.with(context)
-                            .load(data.urls[1])
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.TOP_RIGHT))
-                            .into(pic1)
-                        Glide.with(context)
-                            .load(data.urls[2])
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.BOTTOM_LEFT))
-                            .into(pic2)
-                        Glide.with(context)
-                            .load(data.urls[3])
-                            .transform(CenterCrop(),
-                                RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                    0,
-                                    RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
-                            .into(pic3)
 
+                        pic0.loadImageWithTransform(context,
+                            data.urls?.get(0),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.TOP_LEFT))
+                        pic1.loadImageWithTransform(context,
+                            data.urls?.get(1),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.TOP_RIGHT))
+
+                        pic2.loadImageWithTransform(context,
+                            data.urls?.get(2),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.BOTTOM_LEFT))
+                        pic3.loadImageWithTransform(context,
+                            data.urls?.get(3),
+                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
+                                0,
+                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
                     }
                 }
             }

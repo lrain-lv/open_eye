@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.rx.loadImageCommon
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.mvp.contract.TopicDetailContract
@@ -20,7 +21,6 @@ import com.app.eye.widgets.EyeCommentDialog
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.SizeUtils
-import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_topic_detail.*
 
@@ -131,9 +131,8 @@ class TopicDetailActivity :
             layout.addView(tv)
         }
         val ivBg = headerView.findViewById<ImageView>(R.id.iv_bg)
-        Glide.with(mContext)
-            .load(entity?.headPicture)
-            .into(ivBg)
+
+        ivBg.loadImageCommon(mContext, entity?.headPicture)
         topicDetailAdapter.addHeaderView(headerView)
     }
 

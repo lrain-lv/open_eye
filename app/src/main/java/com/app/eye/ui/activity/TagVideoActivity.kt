@@ -1,21 +1,21 @@
 package com.app.eye.ui.activity
 
-import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.TopicFragmentAdapter
 import com.app.eye.ui.fragment.TagDynamicFragment
 import com.app.eye.ui.fragment.TagVideoFragment
 import com.app.eye.ui.mvp.contract.TagVideoContract
 import com.app.eye.ui.mvp.model.entity.TagIndexEntity
+import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import com.app.eye.ui.mvp.presenter.TagVideoPresenter
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_tag_video.*
 import me.yokeyword.fragmentation.SupportFragment
@@ -56,10 +56,7 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
         tv_title.text = title
         tv_title_big.text = title
         tv_dec.text = dec
-        Glide.with(mContext)
-            .load(icon)
-            .centerCrop()
-            .into(iv_bg)
+        iv_bg.loadImageCommon(mContext, icon)
         tool_bar.setNavigationOnClickListener {
             onBackPressedSupport()
         }
@@ -84,7 +81,7 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
-                positionOffsetPixels: Int
+                positionOffsetPixels: Int,
             ) {
             }
 
@@ -117,10 +114,7 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
         tv_title_big.text = entity.tagInfo.name
         tv_title.text = entity.tagInfo.name
         tv_dec.text = entity.tagInfo.description
-        Glide.with(mContext)
-            .load(entity.tagInfo.bgPicture)
-            .centerCrop()
-            .into(iv_bg)
+        iv_bg.loadImageCommon(mContext, entity.tagInfo.bgPicture)
     }
 
     override fun setTagVideoResponse(entity: TagVideoEntity?) {

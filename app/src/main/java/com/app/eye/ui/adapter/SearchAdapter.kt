@@ -4,15 +4,13 @@ import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.app.eye.R
+import com.app.eye.rx.loadImageCircle
+import com.app.eye.rx.loadImageRound
+import com.app.eye.rx.loadImageRoundWithSize
 import com.app.eye.ui.mvp.model.entity.SearchItem
-import com.app.eye.widgets.transformations.RoundedCornersTransformation
-import com.blankj.utilcode.util.SizeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-
 import java.util.*
 
 class SearchAdapter(dataList: MutableList<SearchItem>) :
@@ -51,10 +49,7 @@ class SearchAdapter(dataList: MutableList<SearchItem>) :
                 holder.setText(R.id.tv_duration, time)
                     .setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "#${item.data.category}")
-                Glide.with(context)
-                    .load(item.data.cover.feed)
-                    .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                    .into(img)
+                img.loadImageRound(context, item.data.cover.feed)
             }
             SearchItem.SEARCH_BRIEF_CARD -> {
                 val iconType = item.data.iconType
@@ -63,20 +58,9 @@ class SearchAdapter(dataList: MutableList<SearchItem>) :
                     .setGone(R.id.tv_attention, item.data.follow == null)
                 val ivIcon = holder.getView<ImageView>(R.id.iv_icon)
                 if (TextUtils.equals("round", iconType)) {
-                    Glide.with(context)
-                        .load(item.data.icon)
-                        .override(SizeUtils.dp2px(70f), SizeUtils.dp2px(70f))
-                        .circleCrop()
-                        .into(ivIcon)
+                    ivIcon.loadImageCircle(context, item.data.icon, 70f)
                 } else {
-                    Glide.with(context)
-                        .load(item.data.icon)
-                        .override(SizeUtils.dp2px(70f), SizeUtils.dp2px(70f))
-                        .transform(
-                            CenterCrop(),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f), 0)
-                        )
-                        .into(ivIcon)
+                    ivIcon.loadImageRoundWithSize(context, item.data.icon, 70f)
                 }
             }
         }

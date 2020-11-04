@@ -5,6 +5,7 @@ import com.app.eye.R
 import com.app.eye.base.BaseFragment
 import com.app.eye.event.LoginEvent
 import com.app.eye.rx.SchedulerUtils
+import com.app.eye.rx.loadImageCircle
 import com.app.eye.ui.activity.LoginActivity
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
@@ -72,10 +73,7 @@ class MineFragment : BaseFragment(), View.OnClickListener {
         val loginEntity = loginEvent.loginEntity
         avatar = loginEntity.member?.avatar!!
         nick = loginEntity.member.nick
-        Glide.with(mContext)
-            .load(loginEntity.member?.avatar)
-            .circleCrop()
-            .into(iv_header)
+        iv_header.loadImageCircle(mContext, loginEntity.member.avatar, 80f)
         tv_login.text = loginEntity.member?.nick
         Observable.just(loginEntity)
             .observeOn(Schedulers.io())

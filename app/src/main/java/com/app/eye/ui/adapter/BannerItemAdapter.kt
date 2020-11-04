@@ -3,12 +3,8 @@ package com.app.eye.ui.adapter
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.app.eye.rx.loadImageRound
 import com.app.eye.ui.mvp.model.entity.ItemX
-import com.app.eye.widgets.transformations.RoundedCornersTransformation
-import com.blankj.utilcode.util.SizeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.youth.banner.adapter.BannerAdapter
 
 
@@ -33,11 +29,6 @@ class BannerItemAdapter(dataList: MutableList<ItemX>) :
     }
 
     override fun onBindView(holder: MyHolder?, data: ItemX?, position: Int, size: Int) {
-        val roundedCornersTransformation = RoundedCornersTransformation(SizeUtils.dp2px(5f), 0)
-        Glide.with(holder?.imageView?.context!!)
-            .load(data?.data?.image)
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .transform(CenterCrop(), roundedCornersTransformation)
-            .into(holder.imageView)
+        holder!!.imageView.loadImageRound(holder.imageView.context!!, data?.data?.image!!, 5f)
     }
 }

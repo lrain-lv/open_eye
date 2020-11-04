@@ -5,20 +5,19 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
+import com.app.eye.rx.loadImageCircle
+import com.app.eye.rx.loadImageWithTransform
 import com.app.eye.ui.mvp.model.entity.ItemDaily
 import com.app.eye.widgets.NoScrollLinearLayoutManager
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-
 import java.util.*
 
 class DailyAdapter(dataList: MutableList<ItemDaily>) :
-    BaseMultiItemQuickAdapter<ItemDaily, BaseViewHolder>(dataList),LoadMoreModule {
+    BaseMultiItemQuickAdapter<ItemDaily, BaseViewHolder>(dataList), LoadMoreModule {
 
     init {
         addItemType(ItemDaily.NONE, R.layout.layout_none)
@@ -39,7 +38,7 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
                 val video_duration = data.duration
                 var time: String = ""
                 if (video_duration < 60) {
-                     time = String.format(Locale.getDefault(), "00:%02d", video_duration % 60)
+                    time = String.format(Locale.getDefault(), "00:%02d", video_duration % 60)
                 } else if (video_duration < 3600) {
                     time = String.format(
                         Locale.getDefault(),
@@ -52,39 +51,30 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
                     .setText(R.id.tv_category, "${data.author.name} / #${data.category}")
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
-                Glide.with(context)
-                    .load(data.cover.feed)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCornersTransformation(
-                            SizeUtils.dp2px(5f),
-                            0,
-                            RoundedCornersTransformation.CornerType.TOP
-                        )
-                    ).into(ivCover)
+                ivCover.loadImageWithTransform(context,
+                    data.cover.feed,
+                    RoundedCornersTransformation(
+                        SizeUtils.dp2px(5f),
+                        0,
+                        RoundedCornersTransformation.CornerType.TOP
+                    ))
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-                Glide.with(context)
-                    .load(data.author.icon)
-                    .override(SizeUtils.dp2px(36f), SizeUtils.dp2px(36f))
-                    .circleCrop()
-                    .into(ivHeader)
+                ivHeader.loadImageCircle(context, data.author.icon, 36f)
             }
             ItemDaily.DAILY_INFORMATION -> {
                 val data = item.data
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 val recycler = holder.getView<RecyclerView>(R.id.recycler)
-                Glide.with(context)
-                    .load(data.backgroundImage)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCornersTransformation(
-                            SizeUtils.dp2px(5f),
-                            0,
-                            RoundedCornersTransformation.CornerType.TOP
-                        )
-                    ).into(ivCover)
+                ivCover.loadImageWithTransform(context,
+                    data.backgroundImage,
+                    RoundedCornersTransformation(
+                        SizeUtils.dp2px(5f),
+                        0,
+                        RoundedCornersTransformation.CornerType.TOP
+                    ))
                 val adapter = DailyInfoAdapter(data.titleList)
-                recycler.layoutManager = NoScrollLinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+                recycler.layoutManager =
+                    NoScrollLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recycler.adapter = adapter
             }
         }

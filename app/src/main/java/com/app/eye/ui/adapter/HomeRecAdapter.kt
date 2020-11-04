@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
+import com.app.eye.rx.*
 import com.app.eye.ui.mvp.model.entity.HomeRecItem
 import com.app.eye.ui.mvp.model.entity.HomeRecItem.Companion.HOME_FOLLOWCARD_VIDEO
 import com.app.eye.ui.mvp.model.entity.HomeRecItem.Companion.HOME_INFORMATION
@@ -16,18 +17,14 @@ import com.app.eye.ui.mvp.model.entity.HomeRecItem.Companion.HOME_VIDEO_SMALL_CA
 import com.app.eye.widgets.NoScrollLinearLayoutManager
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-
 import java.util.*
 
 
 class HomeRecAdapter(data: MutableList<HomeRecItem>) :
-    BaseMultiItemQuickAdapter<HomeRecItem, BaseViewHolder>(data = data),LoadMoreModule {
+    BaseMultiItemQuickAdapter<HomeRecItem, BaseViewHolder>(data = data), LoadMoreModule {
     init {
         addItemType(HomeRecItem.NONE, R.layout.layout_none)
         addItemType(HomeRecItem.HOME_TEXT_CARD, R.layout.layout_discover_text_card)
@@ -64,37 +61,28 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                     .setText(R.id.tv_category, item.data.header?.description)
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
-                Glide.with(context)
-                    .load(data.cover.feed)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCornersTransformation(
-                            SizeUtils.dp2px(5f),
-                            0,
-                            RoundedCornersTransformation.CornerType.TOP
-                        )
-                    ).into(ivCover)
+
+                ivCover.loadImageWithTransform(context,
+                    data.cover.feed,
+                    RoundedCornersTransformation(
+                        SizeUtils.dp2px(5f),
+                        0,
+                        RoundedCornersTransformation.CornerType.TOP
+                    ))
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-                Glide.with(context)
-                    .load(item.data.header?.icon)
-                    .override(SizeUtils.dp2px(36f), SizeUtils.dp2px(36f))
-                    .circleCrop()
-                    .into(ivHeader)
+                ivHeader.loadImageCircle(context, item.data.header?.icon, 36f)
             }
             HOME_INFORMATION -> {
                 val data = item.data
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 val recycler = holder.getView<RecyclerView>(R.id.recycler)
-                Glide.with(context)
-                    .load(data.backgroundImage)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCornersTransformation(
-                            SizeUtils.dp2px(5f),
-                            0,
-                            RoundedCornersTransformation.CornerType.TOP
-                        )
-                    ).into(ivCover)
+                ivCover.loadImageWithTransform(context,
+                    data.backgroundImage,
+                    RoundedCornersTransformation(
+                        SizeUtils.dp2px(5f),
+                        0,
+                        RoundedCornersTransformation.CornerType.TOP
+                    ))
                 val adapter = DailyInfoAdapter(data.titleList)
                 recycler.layoutManager = NoScrollLinearLayoutManager(context,
                     LinearLayoutManager.VERTICAL, false)
@@ -117,11 +105,7 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                 holder.setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
                     .setText(R.id.tv_duration, time)
-                Glide.with(context)
-                    .load(item.data.cover.feed)
-                    .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img)
+                img.loadImageRound(context, item.data.cover.feed)
             }
             HOME_UGC_SELECT_CARD -> {
                 val itemList = item.data.itemList
@@ -129,21 +113,15 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                     when (index) {
                         0 -> {
                             val imgleft = holder.getView<ImageView>(R.id.img_left)
-                            Glide.with(context)
-                                .load(homeRecItemX.data.cover.feed)
-                                .into(imgleft)
+                            imgleft.loadImageCommon(context, homeRecItemX.data.cover.feed)
                         }
                         1 -> {
                             val imgtop = holder.getView<ImageView>(R.id.img_top)
-                            Glide.with(context)
-                                .load(homeRecItemX.data.cover.feed)
-                                .into(imgtop)
+                            imgtop.loadImageCommon(context, homeRecItemX.data.cover.feed)
                         }
                         2 -> {
                             val imgbottom = holder.getView<ImageView>(R.id.img_bottom)
-                            Glide.with(context)
-                                .load(homeRecItemX.data.cover.feed)
-                                .into(imgbottom)
+                            imgbottom.loadImageCommon(context, homeRecItemX.data.cover.feed)
                         }
                     }
                 }
@@ -155,19 +133,11 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                 tvAttention.text = "+关注"
                 holder.setText(R.id.tv_brief_title, item.data.title)
                     .setText(R.id.tv_dec, item.data.description)
-                Glide.with(context)
-                    .load(item.data.icon)
-                    .override(SizeUtils.dp2px(70f), SizeUtils.dp2px(70f))
-                    .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .into(img)
+                img.loadImageRoundWithSize(context, item.data.icon, 70f)
             }
             HOME_TOPIC_BRIEF_CARD -> {
                 val ivIcon = holder.getView<ImageView>(R.id.iv_icon)
-                Glide.with(context)
-                    .load(item.data.icon)
-                    .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                    .into(ivIcon)
+                ivIcon.loadImageRound(context,item.data.icon)
                 holder.setText(R.id.tv_title, item.data.title)
                     .setGone(R.id.iv_fire, !item.data.showHotSign)
                     .setText(R.id.tv_count, item.data.description)
