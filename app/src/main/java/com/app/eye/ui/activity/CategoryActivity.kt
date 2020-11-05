@@ -10,10 +10,12 @@ import com.app.eye.base.BaseMvpActivity
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.CategoryAdapter
 import com.app.eye.ui.adapter.InformationAdapter
+import com.app.eye.ui.adapter.RecFriendAdapter
 import com.app.eye.ui.adapter.SpecialTopicAdapter
 import com.app.eye.ui.mvp.contract.CategoryContract
 import com.app.eye.ui.mvp.model.entity.CategoryEntity
 import com.app.eye.ui.mvp.model.entity.InformationEntity
+import com.app.eye.ui.mvp.model.entity.RecFriendEntity
 import com.app.eye.ui.mvp.model.entity.SpecialTopicEntity
 import com.app.eye.ui.mvp.presenter.CategoryPresenter
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
@@ -24,7 +26,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_category.*
 
 /**
- * 分类 专题策划 全部资讯
+ * 分类 专题策划 全部资讯 发现好友
  */
 class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryContract.View>(),
     CategoryContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
@@ -33,7 +35,7 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
         fun startActivity(title: String, type: Int) {
             val bundle = Bundle().apply {
                 putString("title", title)
-                putInt("type", type) // 0 分类 1 策划 2 资讯
+                putInt("type", type) // 0 分类 1 策划 2 资讯 3 发现好友页面
             }
             ActivityUtils.startActivity(bundle, CategoryActivity::class.java)
         }
@@ -45,6 +47,8 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
 
     private lateinit var specialTopicAdapter: SpecialTopicAdapter
     private lateinit var informationAdapter: InformationAdapter
+
+    private lateinit var recFriendAdapter: RecFriendAdapter
 
     private var nextPageUrl: String? = ""
 
@@ -126,6 +130,16 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
                     LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
                 recycler_view.adapter = informationAdapter
             }
+            3 -> {
+                recFriendAdapter = RecFriendAdapter(mutableListOf())
+                recFriendAdapter.apply {
+                    loadMoreModule.setOnLoadMoreListener(this@CategoryActivity)
+                    loadMoreModule.isEnableLoadMore = false
+                }
+                recycler_view.layoutManager =
+                    LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+                recycler_view.adapter = recFriendAdapter
+            }
         }
     }
 
@@ -142,6 +156,9 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
                 2 -> {
                     isRefresh = true
                     mPresenter?.getInformationRequest(hashMapOf())
+                }
+                3 -> {
+                    mPresenter?.getRecFriendRequest(hashMapOf())
                 }
             }
         }
@@ -197,42 +214,63 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
         refresh_layout.isEnabled = true
     }
 
+    override fun setRecFriendResponse(entity: RecFriendEntity?) {
+        entity ?: status_view.showEmptyView()
+        nextPageUrl = entity?.nextPageUrl
+        if (isRefresh) {
+            recFriendAdapter.loadMoreModule.isEnableLoadMore = true
+            recFriendAdapter.setList(entity?.itemList)
+            if (TextUtils.isEmpty(nextPageUrl)) recFriendAdapter.loadMoreModule.loadMoreEnd()
+        } else {
+            recFriendAdapter.loadMoreModule.isEnableLoadMore = true
+            recFriendAdapter.addData(entity?.itemList!!)
+            if (TextUtils.isEmpty(nextPageUrl)) {
+                recFriendAdapter.loadMoreModule.loadMoreEnd()
+            } else {
+                recFriendAdapter.loadMoreModule.loadMoreComplete()
+            }
+        }
+        refresh_layout.isEnabled = true
+    }
+
     override fun onRefresh() {
+        isRefresh = true
         when (type) {
             0 -> {
                 mPresenter?.getCategoryRequest()
             }
             1 -> {
-                isRefresh = true
                 mPresenter?.getSpecialTopicRequest(hashMapOf())
             }
             2 -> {
-                isRefresh = true
                 mPresenter?.getInformationRequest(hashMapOf())
+            }
+            3 -> {
+                mPresenter?.getRecFriendRequest(hashMapOf())
             }
         }
     }
 
     override fun onLoadMore() {
 
-        when (type) {
-            1 -> {
-                if (!nextPageUrl.isNullOrEmpty()) {
-                    refresh_layout.isEnabled = false
-                    isRefresh = false
-                    val map = nextPageUrl!!.urlToMap()
+        if (!nextPageUrl.isNullOrEmpty()) {
+            refresh_layout.isEnabled = false
+            isRefresh = false
+            val map = nextPageUrl!!.urlToMap()
+            when (type) {
+                1 -> {
+
                     mPresenter?.getSpecialTopicRequest(map)
                 }
-            }
-            2 -> {
-                if (!nextPageUrl.isNullOrEmpty()) {
-                    refresh_layout.isEnabled = false
-                    isRefresh = false
-                    val map = nextPageUrl!!.urlToMap()
+                2 -> {
                     mPresenter?.getInformationRequest(map)
+                }
+                3 -> {
+                    mPresenter?.getRecFriendRequest(map)
                 }
             }
         }
+
     }
 
     override fun hideLoading() {

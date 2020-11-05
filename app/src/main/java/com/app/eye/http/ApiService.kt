@@ -41,6 +41,13 @@ interface ApiService {
     @GET(Constant.MESSAGE)
     fun getPushMessage(@QueryMap map: Map<String, String>): Observable<PushEntity>
 
+    @Headers("hostName: common")
+    @GET(Constant.PRIVATE_MESSAGE)
+    fun getPrivateMsg(@QueryMap map: Map<String, String>): Observable<MessageEntity>
+
+    @GET(Constant.REC_FRIEND)
+    fun getRecFriend(@QueryMap map: Map<String, String>): Observable<RecFriendEntity>
+
     @GET(Constant.COM_REC)
     fun getCommunityRec(@QueryMap map: Map<String, String>): Observable<ComRecEntity>
 
@@ -50,7 +57,7 @@ interface ApiService {
     @GET("${Constant.TAG_CHILDTAB}/{id}")
     fun getTabChild(
         @Path("id") id: Int,
-        @QueryMap map: Map<String, String>
+        @QueryMap map: Map<String, String>,
     ): Observable<TabChildEntity>
 
     @GET(Constant.TOPIC_LIST)
@@ -74,7 +81,7 @@ interface ApiService {
     @GET(Constant.RANK_LIST)
     fun getRankList(
         @Query("strategy") strategy: String,
-        @QueryMap map: Map<String, String>
+        @QueryMap map: Map<String, String>,
     ): Observable<RankEntity>
 
     @GET(Constant.INFORMATION_LIST)
@@ -92,7 +99,7 @@ interface ApiService {
 
     @GET(Constant.REPLY_VIDEO)
     fun getReplyVideoRequest(
-        @QueryMap map: Map<String, String>
+        @QueryMap map: Map<String, String>,
     ): Observable<ReplyVideoEntity>
 
     @GET(Constant.REPLY_CONVERSATION)

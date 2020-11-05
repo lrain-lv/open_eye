@@ -1,12 +1,9 @@
 package com.app.eye.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.app.eye.R
-import com.app.eye.base.BaseActivity
 import com.app.eye.base.BaseMvpActivity
 import com.app.eye.event.LoginEvent
 import com.app.eye.http.Constant
@@ -86,7 +83,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         loginEntity ?: return
         when (loginEntity.error) {
             0 -> {
-                EventBus.getDefault().post(LoginEvent(loginEntity))
+                EventBus.getDefault().post(LoginEvent(loginEntity = loginEntity))
                 onBackPressedSupport()
             }
             else -> {

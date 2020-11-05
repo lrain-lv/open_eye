@@ -10,7 +10,9 @@ import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.PushMessageAdapter
 import com.app.eye.ui.mvp.contract.PushContract
+import com.app.eye.ui.mvp.model.entity.MessageEntity
 import com.app.eye.ui.mvp.model.entity.PushEntity
+import com.app.eye.ui.mvp.model.entity.RecFriendEntity
 import com.app.eye.ui.mvp.presenter.PushPresenter
 import com.app.eye.widgets.MultipleStatusView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -102,6 +104,15 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
             }
         }
         refresh_layout.isEnabled = true
+    }
+
+    override fun setPrivateMsgResponse(entity: MessageEntity?) {
+
+    }
+
+    override fun setRecFriendResponse(entity: RecFriendEntity?) {
+
+
     }
 
     override fun showLoading() {

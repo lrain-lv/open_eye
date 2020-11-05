@@ -4,6 +4,7 @@ import com.app.eye.base.mvp.BasePresenter
 import com.app.eye.rx.SchedulerUtils
 import com.app.eye.ui.mvp.contract.CategoryContract
 import com.app.eye.ui.mvp.model.CategoryModel
+import com.blankj.utilcode.util.ToastUtils
 
 class CategoryPresenter : BasePresenter<CategoryContract.Model, CategoryContract.View>(),
     CategoryContract.Presenter {
@@ -44,6 +45,20 @@ class CategoryPresenter : BasePresenter<CategoryContract.Model, CategoryContract
             }, {
                 view?.hideLoading()
                 view?.setInformationResponse(null)
+            })
+        addDisposable(subscribe)
+    }
+
+    override fun getRecFriendRequest(map: Map<String, String>) {
+        val subscribe = model.getRecFriendRequest(map)
+            .compose(SchedulerUtils.ioToMain())
+            .subscribe({
+                view?.hideLoading()
+                view?.setRecFriendResponse(it)
+            }, {
+                ToastUtils.showShort(it.message ?: "请求失败")
+                view?.hideLoading()
+                view?.setRecFriendResponse(null)
             })
         addDisposable(subscribe)
     }
