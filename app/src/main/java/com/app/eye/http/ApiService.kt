@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface ApiService {
     @GET(Constant.CONFIGS)
-    fun getConfigs(@Query("size") size: String): Observable<ResponseBody>
+    fun getConfigs(): Observable<ConfigEntity>
 
     @Headers("hostName: recommend")
     @POST(Constant.GET_PAGE)
