@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 class NoScrollLinearLayoutManager(
     context: Context,
     orientation: Int = RecyclerView.VERTICAL,
-    reverse: Boolean = false
+    reverse: Boolean = false,
 ) : LinearLayoutManager(context, orientation, reverse) {
 
     override fun canScrollVertically(): Boolean {
         return false
     }
+
 }

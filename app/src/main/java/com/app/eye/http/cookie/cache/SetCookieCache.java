@@ -1,5 +1,7 @@
 package com.app.eye.http.cookie.cache;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,6 +30,7 @@ public class SetCookieCache implements CookieCache {
         cookies.clear();
     }
 
+    @NotNull
     @Override
     public Iterator<Cookie> iterator() {
         return new SetCookieCacheIterator();

@@ -27,7 +27,7 @@ data class InfoItem(
 }
 
 data class InfoData(
-    val actionUrl: Any,
+    val actionUrl: String?,
     val backgroundImage: String,
     val bannerList: MutableList<InfoBanner>,
     val dataType: String,

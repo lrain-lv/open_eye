@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.rx.*
+import com.app.eye.ui.activity.LightTopicActivity
 import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.mvp.model.entity.DataX
@@ -132,14 +133,18 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 holder.setText(R.id.tv_title, header.title)
                     .setText(R.id.tv_right_text, header.rightText)
                 val columnRecycler = holder.getView<RecyclerView>(R.id.recycler)
-                val adapter = ColumnItemAdapter(item.data.itemList)
+                val columnItemAdapter = ColumnItemAdapter(item.data.itemList)
                 columnRecycler.layoutManager =
                     GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
                 if (columnRecycler.itemDecorationCount == 0) {
                     columnRecycler.addItemDecoration(LayoutMarginDecoration(2, SizeUtils.dp2px(5f)))
                 }
                 columnRecycler.setHasFixedSize(true)
-                columnRecycler.adapter = adapter
+                columnRecycler.adapter = columnItemAdapter
+                columnItemAdapter.setOnItemClickListener { adapter, view, position ->
+                    val item = columnItemAdapter.getItem(position)
+                    LightTopicActivity.startActivity(item.data.title, item.data.id)
+                }
             }
             DISCOVER_TEXT_CARD -> {
                 holder.setText(R.id.tv_title, item.data.text)

@@ -7,13 +7,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.actionUrlToMap
-import com.app.eye.ui.activity.CategoryActivity
-import com.app.eye.ui.activity.RankActivity
-import com.app.eye.ui.activity.TopicSquareActivity
-import com.app.eye.ui.activity.WebActivity
+import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
+import com.app.eye.ui.mvp.model.entity.Item
 import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
@@ -42,7 +40,18 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         discoverAdapter.loadMoreModule.setOnLoadMoreListener { }
         discoverAdapter.setOnItemClickListener { adapter, view, position ->
-
+            val item = discoverAdapter.getItem(position)
+            when (item.itemType) {
+                Item.DISCOVER_VIDEO_SMALL_CARD -> {
+                    VideoDetailActivity.startActivity(item.data.id.toString())
+                }
+                Item.DISCOVER_BRIEF_CARD -> {
+                    TagVideoActivity.startActivity(item.data.id.toString(),
+                        item.data.title,
+                        item.data.icon,
+                        item.data.description)
+                }
+            }
         }
         discoverAdapter.addChildClickViewIds(R.id.tv_right_text)
         discoverAdapter.setOnItemChildClickListener { _, view, position ->
@@ -106,7 +115,6 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
 //            }
 //        })
     }
-
 
 
     override fun initData() {

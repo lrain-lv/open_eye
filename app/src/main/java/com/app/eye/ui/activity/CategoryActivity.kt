@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.CategoryAdapter
 import com.app.eye.ui.adapter.InformationAdapter
@@ -129,6 +130,14 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
                 recycler_view.layoutManager =
                     LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
                 recycler_view.adapter = informationAdapter
+                informationAdapter.setOnItemClickListener { adapter, view, position ->
+                    val item = informationAdapter.getItem(position)
+                    val actionUrl = item.data.actionUrl
+                    WebActivity.startWebActivity(
+                        url = actionUrl!!.actionUrlToMap()["url"] ?: error(""),
+                        title = actionUrl.actionUrlToMap()["title"] ?: error("")
+                    )
+                }
             }
             3 -> {
                 recFriendAdapter = RecFriendAdapter(mutableListOf())

@@ -6,6 +6,12 @@ object Constant {
     const val RECOMMEND_BASE_URL = "http://api.eyepetizer.net/"
     const val ACCOUNT_BASE_URL = "https://account.kaiyanapp.com/"
 
+    const val X_THEFAIR_APPID= "ahpagrcrf2p7m6rg"
+    const val X_THEFAIR_AUTH= "GNDG32JRfMGTxw/W6tBWtk+K577rigUWd73muNoT6alLkiu7XEoGfqeyJFndxKFGO5wIHJLUawMGxg6uWYR6dC7auVfSZsM86u94o4ETAmQZ3WTWo28+6KXhL/Uj5FP3ZiZmNskoqRz2jwHjQncP9nM2XB2jbZUbL9YTZ6Se3FpSxJlkC824c3bYUSQ07jTZ6QXpGdc0g+p948/trkFAmCQuSuCZP5y5Z3QpG1qeGdPPHuusGea7BsOf4/aO9r+FL5Y05RtfE+DAYNsajfjBFQ=="
+    const val X_THEFAIR_CID= "c440c5ef4cc919d27fdb74e0c382d955"
+    const val X_THEFAIR_UA= "EYEPETIZER/6030101 (ALP-AL00;android;10;zh_CN_#Hans;android;6.3.10;cn-bj;huawei;c440c5ef4cc919d27fdb74e0c382d955;WIFI;1080*1920) native/1.0"
+    const val x_api_key= "0530ee4341324ce2b26c23fcece80ea2"
+
     const val LOGIN = "v1/api/login"
 
     const val CONFIGS =

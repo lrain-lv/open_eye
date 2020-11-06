@@ -41,7 +41,6 @@ interface ApiService {
     @GET(Constant.MESSAGE)
     fun getPushMessage(@QueryMap map: Map<String, String>): Observable<PushEntity>
 
-    @Headers("hostName: common")
     @GET(Constant.PRIVATE_MESSAGE)
     fun getPrivateMsg(@QueryMap map: Map<String, String>): Observable<MessageEntity>
 
@@ -87,7 +86,6 @@ interface ApiService {
     @GET(Constant.INFORMATION_LIST)
     fun getInformationList(@QueryMap map: Map<String, String>): Observable<InformationEntity>
 
-    @Headers("hostName: common")
     @GET(Constant.COM_ATTENTION)
     fun getComFollow(@QueryMap map: Map<String, String>): Observable<ComAttentionEntity>
 

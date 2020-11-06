@@ -3,6 +3,8 @@ package com.app.eye.http.cookie;
 
 import com.app.eye.http.cookie.cache.CookieCache;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -39,11 +41,11 @@ public class PersistentCookieJar implements ClearableCookieJar {
         return persistentCookies;
     }
 
+    @NotNull
     @Override
     synchronized public List<Cookie> loadForRequest(HttpUrl url) {
         List<Cookie> cookiesToRemove = new ArrayList<>();
         List<Cookie> validCookies = new ArrayList<>();
-
         for (Iterator<Cookie> it = cache.iterator(); it.hasNext(); ) {
             Cookie currentCookie = it.next();
 
@@ -51,11 +53,10 @@ public class PersistentCookieJar implements ClearableCookieJar {
                 cookiesToRemove.add(currentCookie);
                 it.remove();
 
-            } else if (currentCookie.matches(url)) {
+            } else{
                 validCookies.add(currentCookie);
             }
         }
-
         persistor.removeAll(cookiesToRemove);
 
         return validCookies;

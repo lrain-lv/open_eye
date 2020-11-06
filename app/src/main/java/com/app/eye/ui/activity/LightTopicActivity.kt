@@ -55,6 +55,10 @@ class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTo
         adapter.addHeaderView(headerView)
         adapter.loadMoreModule.setOnLoadMoreListener {}
         adapter.loadMoreModule.isEnableLoadMore = false
+        adapter.setOnItemClickListener { _, view, position ->
+            val item = adapter.getItem(position)
+            VideoDetailActivity.startActivity(item.data.content.data.id.toString())
+        }
         recycler_view.adapter = adapter
         recycler_view.addOnChildAttachStateChangeListener(object :
             OnChildAttachStateChangeListener {

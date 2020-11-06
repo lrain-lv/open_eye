@@ -17,7 +17,6 @@ import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
 import com.app.eye.ui.mvp.model.entity.ComRecEntity
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_gallery.*
@@ -53,6 +52,7 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
 
     private var isPageSelected = false
 
+
     override fun initView() {
         val extras = intent.extras!!
         data = extras.getSerializable("data") as ComRecEntity
@@ -72,7 +72,7 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
             orientation = ViewPager2.ORIENTATION_VERTICAL
             currentItem = 0
         }
-        galleryAdapter.setOnItemClickListener { adapter, view, position -> ToastUtils.showShort("click") }
+
         tv_content.movementMethod = object : ScrollingMovementMethod() {}
         view_pager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
@@ -135,6 +135,8 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
     }
 
     private fun startAnim() {
+        iv_close.visibility = View.VISIBLE
+        layout.visibility = View.VISIBLE
         animatorSet.start()
     }
 
@@ -165,7 +167,10 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
 
 
     override fun onClick() {
-
+        iv_close.visibility =
+            if (iv_close.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        layout.visibility =
+            if (layout.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     override fun createPresenter(): CommunityContract.Presenter? = CommunityPresenter()

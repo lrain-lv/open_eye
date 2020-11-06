@@ -2,6 +2,7 @@ package com.app.eye.ui.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
@@ -17,11 +18,14 @@ import com.app.eye.ui.mvp.model.entity.HomeRecEntity
 import com.app.eye.ui.mvp.presenter.HomeRecPresenter
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_recommend.*
 
 class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecContract.View>(),
-    HomeRecContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
+    HomeRecContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
+    OnItemClickListener {
 
     companion object {
         @JvmStatic
@@ -51,6 +55,7 @@ class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecCont
 
         }
         homeRecAdapter.addChildClickViewIds(R.id.tv_right_text)
+        homeRecAdapter.setOnItemClickListener(this)
         homeRecAdapter.setOnItemChildClickListener { _, view, position ->
             val item = homeRecAdapter.getItem(position)
             val data = item.data
@@ -150,6 +155,11 @@ class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecCont
             val map = nextPageUrl!!.urlToMap()
             mPresenter?.getRecData(map)
         }
+
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val item = homeRecAdapter.getItem(position)
 
     }
 }

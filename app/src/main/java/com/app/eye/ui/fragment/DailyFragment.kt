@@ -1,23 +1,31 @@
 package com.app.eye.ui.fragment
 
 import android.text.TextUtils
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.CategoryActivity
+import com.app.eye.ui.activity.VideoDetailActivity
+import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.DailyAdapter
 import com.app.eye.ui.mvp.contract.DailyContract
 import com.app.eye.ui.mvp.model.entity.DailyEntity
+import com.app.eye.ui.mvp.model.entity.ItemDaily
 import com.app.eye.ui.mvp.presenter.DailyPresenter
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.blankj.utilcode.util.NetworkUtils
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_daily.*
 
 class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.View>(),
-    DailyContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
+    DailyContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
+    OnItemClickListener {
 
     companion object {
         @JvmStatic
@@ -39,6 +47,7 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
         recycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler.adapter = dailyAdapter
         dailyAdapter.loadMoreModule.setOnLoadMoreListener(this)
+        dailyAdapter.loadMoreModule.isEnableLoadMore = false
         dailyAdapter.addChildClickViewIds(R.id.tv_right_text)
         dailyAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
@@ -49,6 +58,7 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
                 }
             }
         }
+        dailyAdapter.setOnItemClickListener(this)
 //        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                if (!_mActivity.isFinishing) {
@@ -80,11 +90,13 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
         entity?.itemList?.isEmpty() ?: status_view.showEmptyView()
         nextPage = entity?.nextPageUrl
         if (isRefresh) {
+            dailyAdapter.loadMoreModule.isEnableLoadMore = true
             if (TextUtils.isEmpty(nextPage)) {
                 dailyAdapter.loadMoreModule.loadMoreEnd()
             }
             dailyAdapter.setList(entity?.itemList)
         } else {
+            dailyAdapter.loadMoreModule.isEnableLoadMore = true
             if (TextUtils.isEmpty(nextPage)) {
                 dailyAdapter.loadMoreModule.loadMoreEnd()
             } else {
@@ -120,6 +132,22 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
         isRefresh = false
         refresh_layout.isEnabled = false
         mPresenter?.getDailyData(isRefresh, nextPage!!.urlToMap())
+    }
+
+    override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        val item = dailyAdapter.getItem(position)
+        when (item.itemType) {
+            ItemDaily.DAILY_VIDEO -> {
+                VideoDetailActivity.startActivity(item.data.header.id.toString())
+            }
+            ItemDaily.DAILY_INFORMATION -> {
+                val actionUrl = item.data.actionUrl
+                WebActivity.startWebActivity(
+                    url = actionUrl!!.actionUrlToMap()["url"] ?: error(""),
+                    title = actionUrl.actionUrlToMap()["title"] ?: error("")
+                )
+            }
+        }
     }
 
 }
