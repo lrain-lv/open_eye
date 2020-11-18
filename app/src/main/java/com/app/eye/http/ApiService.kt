@@ -119,4 +119,7 @@ interface ApiService {
     @FormUrlEncoded
     @Headers("hostName: recommend")
     fun getCallMetroList(@FieldMap map: Map<String, String>): Observable<BrandWallEntity>
+
+    @GET(Constant.TAG_MEDALS)
+    fun getTagMedals(): Observable<BadgeEntity>
 }

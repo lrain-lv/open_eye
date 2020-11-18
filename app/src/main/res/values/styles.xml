@@ -72,6 +72,9 @@
         <item name="android:windowAnimationStyle">@style/BottomDialog.AnimationStyle</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
+    <style name="MedalDialog" parent="@android:style/Theme.DeviceDefault.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
     <style name="BottomDialog.AnimationStyle" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/in_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/out_from_bottom</item>

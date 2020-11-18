@@ -22,7 +22,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine
 import kotlinx.android.synthetic.main.layout_comment.*
 
 
-class EyeCommentDialog() : DialogFragment(),
+class EyeCommentDialog : DialogFragment(),
     View.OnClickListener {
 
     private var cxt: Context? = null

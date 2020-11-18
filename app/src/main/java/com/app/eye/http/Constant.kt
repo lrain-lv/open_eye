@@ -43,6 +43,10 @@ object Constant {
     //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1602982800000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1602810000000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 
+    const val TAG_MEDALS =
+        "api/v6/medal/tag/medals?uid=304200827&udid=b5aab67021c9477db32b8a3e5f587b72e9f8039d&vc=6040004&vn=6.4.0&size=1080X1920&deviceModel=ALP-AL00&first_channel=yingyongbao&last_channel=yingyongbao&system_version_code=29"
+
+
     const val HOME_REC =
         "api/v5/index/tab/allRec?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
 

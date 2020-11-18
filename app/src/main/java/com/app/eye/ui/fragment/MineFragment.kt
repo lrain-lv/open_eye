@@ -6,10 +6,12 @@ import com.app.eye.base.BaseFragment
 import com.app.eye.event.LoginEvent
 import com.app.eye.rx.SchedulerUtils
 import com.app.eye.rx.loadImageCircle
+import com.app.eye.ui.activity.BadgeActivity
 import com.app.eye.ui.activity.LoginActivity
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
 import io.reactivex.rxjava3.core.Observable
@@ -37,8 +39,10 @@ class MineFragment : BaseFragment(), View.OnClickListener {
             .compose(SchedulerUtils.ioToMain())
             .subscribe {
                 Glide.with(mContext)
-                    .load(if (avatar.isNotEmpty()) avatar else R.mipmap.pgc_default_avatar)
+                    .load(avatar)
+                    .error(R.mipmap.pgc_default_avatar)
                     .circleCrop()
+                    .override(SizeUtils.dp2px(80f), SizeUtils.dp2px(80f))
                     .into(iv_header)
                 tv_login.text = if (nick.isNotEmpty()) nick else "点击登录即可评论及发布内容"
             }
@@ -76,7 +80,7 @@ class MineFragment : BaseFragment(), View.OnClickListener {
         nick = loginEntity.member.nick
         iv_header.loadImageCircle(mContext, loginEntity.member.avatar, 80f)
         tv_login.text = loginEntity.member?.nick
-        Logger.e(loginEntity.member?.avatar+loginEntity.member?.nick)
+        Logger.e(loginEntity.member?.avatar + loginEntity.member?.nick)
         Observable.just(loginEntity)
             .observeOn(Schedulers.io())
             .subscribe {
@@ -97,6 +101,9 @@ class MineFragment : BaseFragment(), View.OnClickListener {
             R.id.iv_header, R.id.tv_login -> {
                 if (avatar.isNotEmpty()) return
                 ActivityUtils.startActivity(LoginActivity::class.java)
+            }
+            R.id.tv_badge -> {
+                ActivityUtils.startActivity(BadgeActivity::class.java)
             }
         }
     }
