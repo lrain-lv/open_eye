@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.SPUtils
 import com.bumptech.glide.Glide
+import com.orhanobut.logger.Logger
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_mine.*
@@ -75,6 +76,7 @@ class MineFragment : BaseFragment(), View.OnClickListener {
         nick = loginEntity.member.nick
         iv_header.loadImageCircle(mContext, loginEntity.member.avatar, 80f)
         tv_login.text = loginEntity.member?.nick
+        Logger.e(loginEntity.member?.avatar+loginEntity.member?.nick)
         Observable.just(loginEntity)
             .observeOn(Schedulers.io())
             .subscribe {

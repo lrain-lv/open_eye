@@ -9,11 +9,6 @@ interface ApiService {
     @GET(Constant.CONFIGS)
     fun getConfigs(): Observable<ConfigEntity>
 
-    @Headers("hostName: recommend")
-    @POST(Constant.GET_PAGE)
-    @FormUrlEncoded
-    fun getPage(@FieldMap map: Map<String, String>): Observable<ResponseBody>
-
     @GET(Constant.HOME_REC)
     fun getHomeRec(@QueryMap map: Map<String, String>): Observable<HomeRecEntity>
 
@@ -114,4 +109,14 @@ interface ApiService {
 
     @GET("${Constant.VIDEO_INDEX}/{id}?${Constant.PARAMS}")
     fun getVideoIndex(@Path("id") id: String): Observable<VideoIndexEntity>
+
+    @POST(Constant.GET_PAGE)
+    @FormUrlEncoded
+    @Headers("hostName: recommend")
+    fun getPage(@FieldMap map: Map<String, String>): Observable<BrandWallEntity>
+
+    @POST(Constant.CALL_METRO)
+    @FormUrlEncoded
+    @Headers("hostName: recommend")
+    fun getCallMetroList(@FieldMap map: Map<String, String>): Observable<BrandWallEntity>
 }

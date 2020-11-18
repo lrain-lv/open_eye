@@ -6,13 +6,19 @@ object Constant {
     const val RECOMMEND_BASE_URL = "http://api.eyepetizer.net/"
     const val ACCOUNT_BASE_URL = "https://account.kaiyanapp.com/"
 
-    const val X_THEFAIR_APPID= "ahpagrcrf2p7m6rg"
-    const val X_THEFAIR_AUTH= "GNDG32JRfMGTxw/W6tBWtk+K577rigUWd73muNoT6alLkiu7XEoGfqeyJFndxKFGO5wIHJLUawMGxg6uWYR6dC7auVfSZsM86u94o4ETAmQZ3WTWo28+6KXhL/Uj5FP3ZiZmNskoqRz2jwHjQncP9nM2XB2jbZUbL9YTZ6Se3FpSxJlkC824c3bYUSQ07jTZ6QXpGdc0g+p948/trkFAmCQuSuCZP5y5Z3QpG1qeGdPPHuusGea7BsOf4/aO9r+FL5Y05RtfE+DAYNsajfjBFQ=="
-    const val X_THEFAIR_CID= "c440c5ef4cc919d27fdb74e0c382d955"
-    const val X_THEFAIR_UA= "EYEPETIZER/6030101 (ALP-AL00;android;10;zh_CN_#Hans;android;6.3.10;cn-bj;huawei;c440c5ef4cc919d27fdb74e0c382d955;WIFI;1080*1920) native/1.0"
-    const val x_api_key= "0530ee4341324ce2b26c23fcece80ea2"
+    const val X_THEFAIR_APPID = "ahpagrcrf2p7m6rg"
+    const val X_THEFAIR_AUTH =
+        "JtyvXLdqbcx2AWfX04C6XpCJMnq7zkCRSJn/0Fxx9TUMMUQrFPV+luSRZhMy/7HhDrnYR146S3LoEQlBzViRhQcPbnlKGtwcnLC3qdOnqpndZ5m9Hd6smCsT0VgBRsdTv1ON9ySY9ICo/8/2w+iG1c76AOGYZyifIT8DNNwM90EwDGa4uunqxYg7zLlbquGSMleDDDR5kMaK+ZqsxGLGsSYNRUoxIFVd3O7dlkfIvXq7liQT2BSQLIRM8h1HUeH0pa6BB+De9wtDfc4UZDiE+Q=="
+    const val X_THEFAIR_CID = "0bb34b4265e88268cc5187c593f7814e"
+    const val X_THEFAIR_UA =
+        "EYEPETIZER/6040004 (ALP-AL00;android;10;zh_CN_#Hans;android;6.4.0;cn-bj;yingyongbao;0bb34b4265e88268cc5187c593f7814e;WIFI;1080*1920) native/1.0"
+    const val x_api_key = "0530ee4341324ce2b26c23fcece80ea2"
 
     const val LOGIN = "v1/api/login"
+
+    const val GET_PAGE = "v1/card/page/get_page"
+
+    const val CALL_METRO = "v1/card/metro/call_metro_list"
 
     const val CONFIGS =
         "api/v2/configs?model=Android&deviceTypeOs=29&deviceImsi=0&deviceBrand=HUAWEI&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"
@@ -36,7 +42,6 @@ object Constant {
     //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1603155600000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
     //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1602982800000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
 //http://baobab.kaiyanapp.com/api/v5/index/tab/feed?date=1602810000000&num=2&udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29
-    const val GET_PAGE = "v1/card/page/get_page"
 
     const val HOME_REC =
         "api/v5/index/tab/allRec?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"

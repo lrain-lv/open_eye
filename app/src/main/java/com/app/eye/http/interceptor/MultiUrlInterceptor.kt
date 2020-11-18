@@ -30,14 +30,14 @@ class MultiUrlInterceptor : Interceptor {
                 .host(baseUrl.host())
                 .port(baseUrl.port())
                 .build()
-            builder.addHeader("X-THEFAIR-APPID", Constant.X_THEFAIR_APPID)
+            builder.addHeader("x-thefair-appid", Constant.X_THEFAIR_APPID)
                 .addHeader(
-                    "X-THEFAIR-AUTH",
+                    "x-thefair-auth",
                     Constant.X_THEFAIR_AUTH
                 )
-                .addHeader("X-THEFAIR-CID", Constant.X_THEFAIR_CID)
+                .addHeader("x-thefair-cid", Constant.X_THEFAIR_CID)
                 .addHeader(
-                    "X-THEFAIR-UA",
+                    "x-thefair-ua",
                     Constant.X_THEFAIR_UA
                 )
                 .addHeader("x-api-key", Constant.x_api_key)

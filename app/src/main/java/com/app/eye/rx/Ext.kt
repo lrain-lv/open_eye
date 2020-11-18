@@ -2,9 +2,14 @@ package com.app.eye.rx
 
 import android.app.Activity
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
 import android.widget.LinearLayout
 import com.blankj.utilcode.util.EncodeUtils
 import com.just.agentweb.AgentWeb
+import com.just.agentweb.WebChromeClient
+import com.just.agentweb.WebViewClient
+import com.orhanobut.logger.Logger
 
 
 fun String.getAgentWeb(
@@ -14,6 +19,15 @@ fun String.getAgentWeb(
 ): AgentWeb = AgentWeb.with(activity)//传入Activity or Fragment
     .setAgentWebParent(webContent, layoutParams)//传入AgentWeb 的父控件
     .useDefaultIndicator()
+    .setWebViewClient(object  : WebViewClient(){
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            Logger.e(request!!.url.toString())
+            return super.shouldOverrideUrlLoading(view, request)
+        }
+    })
     .createAgentWeb()
     .ready()
     .go(this)

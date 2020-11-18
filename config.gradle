@@ -42,7 +42,8 @@ ext {
             material             : "com.google.android.material:material:1.0.0",
             matisse              : 'com.zhihu.android:matisse:0.5.3-beta3',
             photoView            : 'com.github.chrisbanes:PhotoView:2.0.0',
-            gpuimage            : "jp.co.cyberagent.android:gpuimage:2.1.0",
+            gpuimage             : "jp.co.cyberagent.android:gpuimage:2.1.0",
+            lottie               : 'com.airbnb.android:lottie:3.5.0',
 
     ]
 }

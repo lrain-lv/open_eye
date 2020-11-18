@@ -68,6 +68,7 @@ class SplashActivity : BaseActivity() {
                 }
                 subscribe = RetrofitManager.service.getConfigs()
                     .subscribe {
+
                         SPUtils.getInstance("eye").put("splash", it.startPageAd.imageUrl)
                     }
             } else {

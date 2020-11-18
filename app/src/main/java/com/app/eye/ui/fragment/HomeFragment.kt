@@ -3,6 +3,7 @@ package com.app.eye.ui.fragment
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
+import com.app.eye.ui.activity.BrandWallActivity
 import com.app.eye.ui.activity.SearchActivity
 import com.app.eye.ui.adapter.TabFragmentAdapter
 import com.app.eye.widgets.videoplayer.Jzvd
@@ -53,6 +54,10 @@ class HomeFragment : BaseFragment() {
                 SearchActivity::class.java, R.anim.in_from_top,
                 R.anim.top_slient
             )
+        }
+
+        iv_nav_card.setOnClickListener {
+            ActivityUtils.startActivity(BrandWallActivity::class.java)
         }
     }
 

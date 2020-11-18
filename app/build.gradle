@@ -22,7 +22,7 @@ android {
     }
     signingConfigs {
         releaseConfig {
-            storeFile file('D:\\projects\\open-eye\\openeye.jks')
+            storeFile file('/Users/liuyan/Desktop/workspace/OpenEye/openeye.jks')
             storePassword '123456'
             keyAlias 'openeye'
             keyPassword '123456'
@@ -77,6 +77,7 @@ dependencies {
     implementation ext.dependencies.photoView
     implementation ext.dependencies.viewpager2
     implementation ext.dependencies.gpuimage
+    implementation ext.dependencies.lottie
 //    implementation (ext.dependencies.vlayout ){
 //        transitive = true
 //    }

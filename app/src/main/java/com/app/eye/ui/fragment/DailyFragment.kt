@@ -149,5 +149,4 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
             }
         }
     }
-
 }

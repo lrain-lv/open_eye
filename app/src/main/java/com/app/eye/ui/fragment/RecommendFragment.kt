@@ -3,21 +3,21 @@ package com.app.eye.ui.fragment
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.Switch
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.rx.urlToMap
-import com.app.eye.ui.activity.CategoryActivity
-import com.app.eye.ui.activity.RankActivity
-import com.app.eye.ui.activity.TagVideoActivity
-import com.app.eye.ui.activity.TopicSquareActivity
+import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.HomeRecAdapter
 import com.app.eye.ui.mvp.contract.HomeRecContract
 import com.app.eye.ui.mvp.model.entity.HomeRecEntity
+import com.app.eye.ui.mvp.model.entity.HomeRecItem
 import com.app.eye.ui.mvp.presenter.HomeRecPresenter
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
+import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
@@ -160,6 +160,21 @@ class RecommendFragment : BaseMvpFragment<HomeRecContract.Presenter, HomeRecCont
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val item = homeRecAdapter.getItem(position)
+        when (item.type) {
+            "followCard" -> {
+                val id = item.data.content.data.id.toString()
+                VideoDetailActivity.startActivity(id)
+            }
+            "videoSmallCard" -> {
+                val id = item.data.id.toString()
+                VideoDetailActivity.startActivity(id)
+            }
+            "briefCard" -> {
+//                if (StringUtils.equals("TagBriefCard",
+//                        data.dataType)
+//                ) HomeRecItem.HOME_TAG_BRIEF_CARD else HomeRecItem.HOME_TOPIC_BRIEF_CARD
+            }
 
+        }
     }
 }
