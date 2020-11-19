@@ -24,10 +24,11 @@ abstract class BaseActivity : SupportActivity() {
 
     val immersionBar: ImmersionBar by lazy { ImmersionBar.with(this) }
 
-    val receiver = NetworkChangeReceiver()
+    private val receiver = NetworkChangeReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         ActivityUtils.addActivityLifecycleCallbacks(this, Utils.ActivityLifecycleCallbacks())
         setContentView(getLayoutRes())
         val filter = IntentFilter()
@@ -41,15 +42,17 @@ abstract class BaseActivity : SupportActivity() {
         initData()
     }
 
-     fun initToolBar(bar: Toolbar) {
+    fun initToolBar(bar: Toolbar) {
         bar.setNavigationOnClickListener {
             onBackPressedSupport()
         }
     }
+
     open fun initSwipeRefreshLayout(refreshLayout: SwipeRefreshLayout) {
         val intArray = resources.getIntArray(R.array.google_colors)
         refreshLayout.setColorSchemeColors(*intArray)
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public fun onNetworkChangeEvent(event: NetworkEvent) {
         SPUtils.getInstance("eye").put("isLastConnect", event.isConnect)
@@ -72,7 +75,7 @@ abstract class BaseActivity : SupportActivity() {
     abstract fun getLayoutRes(): Int
     abstract fun initView()
     abstract fun initData()
-    open fun reConnect(){}
+    open fun reConnect() {}
     open fun isUseEventBus(): Boolean = false
 
 
