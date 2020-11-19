@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.widget.LinearLayout
+import com.app.eye.ui.mvp.model.entity.BrandApiRequest
 import com.blankj.utilcode.util.EncodeUtils
+import com.blankj.utilcode.util.GsonUtils
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.WebChromeClient
 import com.just.agentweb.WebViewClient
@@ -19,7 +21,7 @@ fun String.getAgentWeb(
 ): AgentWeb = AgentWeb.with(activity)//传入Activity or Fragment
     .setAgentWebParent(webContent, layoutParams)//传入AgentWeb 的父控件
     .useDefaultIndicator()
-    .setWebViewClient(object  : WebViewClient(){
+    .setWebViewClient(object : WebViewClient() {
         override fun shouldOverrideUrlLoading(
             view: WebView?,
             request: WebResourceRequest?
@@ -58,4 +60,12 @@ fun String.formToMap(): Map<String, String> {
         map[urlDecode.substring(0, index)] = urlDecode.substring(index + 1)
     }
     return map
+}
+
+fun String.actionUrlToRequest(): BrandApiRequest {
+    val urlDecode = EncodeUtils.urlDecode(this)
+    val index = urlDecode.indexOf("{")
+    val indexLast = urlDecode.lastIndexOf("}")
+    val substring = urlDecode.substring(index, indexLast + 1)
+    return GsonUtils.fromJson(substring, BrandApiRequest::class.java)
 }

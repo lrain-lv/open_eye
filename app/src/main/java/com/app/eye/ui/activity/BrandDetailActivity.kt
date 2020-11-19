@@ -1,17 +1,21 @@
 package com.app.eye.ui.activity
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
 import com.app.eye.rx.getAgentWeb
+import com.app.eye.rx.loadImageCircle
+import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.BrandWallAdapter
 import com.app.eye.ui.adapter.BrandWallHeaderAdapter
 import com.app.eye.ui.mvp.contract.BrandWallContract
@@ -19,18 +23,32 @@ import com.app.eye.ui.mvp.model.entity.BrandListItemX
 import com.app.eye.ui.mvp.model.entity.BrandWallEntity
 import com.app.eye.ui.mvp.presenter.BrandWallPresenter
 import com.blankj.utilcode.util.ActivityUtils
+import com.blankj.utilcode.util.SizeUtils
+import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.StringUtils
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.orhanobut.logger.Logger
+import kotlinx.android.synthetic.main.activity_brand_detail.*
 import kotlinx.android.synthetic.main.activity_brand_wall.*
 import kotlinx.android.synthetic.main.activity_brand_wall.recycler_view
 import kotlinx.android.synthetic.main.activity_brand_wall.refresh_layout
 import kotlinx.android.synthetic.main.activity_brand_wall.status_view
-import kotlinx.android.synthetic.main.fragment_rank_list.*
+import kotlinx.android.synthetic.main.activity_brand_wall.tv_title
+import kotlinx.android.synthetic.main.layout_brand_detail_header.*
+import kotlinx.android.synthetic.main.layout_brand_detail_header.view
 
-class BrandWallActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWallContract.View>(),
+class BrandDetailActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWallContract.View>(),
     BrandWallContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
+
+
+    companion object {
+        fun startActivity(id: String) {
+            val bundle = Bundle().apply {
+                putString("id", id)
+            }
+            ActivityUtils.startActivity(bundle, BrandDetailActivity::class.java)
+        }
+    }
 
     private var isRefresh = true
 
@@ -40,19 +58,26 @@ class BrandWallActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWall
 
     private var paramsMap = hashMapOf<String, String>()
 
-    private lateinit var container: FrameLayout
-    private lateinit var recyclerHeader: RecyclerView
+    private lateinit var img: ImageView
+    private lateinit var imgIcon: ImageView
+    private lateinit var tvText: TextView
+    private lateinit var tvContent: TextView
     private lateinit var tvTitle: TextView
-    private lateinit var tvRightText: TextView
+    private lateinit var tvTag: TextView
 
-    override fun getLayoutRes(): Int = R.layout.activity_brand_wall
+    private var id: String = ""
+
+    private var distance: Int = 0
+
+    private var isShow: Boolean = false
+
+    override fun getLayoutRes(): Int = R.layout.activity_brand_detail
 
     override fun initView() {
-        immersionBar.statusBarDarkFont(true)
-            .fitsSystemWindows(true)
-            .statusBarColor(R.color.white)
+        immersionBar.statusBarDarkFont(false)
+            .statusBarAlpha(0f)
             .init()
-        tool_bar.setNavigationOnClickListener { onBackPressedSupport() }
+        id = intent.extras!!.getString("id", "")
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
         recycler_view.layoutManager = LinearLayoutManager(this)
@@ -66,37 +91,45 @@ class BrandWallActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWall
             val videoId = item.metro_data.video_id
             VideoDetailActivity.startActivity(videoId.toString())
         }
+        iv_back.setOnClickListener { onBackPressedSupport() }
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                distance += dy
+                if (distance > SizeUtils.dp2px(65f)) {
+                    if (view_bg.visibility == View.GONE) {
+                        immersionBar.statusBarDarkFont(true)
+                            .init()
+                        view_bg.visibility = View.VISIBLE
+                        iv_back.setImageResource(R.mipmap.ic_back_black)
+                    }
+                } else {
+                    if (view_bg.visibility == View.VISIBLE) {
+                        immersionBar.statusBarDarkFont(false)
+                            .init()
+                        view_bg.visibility = View.GONE
+                        iv_back.setImageResource(R.mipmap.ic_back_white)
+                    }
+                }
+            }
+        })
     }
 
     private fun initHeader() {
         val headerView =
-            layoutInflater.inflate(R.layout.lauyout_brand_wall_header, recycler_view, false)
-        container = headerView.findViewById<FrameLayout>(R.id.container)
-        val view = headerView.findViewById<View>(R.id.view3)
-        view.setOnClickListener {
-            ActivityUtils.startActivity(BrandListActivity::class.java)
-        }
-        recyclerHeader = headerView.findViewById<RecyclerView>(R.id.recycler_header)
+            layoutInflater.inflate(R.layout.layout_brand_detail_header, recycler_view, false)
+        img = headerView.findViewById<ImageView>(R.id.iv_img)
+        imgIcon = headerView.findViewById<ImageView>(R.id.iv_icon)
+        tvText = headerView.findViewById<TextView>(R.id.tv_text)
         tvTitle = headerView.findViewById<TextView>(R.id.tv_title)
-        tvRightText = headerView.findViewById<TextView>(R.id.tv_right_text)
-        recyclerHeader.apply {
-            layoutManager =
-                LinearLayoutManager(this@BrandWallActivity, LinearLayoutManager.HORIZONTAL, false)
-            setHasFixedSize(true)
-            adapter = headerAdapter
-        }
-        headerAdapter.setOnItemClickListener { adapter, view, position ->
-            val item = headerAdapter.getItem(position)
-            val videoId = item.metro_data.video_id
-            VideoDetailActivity.startActivity(videoId.toString())
-        }
+        tvTag = headerView.findViewById<TextView>(R.id.tv_tag)
+        tvContent = headerView.findViewById<TextView>(R.id.tv_content)
         brandAdapter.addHeaderView(headerView)
     }
 
     override fun initData() {
         val map = mapOf(
-            "page_label" to "brand_wall",
-            "title" to "品牌墙",
+            "page_label" to "brand_wall_detail",
+            "resource_id" to id,
             "page_type" to "card"
         )
         recycler_view.post {
@@ -115,14 +148,40 @@ class BrandWallActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWall
         if (isRefresh) {
             brandAdapter.loadMoreModule.isEnableLoadMore = true
             val cardList = entity.result.card_list
-            cardList.forEach {
-                val type = it.type
+            cardList.forEachIndexed { index, brandCard ->
+                val type = brandCard.type
                 when {
-                    StringUtils.equals("set_metro_list", type) -> {
-                        brandAdapter.setList(it.card_data.body.metro_list)
+                    index == 0 -> {
+                        val brandMetro = brandCard.card_data.body.metro_list[0]
+                        val metroData = brandMetro.metro_data
+                        tvTitle.text = metroData.title
+                        tvContent.text = metroData.desc
+                        metroData.tags.forEach {
+                            tvTag.append("${it.title} ")
+                        }
+                        img.loadImageCommon(this@BrandDetailActivity, metroData.background.url)
+                        imgIcon.loadImageCircle(this@BrandDetailActivity, metroData.avatar.url, 80f)
+                    }
+                    index == 1 -> {
+                        val cardData = brandCard.card_data
+                        val header = cardData.header
+                        val brandLeft = header.left[0]
+                        val create = SpanUtils.with(tvText)
+                            .append(brandLeft.metro_data.text)
+                            .setBold()
+                            .setForegroundColor(Color.BLACK)
+                            .setFontSize(18, true)
+                            .append(" ")
+                            .append(brandLeft.metro_data.subtitle)
+                            .setFontSize(14, true)
+                            .setForegroundColor(Color.GRAY)
+                            .create()
+                        tvText.text = create
+                        val metroList = cardData.body.metro_list
+                        brandAdapter.setList(metroList)
                     }
                     StringUtils.equals("call_metro_list", type) -> {
-                        val apiRequest = it.card_data.body.api_request
+                        val apiRequest = brandCard.card_data.body.api_request
                         paramsMap["type"] = apiRequest.params.type
                         paramsMap["last_item_id"] = apiRequest.params.last_item_id
                         paramsMap["num"] = apiRequest.params.num.toString()
@@ -132,28 +191,7 @@ class BrandWallActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWall
                         paramsMap["material_relative_index"] =
                             apiRequest.params.material_relative_index.toString()
                         paramsMap["start_last_item_id"] = apiRequest.params.start_last_item_id
-                    }
-                    StringUtils.equals("web_card", type) -> {
-                        val url = it.card_data.body.metro_list[0].metro_data.url
-                        url.getAgentWeb(this@BrandWallActivity, container)
-                    }
-                    StringUtils.equals("set_slide_metro_list", type) -> {
-                        val brandLeft = it.card_data.header.left[0]
-                        val brandRight = it.card_data.header.right[0]
-                        tvTitle.text = brandLeft.metro_data.text
-                        tvRightText.text = brandRight.metro_data.text
-                        tvRightText.setOnClickListener {
-                            val link = brandRight.metro_data.link
-                            val index = link.indexOf("?")
-                            val lastIndex = link.lastIndexOf("/")
-                            val id = link.substring(lastIndex + 1, index)
-                            LightTopicActivity.startActivity(
-                                brandLeft.metro_data.text,
-                                id = id.toInt()
-                            )
-                        }
-                        val metroList = it.card_data.body.metro_list
-                        headerAdapter.setList(metroList)
+                        paramsMap["related_tag_id"] = apiRequest.params.related_tag_id.toString()
                     }
                 }
             }
@@ -187,8 +225,8 @@ class BrandWallActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWall
         isRefresh = true
         brandAdapter.loadMoreModule.isEnableLoadMore = false
         val map = mapOf(
-            "page_label" to "brand_wall",
-            "title" to "品牌墙",
+            "page_label" to "brand_wall_detail",
+            "resource_id" to id,
             "page_type" to "card"
         )
         mPresenter?.getRequest(map, true)

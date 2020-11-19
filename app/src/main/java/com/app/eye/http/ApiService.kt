@@ -122,4 +122,9 @@ interface ApiService {
 
     @GET(Constant.TAG_MEDALS)
     fun getTagMedals(): Observable<BadgeEntity>
+
+    @Headers("hostName: recommend")
+    @POST(Constant.BRAND_LIST)
+    fun getBrandList(): Observable<BrandListEntity>
+
 }

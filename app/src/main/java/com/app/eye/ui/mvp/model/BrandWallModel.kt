@@ -2,6 +2,7 @@ package com.app.eye.ui.mvp.model
 
 import com.app.eye.http.RetrofitManager
 import com.app.eye.ui.mvp.contract.BrandWallContract
+import com.app.eye.ui.mvp.model.entity.BrandListEntity
 import com.app.eye.ui.mvp.model.entity.BrandWallEntity
 import io.reactivex.rxjava3.core.Observable
 
@@ -13,6 +14,10 @@ class BrandWallModel : BrandWallContract.Model {
         RetrofitManager.service.getPage(map)
     } else {
         RetrofitManager.service.getCallMetroList(map)
+    }
+
+    override fun getListRequest(): Observable<BrandListEntity> {
+        return RetrofitManager.service.getBrandList()
     }
 
 

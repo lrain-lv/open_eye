@@ -71,7 +71,6 @@ class MedalDialog : DialogFragment() {
     override fun onStart() {
         super.onStart()
         val window = dialog!!.window!!
-//        window!!.setBackgroundDrawableResource(android.R.color.transparent)
         val params = window.attributes
         params.dimAmount = 0.6f
         params.gravity = Gravity.CENTER

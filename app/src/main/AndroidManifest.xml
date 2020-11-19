@@ -17,7 +17,9 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.BadgeActivity"/>
+        <activity android:name=".ui.activity.BrandDetailActivity"></activity>
+        <activity android:name=".ui.activity.BrandListActivity" />
+        <activity android:name=".ui.activity.BadgeActivity" />
         <activity android:name=".ui.activity.BrandWallActivity" />
         <activity android:name=".ui.activity.TestActivity" />
         <activity android:name=".ui.activity.GalleryActivity" />

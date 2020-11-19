@@ -83,8 +83,11 @@ data class BrandMetro(
     val show_duration: Int,
     val style: BrandStyle,
     val tracking_data: BrandTrackingData,
-    val type: String
-)
+    val type: String,
+
+    )
+
+data class Background(val url: String)
 
 data class BrandItem(
     val link: String,
@@ -104,7 +107,9 @@ data class BrandParams(
     val material_relative_index: Int,
     val num: Int,
     val start_last_item_id: String,
-    val type: String
+    val type: String,
+    val related_tag_id: Long,
+    val resource_id: Int
 )
 
 data class BrandMetroData(
@@ -123,8 +128,13 @@ data class BrandMetroData(
     val tags: MutableList<BrandTag>,
     val title: String,
     val url: String,
-    val video_id: Int
+    val desc: String,
+    val video_id: Int,
+    val background: Background,
+    val avatar: Avatar,
 )
+
+data class Avatar(val url: String)
 
 data class BrandStyle(
     val metro_to_screen_ratio: Double,
@@ -294,7 +304,8 @@ data class BrandStyleXXX(
 )
 
 data class BrandMetroDataX(
-    val text: String
+    val text: String,
+    val subtitle: String
 )
 
 data class BrandStyleX(
