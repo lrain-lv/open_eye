@@ -35,29 +35,31 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
             }
             ItemDaily.DAILY_VIDEO -> {
                 val data = item.data.content.data
-                val video_duration = data.duration
+                val videoDuration = data.duration
                 var time: String = ""
-                if (video_duration < 60) {
-                    time = String.format(Locale.getDefault(), "00:%02d", video_duration % 60)
-                } else if (video_duration < 3600) {
+                if (videoDuration < 60) {
+                    time = String.format(Locale.getDefault(), "00:%02d", videoDuration % 60)
+                } else if (videoDuration < 3600) {
                     time = String.format(
                         Locale.getDefault(),
                         "%02d:%02d",
-                        video_duration / 60,
-                        video_duration % 60
+                        videoDuration / 60,
+                        videoDuration % 60
                     )
                 }
                 holder.setText(R.id.tv_title, data.title)
                     .setText(R.id.tv_category, "${data.author.name} / #${data.category}")
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
-                ivCover.loadImageWithTransform(context,
+                ivCover.loadImageWithTransform(
+                    context,
                     data.cover.feed,
                     RoundedCornersTransformation(
                         SizeUtils.dp2px(5f),
                         0,
                         RoundedCornersTransformation.CornerType.TOP
-                    ))
+                    )
+                )
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
                 ivHeader.loadImageCircle(context, data.author.icon, 36f)
             }
@@ -65,13 +67,15 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
                 val data = item.data
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 val recycler = holder.getView<RecyclerView>(R.id.recycler)
-                ivCover.loadImageWithTransform(context,
+                ivCover.loadImageWithTransform(
+                    context,
                     data.backgroundImage,
                     RoundedCornersTransformation(
                         SizeUtils.dp2px(5f),
                         0,
                         RoundedCornersTransformation.CornerType.TOP
-                    ))
+                    )
+                )
                 val adapter = DailyInfoAdapter(data.titleList)
                 recycler.layoutManager =
                     NoScrollLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

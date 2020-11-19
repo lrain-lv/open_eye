@@ -51,12 +51,12 @@ class SplashActivity : BaseActivity() {
             Manifest.permission.READ_PHONE_STATE
         ).subscribe {
             if (it) {
-                Observable.intervalRange(0, 3, 0, 1, TimeUnit.SECONDS)
+                Observable.intervalRange(0, 4, 0, 1, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.io())
                     .doOnSubscribe {
                         tv_time.visibility = View.VISIBLE
                         tv_skip.visibility = View.VISIBLE
-                        tv_time.text = "2秒"
+                        tv_time.text = "3秒"
                         if (splash.isEmpty()) {
                             val typeface = Typeface.createFromAsset(assets, "fonts/Lobster-1.4.otf")
                             tv_en.typeface = typeface
@@ -64,7 +64,7 @@ class SplashActivity : BaseActivity() {
                             animator = iv_splash.animate()
                                 .scaleX(1.2f)
                                 .scaleY(1.2f)
-                                .setDuration(2000)
+                                .setDuration(2500)
                             animator.start()
                         } else {
                             iv_account.visibility = View.GONE
@@ -76,15 +76,15 @@ class SplashActivity : BaseActivity() {
                                 .alpha(0.85f)
                                 .scaleX(1.1f)
                                 .scaleY(1.1f)
-                                .setDuration(2000)
+                                .setDuration(2500)
                             animator.start()
                         }
                     }
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { it ->
-                        tv_time.text = "${2 - it} 秒"
-                        if (it.toInt() == 2) {
+                        tv_time.text = "${3 - it} 秒"
+                        if (it.toInt() == 3) {
                             ActivityUtils.startActivity(MainActivity::class.java)
                             finish()
                         }
