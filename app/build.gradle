@@ -63,7 +63,7 @@ dependencies {
     implementation ext.dependencies.immersionbar
     implementation ext.dependencies.logging_interceptor
     implementation ext.dependencies.rxandroid
-    implementation ext.dependencies.autosize
+//    implementation ext.dependencies.autosize
     implementation ext.dependencies.fragmentationx
     implementation ext.dependencies.eventbus
     implementation ext.dependencies.utilCode

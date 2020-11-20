@@ -17,27 +17,62 @@
         android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.BrandDetailActivity"></activity>
-        <activity android:name=".ui.activity.BrandListActivity" />
-        <activity android:name=".ui.activity.BadgeActivity" />
-        <activity android:name=".ui.activity.BrandWallActivity" />
-        <activity android:name=".ui.activity.TestActivity" />
-        <activity android:name=".ui.activity.GalleryActivity" />
-        <activity android:name=".ui.activity.VideoDetailActivity" />
-        <activity android:name=".ui.activity.PopularActivity" />
-        <activity android:name=".ui.activity.TopicReplyActivity" />
+        <activity
+            android:name=".ui.activity.BrandDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BrandListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BadgeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.BrandWallActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.VideoDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.PopularActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TopicReplyActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.TopicDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".ui.activity.LightTopicActivity" />
-        <activity android:name=".ui.activity.RankActivity" />
-        <activity android:name=".ui.activity.CategoryActivity" />
-        <activity android:name=".ui.activity.TagVideoActivity" />
-        <activity android:name=".ui.activity.TopicSquareActivity" />
-        <activity android:name=".ui.activity.WebActivity" />
-        <activity android:name=".ui.activity.LoginActivity" />
-        <activity android:name=".ui.activity.SearchActivity" />
+        <activity
+            android:name=".ui.activity.LightTopicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TagVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TopicSquareActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.WebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SplashActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -66,12 +101,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <meta-data
-            android:name="design_width_in_dp"
-            android:value="360" />
-        <meta-data
-            android:name="design_height_in_dp"
-            android:value="640" />
+        <!--        <meta-data-->
+        <!--            android:name="design_width_in_dp"-->
+        <!--            android:value="360" />-->
+        <!--        <meta-data-->
+        <!--            android:name="design_height_in_dp"-->
+        <!--            android:value="640" />-->
     </application>
 
 </manifest>

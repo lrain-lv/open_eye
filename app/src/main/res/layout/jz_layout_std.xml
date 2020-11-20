@@ -13,14 +13,15 @@
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/thumb"
+        android:id="@+id/poster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
+        android:adjustViewBounds="true"
         android:background="#000000"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:id="@+id/layout_bottom"
@@ -55,7 +56,7 @@
             android:paddingRight="12dp"
             android:paddingBottom="8dp"
             android:progressDrawable="@drawable/jz_bottom_seek_progress"
-            android:thumb="@drawable/jz_bottom_seek_thumb" />
+            android:thumb="@drawable/jz_bottom_seek_poster" />
 
         <TextView
             android:id="@+id/total"
@@ -71,6 +72,7 @@
             android:clickable="true"
             android:paddingLeft="20dp"
             android:text="clarity"
+
             android:textAlignment="center"
             android:textColor="#ffffff" />
 
@@ -232,7 +234,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="@drawable/retry_bg"
+            android:background="@drawable/jz_retry"
             android:paddingLeft="9dp"
             android:paddingTop="4dp"
             android:paddingRight="9dp"

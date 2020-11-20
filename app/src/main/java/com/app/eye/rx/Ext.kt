@@ -1,10 +1,12 @@
 package com.app.eye.rx
 
 import android.app.Activity
+import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.app.eye.ui.mvp.model.entity.BrandApiRequest
 import com.blankj.utilcode.util.EncodeUtils
 import com.blankj.utilcode.util.GsonUtils
@@ -68,4 +70,8 @@ fun String.actionUrlToRequest(): BrandApiRequest {
     val indexLast = urlDecode.lastIndexOf("}")
     val substring = urlDecode.substring(index, indexLast + 1)
     return GsonUtils.fromJson(substring, BrandApiRequest::class.java)
+}
+
+fun setOnClickListener(vararg v: View?, block: View.() -> Unit) {
+    v.forEach { it?.setOnClickListener(block) }
 }

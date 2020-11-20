@@ -4,15 +4,12 @@ import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.view.Surface;
 
 import java.lang.reflect.Method;
 import java.util.Map;
-
-import androidx.annotation.RequiresApi;
 
 /**
  * Created by Nathen on 2017/11/8.
@@ -48,6 +45,7 @@ public class JZMediaSystem extends JZMediaInterface implements MediaPlayer.OnPre
                 mediaPlayer.setOnInfoListener(JZMediaSystem.this);
                 mediaPlayer.setOnVideoSizeChangedListener(JZMediaSystem.this);
                 Class<MediaPlayer> clazz = MediaPlayer.class;
+                //如果不用反射，没有url和header参数的setDataSource函数
                 Method method = clazz.getDeclaredMethod("setDataSource", String.class, Map.class);
                 method.invoke(mediaPlayer, jzvd.jzDataSource.getCurrentUrl().toString(), jzvd.jzDataSource.headerMap);
                 mediaPlayer.prepareAsync();
@@ -127,12 +125,13 @@ public class JZMediaSystem extends JZMediaInterface implements MediaPlayer.OnPre
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void setSpeed(float speed) {
-        PlaybackParams pp = mediaPlayer.getPlaybackParams();
-        pp.setSpeed(speed);
-        mediaPlayer.setPlaybackParams(pp);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            PlaybackParams pp = mediaPlayer.getPlaybackParams();
+            pp.setSpeed(speed);
+            mediaPlayer.setPlaybackParams(pp);
+        }
     }
 
     @Override
@@ -142,7 +141,7 @@ public class JZMediaSystem extends JZMediaInterface implements MediaPlayer.OnPre
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        handler.post(() -> jzvd.onAutoCompletion());
+        handler.post(() -> jzvd.onCompletion());
     }
 
     @Override

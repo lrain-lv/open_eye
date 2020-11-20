@@ -5,15 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -73,25 +73,9 @@ public class JZUtils {
         return null;
     }
 
-    /**
-     * Get AppCompatActivity from context
-     *
-     * @param context context
-     * @return AppCompatActivity if it's not null
-     */
-    public static AppCompatActivity getAppCompActivity(Context context) {
-        if (context == null) return null;
-        if (context instanceof AppCompatActivity) {
-            return (AppCompatActivity) context;
-        } else if (context instanceof ContextThemeWrapper) {
-            return getAppCompActivity(((ContextThemeWrapper) context).getBaseContext());
-        }
-        return null;
-    }
-
     public static void setRequestedOrientation(Context context, int orientation) {
-        if (JZUtils.getAppCompActivity(context) != null) {
-            JZUtils.getAppCompActivity(context).setRequestedOrientation(
+        if (JZUtils.scanForActivity(context) != null) {
+            JZUtils.scanForActivity(context).setRequestedOrientation(
                     orientation);
         } else {
             JZUtils.scanForActivity(context).setRequestedOrientation(
@@ -100,8 +84,8 @@ public class JZUtils {
     }
 
     public static Window getWindow(Context context) {
-        if (JZUtils.getAppCompActivity(context) != null) {
-            return JZUtils.getAppCompActivity(context).getWindow();
+        if (JZUtils.scanForActivity(context) != null) {
+            return JZUtils.scanForActivity(context).getWindow();
         } else {
             return JZUtils.scanForActivity(context).getWindow();
         }
@@ -183,6 +167,33 @@ public class JZUtils {
     public static void showSystemUI(Context context) {
         int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
         JZUtils.getWindow(context).getDecorView().setSystemUiVisibility(SYSTEM_UI);
+    }
+
+    //获取状态栏的高度
+    public static int getStatusBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
+    }
+
+    //获取NavigationBar的高度
+    public static int getNavigationBarHeight(Context context) {
+        boolean var1 = ViewConfiguration.get(context).hasPermanentMenuKey();
+        int var2;
+        return (var2 = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android")) > 0 && !var1 ? context.getResources().getDimensionPixelSize(var2) : 0;
+    }
+
+    //获取屏幕的宽度
+    public static int getScreenWidth(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.widthPixels;
+    }
+
+    //获取屏幕的高度
+    public static int getScreenHeight(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.heightPixels;
     }
 
 }

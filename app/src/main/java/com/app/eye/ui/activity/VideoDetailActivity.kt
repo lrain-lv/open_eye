@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.rx.setOnClickListener
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.adapter.VideoDetailHeaderAdapter
@@ -18,6 +19,8 @@ import com.app.eye.ui.mvp.model.entity.VrItem
 import com.app.eye.ui.mvp.presenter.VideoDetailPresenter
 import com.app.eye.widgets.EyeCommentDialog
 import com.app.eye.widgets.NoScrollLinearLayoutManager
+import com.app.eye.widgets.videoplayer.Jzvd
+import com.app.eye.widgets.videoplayer.Jzvd.SCREEN_NORMAL
 import com.app.eye.widgets.videoplayer.JzvdStd
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.KeyboardUtils
@@ -30,17 +33,19 @@ import kotlinx.android.synthetic.main.activity_video_detail.*
 
 class VideoDetailActivity :
     BaseMvpActivity<VideoDetailContract.Presenter, VideoDetailContract.View>(),
-    VideoDetailContract.View, OnLoadMoreListener, View.OnClickListener {
+    VideoDetailContract.View, OnLoadMoreListener {
 
     companion object {
         fun startActivity(id: String) {
             val bundle = Bundle().apply {
                 putString("id", id)
             }
-            ActivityUtils.startActivity(bundle,
+            ActivityUtils.startActivity(
+                bundle,
                 VideoDetailActivity::class.java,
                 R.anim.in_from_bottom,
-                R.anim.top_slient)
+                R.anim.top_slient
+            )
         }
     }
 
@@ -48,13 +53,21 @@ class VideoDetailActivity :
     private var nextPageUrl: String? = ""
     private val topicDetailAdapter = TopicDetailAdapter(mutableListOf())
     private var isRefresh: Boolean = true
-
     private val videoDetailHeaderAdapter = VideoDetailHeaderAdapter(mutableListOf())
 
     private val totalList = mutableListOf<VrItem>()
     private val showList = mutableListOf<VrItem>()
 
     private lateinit var headerView: View
+    private lateinit var tvTitle: TextView
+    private lateinit var tvDec: TextView
+    private lateinit var tvTag: TextView
+    private lateinit var tvcount: TextView
+    private lateinit var tare: TextView
+    private lateinit var tautDec: TextView
+    private lateinit var tvAuthTitle: TextView
+    private lateinit var icon: ImageView
+    private lateinit var recHeader: RecyclerView
 
     override fun getLayoutRes(): Int = R.layout.activity_video_detail
 
@@ -68,9 +81,17 @@ class VideoDetailActivity :
             .centerCrop()
             .override(SizeUtils.dp2px(30f), SizeUtils.dp2px(30f))
             .into(iv_header)
-        tv_count.setOnClickListener(this)
-        iv_comment.setOnClickListener(this)
-        tv_comment.setOnClickListener(this)
+        setOnClickListener(tv_count, iv_comment, tv_comment) {
+            when (this.id) {
+                R.id.tv_comment -> {
+                    EyeCommentDialog.createCommentDialog()
+                        .showDialog(supportFragmentManager)
+                }
+                R.id.iv_comment, R.id.tv_count -> {
+                    recycler_view.smoothScrollToPosition(2)
+                }
+            }
+        }
         initHeaderView()
         topicDetailAdapter.loadMoreModule.setOnLoadMoreListener(this)
         topicDetailAdapter.loadMoreModule.isEnableLoadMore = false
@@ -114,22 +135,7 @@ class VideoDetailActivity :
         }
     }
 
-    override fun onBackPressedSupport() {
-        super.onBackPressedSupport()
-        overridePendingTransition(R.anim.top_slient, R.anim.out_from_bottom)
-    }
-
     override fun createPresenter(): VideoDetailContract.Presenter? = VideoDetailPresenter()
-
-    private lateinit var tvTitle: TextView
-    private lateinit var tvDec: TextView
-    private lateinit var tvTag: TextView
-    private lateinit var tvcount: TextView
-    private lateinit var tare: TextView
-    private lateinit var tautDec: TextView
-    private lateinit var tvAuthTitle: TextView
-    private lateinit var icon: ImageView
-    private lateinit var recHeader: RecyclerView
 
     private fun initHeaderView() {
         headerView =
@@ -177,11 +183,11 @@ class VideoDetailActivity :
         recHeader.adapter =
             videoDetailHeaderAdapter
         videoDetailHeaderAdapter.setList(showList)
-        jzvd.setUp(videoIndexEntity.playUrl, "")
+        jzvd.setUp(videoIndexEntity.playUrl, "", SCREEN_NORMAL)
         Glide.with(this)
             .load(videoIndexEntity.cover.feed)
             .centerCrop()
-            .into(jzvd.thumbImageView)
+            .into(jzvd.posterImageView)
     }
 
     override fun setReplyVideoResponse(entity: ReplyVideoEntity?) {
@@ -223,22 +229,24 @@ class VideoDetailActivity :
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        Jzvd.releaseAllVideos()
+        Jzvd.setVideoImageDisplayType(Jzvd.VIDEO_IMAGE_DISPLAY_TYPE_ADAPTER)
+    }
+
+    override fun onBackPressedSupport() {
+        if (Jzvd.backPress()) {
+            return
+        }
+        super.onBackPressedSupport()
+        overridePendingTransition(R.anim.top_slient, R.anim.out_from_bottom)
+    }
+
+
     override fun onDestroy() {
         KeyboardUtils.fixAndroidBug5497(this)
         KeyboardUtils.fixSoftInputLeaks(this)
-        JzvdStd.releaseAllVideos()
         super.onDestroy()
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.tv_comment -> {
-                EyeCommentDialog.createCommentDialog()
-                    .showDialog(supportFragmentManager)
-            }
-            R.id.iv_comment, R.id.tv_count -> {
-                recycler_view.smoothScrollToPosition(2)
-            }
-        }
     }
 }

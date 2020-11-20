@@ -6,6 +6,7 @@ import com.app.eye.base.BaseFragment
 import com.app.eye.event.LoginEvent
 import com.app.eye.rx.SchedulerUtils
 import com.app.eye.rx.loadImageCircle
+import com.app.eye.rx.setOnClickListener
 import com.app.eye.ui.activity.BadgeActivity
 import com.app.eye.ui.activity.LoginActivity
 import com.blankj.utilcode.util.ActivityUtils
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_mine.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class MineFragment : BaseFragment(), View.OnClickListener {
+class MineFragment : BaseFragment() {
 
 
     override fun getLayoutRes(): Int = R.layout.fragment_mine
@@ -50,17 +51,25 @@ class MineFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initListener() {
-        iv_header.setOnClickListener(this)
-        iv_more.setOnClickListener(this)
-        tv_login.setOnClickListener(this)
-        layout_collect.setOnClickListener(this)
-        layout_cache.setOnClickListener(this)
-        tv_attention.setOnClickListener(this)
-        tv_record.setOnClickListener(this)
-        tv_notification.setOnClickListener(this)
-        tv_badge.setOnClickListener(this)
-        tv_feedback.setOnClickListener(this)
-        tv_submit.setOnClickListener(this)
+        setOnClickListener(
+            iv_header,
+            iv_more,
+            tv_login,
+            layout_collect,
+            layout_cache,
+            tv_attention,
+            tv_record, tv_notification, tv_badge, tv_feedback, tv_submit
+        ) {
+            when (this.id) {
+                R.id.iv_header, R.id.tv_login -> {
+                    if (avatar.isEmpty())
+                        ActivityUtils.startActivity(LoginActivity::class.java)
+                }
+                R.id.tv_badge -> {
+                    ActivityUtils.startActivity(BadgeActivity::class.java)
+                }
+            }
+        }
     }
 
     override fun initData() {
@@ -96,17 +105,6 @@ class MineFragment : BaseFragment(), View.OnClickListener {
     override fun reConnect() {
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.iv_header, R.id.tv_login -> {
-                if (avatar.isNotEmpty()) return
-                ActivityUtils.startActivity(LoginActivity::class.java)
-            }
-            R.id.tv_badge -> {
-                ActivityUtils.startActivity(BadgeActivity::class.java)
-            }
-        }
-    }
 
     override fun isUseEventBus(): Boolean = true
     override fun useLazyLoad(): Boolean = true

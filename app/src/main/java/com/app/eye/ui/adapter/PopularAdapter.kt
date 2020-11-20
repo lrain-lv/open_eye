@@ -72,6 +72,6 @@ class PopularAdapter(data: MutableList<PopItem>) :
         jzvdStd.outlineProvider = JzViewOutlineProvider(SizeUtils.dp2px(5f).toFloat())
         jzvdStd.clipToOutline = true
         jzvdStd.setUp(data.playUrl, "")
-        jzvdStd.thumbImageView.loadImageRound(context, data.cover.feed)
+        jzvdStd.posterImageView.loadImageRound(context, data.cover.feed)
     }
 }

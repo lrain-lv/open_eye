@@ -64,7 +64,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 player.start_layout.visibility = View.GONE
                 player.outlineProvider = JzViewOutlineProvider(SizeUtils.dp2px(5f).toFloat())
                 player.clipToOutline = true
-                player.thumbImageView.loadImageCommon(context, detail.imageUrl)
+                player.posterImageView.loadImageCommon(context, detail.imageUrl)
                 player.setUp(detail.url, "")
             }
             DISCOVER_BANNER -> {
