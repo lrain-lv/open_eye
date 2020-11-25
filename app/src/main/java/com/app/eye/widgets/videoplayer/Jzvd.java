@@ -25,6 +25,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+
 import com.app.eye.R;
 import com.blankj.utilcode.util.ScreenUtils;
 
@@ -37,7 +41,7 @@ import java.util.TimerTask;
 /**
  * Created by Nathen on 16/7/30.
  */
-public abstract class Jzvd extends FrameLayout implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, View.OnTouchListener {
+public abstract class Jzvd extends FrameLayout implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, View.OnTouchListener, LifecycleObserver {
 
     public static final String TAG = "JZVD";
     public static final int SCREEN_NORMAL = 0;
@@ -225,6 +229,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     public static void releaseAllVideos() {
         Log.d(TAG, "releaseAllVideos");
         if (CURRENT_JZVD != null) {

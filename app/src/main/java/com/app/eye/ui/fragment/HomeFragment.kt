@@ -3,6 +3,7 @@ package com.app.eye.ui.fragment
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
+import com.app.eye.rx.setOnClickListener
 import com.app.eye.ui.activity.BrandWallActivity
 import com.app.eye.ui.activity.SearchActivity
 import com.app.eye.ui.adapter.TabFragmentAdapter
@@ -11,8 +12,7 @@ import com.blankj.utilcode.util.ActivityUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.yokeyword.fragmentation.SupportFragment
 
-
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
@@ -33,36 +33,29 @@ class HomeFragment : BaseFragment() {
             setViewPager(view_pager)
             currentTab = 1
         }
-//        tab_layout.getTitleView(1).paint.isFakeBoldText = true
-        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
+        view_pager.addOnPageChangeListener(this)
+        setOnClickListener(iv_search, iv_nav_card) {
+            when (this.id) {
+                R.id.iv_search -> {
+                    ActivityUtils.startActivity(
+                        SearchActivity::class.java, R.anim.in_from_top,
+                        R.anim.top_slient
+                    )
+                }
+                R.id.iv_nav_card -> {
+                    ActivityUtils.startActivity(BrandWallActivity::class.java)
+                }
             }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                tab_layout.currentTab = position
-            }
-        })
-        iv_search.setOnClickListener {
-            ActivityUtils.startActivity(
-                SearchActivity::class.java, R.anim.in_from_top,
-                R.anim.top_slient
-            )
-        }
-
-        iv_nav_card.setOnClickListener {
-            ActivityUtils.startActivity(BrandWallActivity::class.java)
         }
     }
 
     override fun initData() {
 
+    }
+
+    override fun onDestroyView() {
+        view_pager.removeOnPageChangeListener(this)
+        super.onDestroyView()
     }
 
     override fun onSupportInvisible() {
@@ -81,6 +74,20 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun reConnect() {
+    }
+
+    override fun onPageScrollStateChanged(state: Int) {
+    }
+
+    override fun onPageScrolled(
+        position: Int,
+        positionOffset: Float,
+        positionOffsetPixels: Int
+    ) {
+    }
+
+    override fun onPageSelected(position: Int) {
+        tab_layout.currentTab = position
     }
 
 }

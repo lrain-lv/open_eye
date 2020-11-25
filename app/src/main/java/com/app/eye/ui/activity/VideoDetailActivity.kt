@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
-import com.app.eye.rx.setOnClickListener
-import com.app.eye.rx.urlToMap
+import com.app.eye.rx.*
 import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.adapter.VideoDetailHeaderAdapter
 import com.app.eye.ui.mvp.contract.VideoDetailContract
@@ -29,6 +28,7 @@ import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.gyf.immersionbar.BarHide
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_video_detail.*
 
 class VideoDetailActivity :
@@ -73,7 +73,8 @@ class VideoDetailActivity :
 
     override fun initView() {
         immersionBar.hideBar(BarHide.FLAG_HIDE_BAR).init()
-        id = intent.extras?.getString("id", "")!!
+        val extras = intent.extras!!
+        id = extras.getString("id", "")!!
         if (id.isEmpty()) onBackPressedSupport()
         Glide.with(this)
             .load(SPUtils.getInstance("eye").getString("avatar", ""))
@@ -81,6 +82,7 @@ class VideoDetailActivity :
             .centerCrop()
             .override(SizeUtils.dp2px(30f), SizeUtils.dp2px(30f))
             .into(iv_header)
+
         setOnClickListener(tv_count, iv_comment, tv_comment) {
             when (this.id) {
                 R.id.tv_comment -> {
@@ -140,54 +142,57 @@ class VideoDetailActivity :
     private fun initHeaderView() {
         headerView =
             layoutInflater.inflate(R.layout.layout_video_detail_header, recycler_view, false)
-        tvTitle = headerView.findViewById<TextView>(R.id.tv_header_title)
-        tvDec = headerView.findViewById<TextView>(R.id.tv_header_dec)
-        tvTag = headerView.findViewById<TextView>(R.id.tv_header_tag)
-        tvcount = headerView.findViewById<TextView>(R.id.tv_like_count)
-        tare = headerView.findViewById<TextView>(R.id.tv_share_count)
-        icon = headerView.findViewById<ImageView>(R.id.iv_header_icon)
-        tautDec = headerView.findViewById<TextView>(R.id.tv_auth_dec)
-        tvAuthTitle = headerView.findViewById<TextView>(R.id.tv_auth_title)
-        recHeader = headerView.findViewById<RecyclerView>(R.id.recycler_video_header)
-        headerView.findViewById<TextView>(R.id.tv_more).setOnClickListener {
-            if (!videoDetailHeaderAdapter.isShow) {
-                videoDetailHeaderAdapter.setList(totalList)
-                it.visibility = View.GONE
+        headerView.apply {
+            tvTitle = findViewById<TextView>(R.id.tv_header_title)
+            tvDec = findViewById<TextView>(R.id.tv_header_dec)
+            tvTag = findViewById<TextView>(R.id.tv_header_tag)
+            tvcount = findViewById<TextView>(R.id.tv_like_count)
+            tare = findViewById<TextView>(R.id.tv_share_count)
+            icon = findViewById<ImageView>(R.id.iv_header_icon)
+            tautDec = findViewById<TextView>(R.id.tv_auth_dec)
+            tvAuthTitle = findViewById<TextView>(R.id.tv_auth_title)
+            recHeader = findViewById<RecyclerView>(R.id.recycler_video_header)
+            findViewById<TextView>(R.id.tv_more).setOnClickListener {
+                if (!videoDetailHeaderAdapter.isShow) {
+                    videoDetailHeaderAdapter.setList(totalList)
+                    it.visibility = View.GONE
+                }
             }
         }
+
     }
 
     override fun setVideoDetailResponse(entity: VideoDetailHeaderEntity) {
         val videoIndexEntity = entity.videoIndexEntity
         val videoRelatedEntity = entity.videoRelatedEntity
-        tvTitle.text = videoIndexEntity.title
-        tvDec.text = videoIndexEntity.description
-        tvTag.text =
-            "#${videoIndexEntity.category} / 开眼精选"
-        tvcount.text =
-            videoIndexEntity.consumption.collectionCount.toString()
-        tare.text =
-            videoIndexEntity.consumption.shareCount.toString()
-        Glide.with(this)
-            .load(videoIndexEntity.author.icon)
-            .circleCrop()
-            .into(icon)
-        tautDec.text =
-            videoIndexEntity.author.description
-        tvAuthTitle.text = videoIndexEntity.author.name
+        videoIndexEntity.apply {
+            iv_blur.loadImageCommon(this@VideoDetailActivity, this.cover.blurred)
+            tvTitle.text = this.title
+            tvDec.text = this.description
+            tvTag.text =
+                "#${this.category} / 开眼精选"
+            tvcount.text =
+                this.consumption.collectionCount.toString()
+            tare.text =
+                this.consumption.shareCount.toString()
+            icon.loadImageCircle(this@VideoDetailActivity, this.author.icon, 35f)
+            tautDec.text =
+                this.author.description
+            tvAuthTitle.text = this.author.name
+            jzvd.setUp(this.playUrl, "", SCREEN_NORMAL)
+            jzvd.posterImageView.loadImageCommon(this@VideoDetailActivity, this.cover.feed)
+        }
         totalList.addAll(videoRelatedEntity.itemList.filter {
             TextUtils.equals("videoSmallCard", it.type)
         })
         showList.addAll(totalList.take(3))
-        recHeader.layoutManager = NoScrollLinearLayoutManager(this)
-        recHeader.adapter =
-            videoDetailHeaderAdapter
+        recHeader.apply {
+            setHasFixedSize(true)
+            layoutManager = NoScrollLinearLayoutManager(this@VideoDetailActivity)
+            adapter =
+                videoDetailHeaderAdapter
+        }
         videoDetailHeaderAdapter.setList(showList)
-        jzvd.setUp(videoIndexEntity.playUrl, "", SCREEN_NORMAL)
-        Glide.with(this)
-            .load(videoIndexEntity.cover.feed)
-            .centerCrop()
-            .into(jzvd.posterImageView)
     }
 
     override fun setReplyVideoResponse(entity: ReplyVideoEntity?) {

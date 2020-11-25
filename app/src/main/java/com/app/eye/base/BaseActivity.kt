@@ -28,7 +28,6 @@ abstract class BaseActivity : SupportActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         ActivityUtils.addActivityLifecycleCallbacks(this, Utils.ActivityLifecycleCallbacks())
         setContentView(getLayoutRes())
         val filter = IntentFilter()
@@ -37,7 +36,7 @@ abstract class BaseActivity : SupportActivity() {
         if (isUseEventBus()) {
             EventBus.getDefault().register(this)
         }
-        init()
+        initPresenter()
         initView()
         initData()
     }
@@ -71,7 +70,7 @@ abstract class BaseActivity : SupportActivity() {
         ActivityUtils.removeActivityLifecycleCallbacks(this)
     }
 
-    open fun init() {}
+    open fun initPresenter() {}
     abstract fun getLayoutRes(): Int
     abstract fun initView()
     abstract fun initData()

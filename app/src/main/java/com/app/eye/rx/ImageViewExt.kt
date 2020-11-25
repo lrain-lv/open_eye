@@ -17,6 +17,12 @@ fun ImageView.loadImageCommon(context: Context, url: String?) {
         .into(this)
 }
 
+fun ImageView.loadImageCommonNoScaleType(context: Context, url: String?) {
+    Glide.with(context)
+        .load(url)
+        .into(this)
+}
+
 fun ImageView.loadImageCircle(context: Context, url: String?, width: Float) {
     Glide.with(context)
         .load(url)

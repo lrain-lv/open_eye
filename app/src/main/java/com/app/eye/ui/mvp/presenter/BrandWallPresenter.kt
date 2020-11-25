@@ -13,7 +13,8 @@ class BrandWallPresenter : BasePresenter<BrandWallContract.Model, BrandWallContr
     BrandWallContract.Presenter {
     override fun createModel(): BrandWallContract.Model = BrandWallModel()
 
-    override fun getRequest(map: Map<String, String>, isRefresh: Boolean) {
+     override  fun getRequest(map: Map<String, String>, isRefresh: Boolean) {
+
         val subscribe = model.getRequest(map, isRefresh)
             .compose(SchedulerUtils.ioToMain())
             .subscribe({

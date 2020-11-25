@@ -7,16 +7,19 @@ abstract class BaseMvpActivity<P : IPresenter<V>, V : IBaseView> : BaseActivity(
 
     var mPresenter: P? = null
 
-    override fun init() {
+    override fun initPresenter() {
         mPresenter = createPresenter()
         mPresenter?.attach(this as V)
+        lifecycle.addObserver(mPresenter!!)
     }
 
     abstract fun createPresenter(): P?
 
     override fun onDestroy() {
         super.onDestroy()
-        mPresenter?.detach()
+        if (mPresenter != null) {
+            lifecycle.removeObserver(mPresenter!!)
+        }
     }
 
     override fun showLoading() {

@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.module.LoadMoreModuleConfig
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import leakcanary.LeakCanary
 
 
 class MainApp : Application() {
