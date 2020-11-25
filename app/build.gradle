@@ -28,7 +28,9 @@ android {
             keyPassword '123456'
         }
     }
-
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -64,6 +66,7 @@ dependencies {
     implementation ext.dependencies.logging_interceptor
     implementation ext.dependencies.rxandroid
 //    implementation ext.dependencies.autosize
+
     implementation ext.dependencies.fragmentationx
     implementation ext.dependencies.eventbus
     implementation ext.dependencies.utilCode
