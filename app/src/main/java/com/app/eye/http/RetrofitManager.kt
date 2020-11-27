@@ -30,7 +30,6 @@ class RetrofitManager {
     lateinit var client: OkHttpClient
 
     companion object {
-
         @JvmStatic
         val sInstance: RetrofitManager by lazy {
             RetrofitManagerHolder.sInstance

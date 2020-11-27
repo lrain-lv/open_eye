@@ -1,12 +1,16 @@
-package com.app.eye.base
+package com.app.eye.base.mvvm
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
+import com.app.eye.base.BaseFragment
 import com.app.eye.event.NetworkEvent
 import com.app.eye.receiver.NetworkChangeReceiver
 import com.blankj.utilcode.util.SPUtils
@@ -17,7 +21,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-abstract class BaseFragment : SupportFragment() {
+abstract class BaseVMFragment : SupportFragment() {
 
     lateinit var mContext: Context
 
@@ -39,8 +43,7 @@ abstract class BaseFragment : SupportFragment() {
         if (isUseEventBus()) {
             EventBus.getDefault().register(this)
         }
-        mRootView =
-            inflater.inflate(getLayoutRes(), container, false)
+        mRootView = inflater.inflate(getLayoutRes(), container, false)
         return mRootView
     }
 
@@ -48,7 +51,9 @@ abstract class BaseFragment : SupportFragment() {
         super.onActivityCreated(savedInstanceState)
         if (!useLazyLoad()) {
             initView()
+            startObserver()
             initData()
+
         }
     }
 
@@ -56,7 +61,9 @@ abstract class BaseFragment : SupportFragment() {
         super.onLazyInitView(savedInstanceState)
         if (useLazyLoad()) {
             initView()
+            startObserver()
             initData()
+
         }
     }
 
@@ -84,12 +91,17 @@ abstract class BaseFragment : SupportFragment() {
 
 
     abstract fun getLayoutRes(): Int
-
-    open fun useLazyLoad(): Boolean = true
-    open fun init() {}
-    open fun reConnect() {}
+    abstract fun startObserver()
     abstract fun initView()
     abstract fun initData()
+    open fun showLoading() {}
+    open fun hideLoading() {}
+
+    open fun useLazyLoad(): Boolean = true
     open fun isUseEventBus(): Boolean = false
+
+    open fun init() {}
+    open fun reConnect() {}
+
 
 }

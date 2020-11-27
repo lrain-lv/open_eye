@@ -26,6 +26,7 @@ abstract class BaseActivity : SupportActivity() {
 
     private val receiver = NetworkChangeReceiver()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityUtils.addActivityLifecycleCallbacks(this, Utils.ActivityLifecycleCallbacks())
@@ -36,7 +37,9 @@ abstract class BaseActivity : SupportActivity() {
         if (isUseEventBus()) {
             EventBus.getDefault().register(this)
         }
-        initPresenter()
+        if (!isVM()) {
+            initPresenter()
+        }
         initView()
         initData()
     }
@@ -76,6 +79,5 @@ abstract class BaseActivity : SupportActivity() {
     abstract fun initData()
     open fun reConnect() {}
     open fun isUseEventBus(): Boolean = false
-
-
+    open fun isVM(): Boolean = false
 }

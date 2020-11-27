@@ -1,11 +1,17 @@
 package com.app.eye.ui.fragment
 
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.http.mvvm.Result
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.DiscoverAdapter
@@ -13,15 +19,18 @@ import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 import com.app.eye.ui.mvp.model.entity.Item
 import com.app.eye.ui.mvp.presenter.FindPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.FindViewModel
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
 import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_find.*
+import org.w3c.dom.Entity
 
-class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(),
-    FindContract.View, SwipeRefreshLayout.OnRefreshListener {
+class FindFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
         @JvmStatic
@@ -29,8 +38,14 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             FindFragment().apply {}
     }
 
-    override fun getLayoutRes(): Int = R.layout.fragment_find
+    private val viewModel: FindViewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getFindVMFactory()
+        ).get(FindViewModel::class.java)
+    }
 
+    override fun getLayoutRes(): Int = R.layout.fragment_find
     private lateinit var discoverAdapter: DiscoverAdapter
     override fun initView() {
         initSwipeRefreshLayout(refresh_layout)
@@ -46,10 +61,12 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
                     VideoDetailActivity.startActivity(item.data.id.toString())
                 }
                 Item.DISCOVER_BRIEF_CARD -> {
-                    TagVideoActivity.startActivity(item.data.id.toString(),
+                    TagVideoActivity.startActivity(
+                        item.data.id.toString(),
                         item.data.title,
                         item.data.icon,
-                        item.data.description)
+                        item.data.description
+                    )
                 }
             }
         }
@@ -78,8 +95,10 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
                             )
                         }
                         else -> {
-                            CategoryActivity.startActivity(header!!.title,
-                                if (actionUrl.contains("categories")) 0 else 1)
+                            CategoryActivity.startActivity(
+                                header!!.title,
+                                if (actionUrl.contains("categories")) 0 else 1
+                            )
                         }
                     }
                 }
@@ -92,7 +111,8 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             override fun onChildViewDetachedFromWindow(view: View) {
                 val jzvd: Jzvd? = view.findViewById(R.id.jzvd)
                 if (jzvd != null && Jzvd.CURRENT_JZVD != null && jzvd.jzDataSource.containsTheUrl(
-                        Jzvd.CURRENT_JZVD.jzDataSource.currentUrl)
+                        Jzvd.CURRENT_JZVD.jzDataSource.currentUrl
+                    )
                 ) {
                     if (Jzvd.CURRENT_JZVD != null && (Jzvd.CURRENT_JZVD.screen != Jzvd.SCREEN_FULLSCREEN)) {
                         Jzvd.releaseAllVideos()
@@ -101,28 +121,35 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
             }
         })
         recycler_view.addOnScrollListener(AutoPlayScrollListener())
-//        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!_mActivity.isFinishing) {
-//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                        Glide.with(_mActivity)
-//                            .resumeRequests()
-//                    } else {
-//                        Glide.with(_mActivity)
-//                            .pauseRequests()
-//                    }
-//                }
-//            }
-//        })
     }
 
+    override fun startObserver() {
+        viewModel.paramData.observe(viewLifecycleOwner, Observer {
+            if (it is Result.Success) {
+                val entity = it.data
+                if (entity.itemList.isEmpty()) {
+                    status_view.showEmptyView()
+                } else {
+                    status_view.showContentView()
+                    discoverAdapter.setList(entity.itemList)
+                    discoverAdapter.loadMoreModule.loadMoreEnd(gone = false)
+                }
+            } else {
+                status_view.showEmptyView()
+            }
+        })
+
+        viewModel.isRefresh.observe(viewLifecycleOwner, Observer {
+            refresh_layout.isRefreshing = it
+        })
+    }
 
     override fun initData() {
         if (!NetworkUtils.isConnected()) {
             status_view.showNoNetworkView()
         } else {
             status_view.showLoadingView()
-            recycler_view.post { mPresenter?.getDiscoveryData() }
+            recycler_view.post { viewModel.refresh(true) }
         }
     }
 
@@ -132,36 +159,20 @@ class FindFragment : BaseMvpFragment<FindContract.Presenter, FindContract.View>(
     }
 
     override fun onRefresh() {
-        refresh_layout.isRefreshing = true
-        mPresenter?.getDiscoveryData()
-    }
-
-    override fun createPresenter(): FindContract.Presenter? = FindPresenter()
-
-
-    override fun setResponse(discoverEntity: DiscoverEntity) {
-        if (discoverEntity.itemList.isEmpty()) {
-            status_view.showEmptyView()
-        } else {
-            status_view.showContentView()
-            discoverAdapter.setList(discoverEntity.itemList)
-            discoverAdapter.loadMoreModule.loadMoreEnd(gone = false)
-            discoverAdapter.banner.addBannerLifecycleObserver(this)
-        }
+        viewModel.refresh()
     }
 
     override fun showLoading() {
     }
 
     override fun hideLoading() {
-        status_view.showContentView()
-        refresh_layout.isRefreshing = false
+
     }
 
     override fun reConnect() {
         if (status_view.getViewStatus() == STATUS_NO_NETWORK) {
             status_view.showLoadingView()
-            mPresenter?.getDiscoveryData()
+            viewModel.refresh()
         }
     }
 

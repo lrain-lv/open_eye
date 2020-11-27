@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'koin'
 def ext = rootProject.ext
 
 android {
@@ -65,15 +66,13 @@ dependencies {
     implementation ext.dependencies.immersionbar
     implementation ext.dependencies.logging_interceptor
     implementation ext.dependencies.rxandroid
-//    implementation ext.dependencies.autosize
-
     implementation ext.dependencies.fragmentationx
     implementation ext.dependencies.eventbus
     implementation ext.dependencies.utilCode
     implementation ext.dependencies.FlycoTabLayout
 //    implementation ext.dependencies.itemdecoration
     implementation ext.dependencies.banner
-    implementation ext.dependencies.rxpermissions
+    implementation ext.dependencies.easypermissions
     implementation ext.dependencies.agentweb
     implementation ext.dependencies.material
     implementation ext.dependencies.matisse
@@ -81,6 +80,14 @@ dependencies {
     implementation ext.dependencies.viewpager2
     implementation ext.dependencies.gpuimage
     implementation ext.dependencies.lottie
+    implementation ext.dependencies.viewmodel
+    implementation ext.dependencies.livedata
+    implementation ext.dependencies.extensions
+    implementation ext.dependencies.coroutines_core
+    implementation ext.dependencies.coroutines_android
+    implementation ext.dependencies.koin_scope
+    implementation ext.dependencies.koin_viewmodel
+    implementation ext.dependencies.koin_ext
     implementation 'com.squareup.leakcanary:leakcanary-android:2.5'
 //    implementation (ext.dependencies.vlayout ){
 //        transitive = true

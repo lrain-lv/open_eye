@@ -2,10 +2,14 @@ package com.app.eye.ui.fragment
 
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.http.mvvm.Result
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.CategoryActivity
@@ -16,16 +20,18 @@ import com.app.eye.ui.mvp.contract.DailyContract
 import com.app.eye.ui.mvp.model.entity.DailyEntity
 import com.app.eye.ui.mvp.model.entity.ItemDaily
 import com.app.eye.ui.mvp.presenter.DailyPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.DailyViewModel
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.blankj.utilcode.util.NetworkUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_daily.*
 
-class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.View>(),
-    DailyContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
-    OnItemClickListener {
+class DailyFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
+    OnItemClickListener, OnItemChildClickListener {
 
     companion object {
         @JvmStatic
@@ -33,8 +39,46 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
     }
 
     private lateinit var dailyAdapter: DailyAdapter
+    private val viewModel by lazy {
+        ViewModelProvider(this, InjectorUtil.getDailyVMFactory()).get(
+            DailyViewModel::class.java
+        )
+    }
 
     override fun getLayoutRes(): Int = R.layout.fragment_daily
+    override fun startObserver() {
+        viewModel.isRefresh.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.paramData.observe(this, Observer {
+            if (it is Result.Success) {
+                status_view.showContentView()
+                val entity = it.data
+                entity.itemList.isEmpty() ?: status_view.showEmptyView()
+                nextPage = entity.nextPageUrl
+                if (isRefresh) {
+                    dailyAdapter.loadMoreModule.isEnableLoadMore = true
+                    if (TextUtils.isEmpty(nextPage)) {
+                        dailyAdapter.loadMoreModule.loadMoreEnd()
+                    }
+                    dailyAdapter.setList(entity.itemList)
+                } else {
+                    dailyAdapter.loadMoreModule.isEnableLoadMore = true
+                    if (TextUtils.isEmpty(nextPage)) {
+                        dailyAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        dailyAdapter.loadMoreModule.loadMoreComplete()
+                    }
+                    dailyAdapter.addData(entity.itemList)
+                }
+                refresh_layout.isEnabled = true
+            } else {
+                if (isRefresh) {
+                    status_view.showErrorView()
+                }
+            }
+        })
+    }
 
     private var isRefresh: Boolean = true
 
@@ -46,32 +90,13 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
         dailyAdapter = DailyAdapter(mutableListOf())
         recycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler.adapter = dailyAdapter
-        dailyAdapter.loadMoreModule.setOnLoadMoreListener(this)
-        dailyAdapter.loadMoreModule.isEnableLoadMore = false
-        dailyAdapter.addChildClickViewIds(R.id.tv_right_text)
-        dailyAdapter.setOnItemChildClickListener { adapter, view, position ->
-            when (view.id) {
-                R.id.tv_right_text -> {
-                    if (dailyAdapter.getItem(position).data.actionUrl?.contains("common")!!) {
-                        CategoryActivity.startActivity("全部资讯", 2)
-                    }
-                }
-            }
+        dailyAdapter.apply {
+            loadMoreModule.setOnLoadMoreListener(this@DailyFragment)
+            loadMoreModule.isEnableLoadMore = false
+            addChildClickViewIds(R.id.tv_right_text)
+            setOnItemChildClickListener(this@DailyFragment)
+            setOnItemClickListener(this@DailyFragment)
         }
-        dailyAdapter.setOnItemClickListener(this)
-//        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!_mActivity.isFinishing) {
-//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                        Glide.with(_mActivity)
-//                            .resumeRequests()
-//                    } else {
-//                        Glide.with(_mActivity)
-//                            .pauseRequests()
-//                    }
-//                }
-//            }
-//        })
     }
 
     override fun initData() {
@@ -79,59 +104,28 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
             status_view.showNoNetworkView()
         } else {
             status_view.showLoadingView()
-            recycler.post { mPresenter?.getDailyData(isRefresh) }
+            recycler.post { viewModel.refresh(mapOf(), true) }
         }
-    }
-
-    override fun createPresenter(): DailyContract.Presenter? = DailyPresenter()
-
-    override fun setDailyEntity(entity: DailyEntity?) {
-        entity ?: status_view.showErrorView()
-        entity?.itemList?.isEmpty() ?: status_view.showEmptyView()
-        nextPage = entity?.nextPageUrl
-        if (isRefresh) {
-            dailyAdapter.loadMoreModule.isEnableLoadMore = true
-            if (TextUtils.isEmpty(nextPage)) {
-                dailyAdapter.loadMoreModule.loadMoreEnd()
-            }
-            dailyAdapter.setList(entity?.itemList)
-        } else {
-            dailyAdapter.loadMoreModule.isEnableLoadMore = true
-            if (TextUtils.isEmpty(nextPage)) {
-                dailyAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                dailyAdapter.loadMoreModule.loadMoreComplete()
-            }
-            dailyAdapter.addData(entity?.itemList!!)
-        }
-        refresh_layout.isEnabled = true
-    }
-
-    override fun showLoading() {
-    }
-
-    override fun hideLoading() {
-        status_view.showContentView()
-        refresh_layout.isRefreshing = false
     }
 
     override fun useLazyLoad(): Boolean = true
+
     override fun reConnect() {
         if (status_view.getViewStatus() == STATUS_NO_NETWORK) {
             status_view.showLoadingView()
-            mPresenter?.getDailyData(true)
+            recycler.post { viewModel.refresh(mapOf()) }
         }
     }
 
     override fun onRefresh() {
         isRefresh = true
-        mPresenter?.getDailyData()
+        recycler.post { viewModel.refresh(mapOf()) }
     }
 
     override fun onLoadMore() {
         isRefresh = false
         refresh_layout.isEnabled = false
-        mPresenter?.getDailyData(isRefresh, nextPage!!.urlToMap())
+        recycler.post { viewModel.loadMore(nextPage!!.urlToMap()) }
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
@@ -146,6 +140,16 @@ class DailyFragment : BaseMvpFragment<DailyContract.Presenter, DailyContract.Vie
                     url = actionUrl!!.actionUrlToMap()["url"] ?: error(""),
                     title = actionUrl.actionUrlToMap()["title"] ?: error("")
                 )
+            }
+        }
+    }
+
+    override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        when (view.id) {
+            R.id.tv_right_text -> {
+                if (dailyAdapter.getItem(position).data.actionUrl?.contains("common")!!) {
+                    CategoryActivity.startActivity("全部资讯", 2)
+                }
             }
         }
     }

@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.rx.*
 import com.app.eye.ui.activity.LightTopicActivity
+import com.app.eye.ui.activity.MainActivity
 import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.activity.WebActivity
+import com.app.eye.ui.fragment.FindFragment
 import com.app.eye.ui.mvp.model.entity.DataX
 import com.app.eye.ui.mvp.model.entity.Item
 import com.app.eye.ui.mvp.model.entity.Item.Companion.DISCOVER_AUTO_PLAY
@@ -30,6 +32,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.orhanobut.logger.Logger
 import com.youth.banner.Banner
 import kotlinx.android.synthetic.main.jz_layout_std.view.*
 import java.util.*
@@ -38,7 +41,7 @@ import java.util.*
 class DiscoverAdapter(var datas: MutableList<Item>) :
     BaseMultiItemQuickAdapter<Item, BaseViewHolder>(datas), LoadMoreModule {
 
-    lateinit var banner: Banner<ItemX, BannerItemAdapter>
+    var banner: Banner<ItemX, BannerItemAdapter>? = null
 
     init {
         addItemType(DISCOVER_BANNER, R.layout.layout_discover_banner)
@@ -68,14 +71,15 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 player.setUp(detail.url, "")
             }
             DISCOVER_BANNER -> {
+                Logger.e("ddd1")
                 banner = holder.getView(R.id.banner)
                 val adapter = BannerItemAdapter(mutableListOf())
-                banner.apply {
+                banner!!.apply {
                     setAdapter(adapter)
                     setBannerGalleryEffect(10, 6, 1f)
                     setScrollTime(1000)
                 }
-                banner.setOnBannerListener { _, position ->
+                banner!!.setOnBannerListener { _, position ->
                     val itemX = adapter.getData(position)
                     val actionUrl = itemX.data.actionUrl
                     if (actionUrl.contains("webview")) {
@@ -87,6 +91,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                         ToastUtils.showShort(actionUrl)
                     }
                 }
+                banner!!.addBannerLifecycleObserver(context as MainActivity)
                 if (TextUtils.equals("banner", item.type)) {
                     val itemX = ItemX(
                         DataX(
@@ -122,7 +127,8 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                             id,
                             item.data.title,
                             item.data.image,
-                            item.data.description ?: "")
+                            item.data.description ?: ""
+                        )
                     }
                 }
                 squareRecycler.setHasFixedSize(true)

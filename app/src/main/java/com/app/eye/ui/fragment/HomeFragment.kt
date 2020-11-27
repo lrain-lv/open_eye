@@ -31,7 +31,7 @@ class HomeFragment : BaseFragment(), ViewPager.OnPageChangeListener {
         }
         tab_layout.apply {
             setViewPager(view_pager)
-            currentTab = 1
+            currentTab = 0
         }
         view_pager.addOnPageChangeListener(this)
         setOnClickListener(iv_search, iv_nav_card) {

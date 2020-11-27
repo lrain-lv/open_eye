@@ -23,7 +23,6 @@ class BadgeActivity : BaseMvpActivity<MineContract.Presenter, MineContract.View>
     private val medalAdapter = MedalAdapter(mutableListOf())
 
     override fun getLayoutRes(): Int = R.layout.activity_badge
-
     override fun initView() {
         immersionBar.statusBarColor(R.color.white)
             .statusBarDarkFont(true)
