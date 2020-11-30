@@ -3,23 +3,36 @@ package com.app.eye.ui.fragment
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.RankAdapter
 import com.app.eye.ui.mvp.contract.RankContract
 import com.app.eye.ui.mvp.model.entity.RankEntity
 import com.app.eye.ui.mvp.presenter.RankPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.RankViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import kotlinx.android.synthetic.main.fragment_push.*
 import kotlinx.android.synthetic.main.fragment_rank_list.*
+import kotlinx.android.synthetic.main.fragment_rank_list.recycler_view
+import kotlinx.android.synthetic.main.fragment_rank_list.refresh_layout
+import kotlinx.android.synthetic.main.fragment_rank_list.status_view
 
-class RankListFragment : BaseMvpFragment<RankContract.Presenter, RankContract.View>(),
-    RankContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
+class RankListFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
     OnItemClickListener {
     private var type: Int = 0
 
@@ -33,6 +46,11 @@ class RankListFragment : BaseMvpFragment<RankContract.Presenter, RankContract.Vi
             }
     }
 
+    private val viewModel by lazy {
+        ViewModelProvider(this, InjectorUtil.getRankVMFactory()).get(
+            RankViewModel::class.java
+        )
+    }
     private var nextPageUrl: String? = ""
 
     private var isRefresh: Boolean = true
@@ -70,31 +88,51 @@ class RankListFragment : BaseMvpFragment<RankContract.Presenter, RankContract.Vi
         isRefresh = true
         status_view.showLoadingView()
         refresh_layout.post {
-            mPresenter?.getRankRequest(
-                type, hashMapOf()
-            )
+            viewModel.onRefresh(type, hashMapOf(), isFirst = true)
         }
     }
 
-    override fun createPresenter(): RankContract.Presenter? = RankPresenter()
-
-    override fun setRankResponse(type: Int, data: RankEntity?) {
-        data ?: status_view.showEmptyView()
-        nextPageUrl = data?.nextPageUrl
-        if (isRefresh) {
-            rankAdapter.loadMoreModule.isEnableLoadMore = true
-            rankAdapter.setList(data?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) rankAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            rankAdapter.loadMoreModule.isEnableLoadMore = true
-            rankAdapter.addData(data?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                rankAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                rankAdapter.loadMoreModule.loadMoreComplete()
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
             }
-        }
-        refresh_layout.isEnabled = true
+        })
+        viewModel.entityLiveData.observe(this, Observer {
+            it.checkSuccess({ data ->
+                nextPageUrl = data.nextPageUrl
+                if (isRefresh) {
+                    rankAdapter.loadMoreModule.isEnableLoadMore = true
+                    rankAdapter.setList(data.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) rankAdapter.loadMoreModule.loadMoreEnd()
+                } else {
+                    rankAdapter.loadMoreModule.isEnableLoadMore = true
+                    rankAdapter.addData(data.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) {
+                        rankAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        rankAdapter.loadMoreModule.loadMoreComplete()
+                    }
+                }
+                refresh_layout.isEnabled = true
+            }, {
+                status_view.showErrorView()
+            })
+        })
     }
 
     override fun hideLoading() {
@@ -105,9 +143,7 @@ class RankListFragment : BaseMvpFragment<RankContract.Presenter, RankContract.Vi
     override fun onRefresh() {
         rankAdapter.loadMoreModule.isEnableLoadMore = false
         isRefresh = true
-        mPresenter?.getRankRequest(
-            type, hashMapOf()
-        )
+        viewModel.onRefresh(type, hashMapOf())
     }
 
     override fun onLoadMore() {
@@ -115,7 +151,7 @@ class RankListFragment : BaseMvpFragment<RankContract.Presenter, RankContract.Vi
             refresh_layout.isEnabled = false
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            mPresenter?.getRankRequest(type, map)
+            viewModel.onLoadMore(type, map)
         }
     }
 

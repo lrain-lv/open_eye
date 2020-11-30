@@ -6,18 +6,24 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.eye.R
 import com.app.eye.base.BaseActivity
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.http.RetrofitManager
 import com.app.eye.rx.SchedulerUtils
+import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.HotSearchAdapter
 import com.app.eye.ui.adapter.SearchAdapter
 import com.app.eye.ui.mvp.contract.SearchContract
 import com.app.eye.ui.mvp.model.entity.HotSearchEntity
 import com.app.eye.ui.mvp.model.entity.SearchEntity
 import com.app.eye.ui.mvp.presenter.SearchPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.SearchViewModel
 import com.blankj.utilcode.util.CacheDiskUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.TimeUtils
@@ -31,8 +37,8 @@ import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_search.*
 import java.util.concurrent.TimeUnit
 
-class SearchActivity : BaseMvpActivity<SearchContract.Presenter, SearchContract.View>(),
-    View.OnClickListener, SearchContract.View, TextWatcher, OnLoadMoreListener {
+class SearchActivity : BaseVMActivity(),
+    View.OnClickListener, TextWatcher, OnLoadMoreListener {
 
     private lateinit var hotSearchAdapter: HotSearchAdapter
     private lateinit var searchAdapter: SearchAdapter
@@ -40,6 +46,12 @@ class SearchActivity : BaseMvpActivity<SearchContract.Presenter, SearchContract.
     private var isFirst: Boolean = true
 
     private lateinit var originDataList: MutableList<HotSearchEntity>
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, InjectorUtil.getSearchVMFactory()).get(
+            SearchViewModel::class.java
+        )
+    }
 
     override fun getLayoutRes(): Int = R.layout.activity_search
 
@@ -71,7 +83,7 @@ class SearchActivity : BaseMvpActivity<SearchContract.Presenter, SearchContract.
                     KeyboardUtils.hideSoftInput(et_search)
                     status_view.showLoadingView()
                     iv_del.visibility = View.VISIBLE
-                    mPresenter?.doSearch(et_search.text.toString())
+                    viewModel.doSearch(et_search.text.toString())
                     isFirst = true
                 }
                 R.id.tv_del -> {
@@ -88,49 +100,42 @@ class SearchActivity : BaseMvpActivity<SearchContract.Presenter, SearchContract.
         status_view.showLoadingView()
         recycler_view.post {
             KeyboardUtils.showSoftInput(et_search)
-            mPresenter?.getHotData()
+            viewModel.getHotData()
         }
+    }
+
+    override fun startObserver() {
+        viewModel.hotLiveData.observe(this, Observer {
+            status_view.showContentView()
+            recycler_view.visibility = View.VISIBLE
+            recycler_view_result.visibility = View.GONE
+            originDataList = it
+            hotSearchAdapter.setList(it)
+        })
+        viewModel.preSearchLiveData.observe(this, Observer {
+            status_view.showContentView()
+            recycler_view.visibility = View.VISIBLE
+            recycler_view_result.visibility = View.GONE
+            if (it.isNotEmpty()) {
+                hotSearchAdapter.setList(it)
+            }
+        })
+        viewModel.searchEntityLiveData.observe(this, Observer {
+            it.checkSuccess({ searchEntity ->
+                status_view.showContentView()
+                searchAdapter.loadMoreModule.isEnableLoadMore = true
+                if (isFirst) {
+                    searchAdapter.setList(searchEntity.itemList)
+                    searchAdapter.loadMoreModule.loadMoreEnd()
+                }
+                recycler_view.visibility = View.GONE
+                recycler_view_result.visibility = View.VISIBLE
+            })
+        })
     }
 
     override fun reConnect() {
 
-    }
-
-    override fun createPresenter(): SearchContract.Presenter? = SearchPresenter()
-
-    override fun setHotSearchData(dataList: MutableList<HotSearchEntity>) {
-        status_view.showContentView()
-        recycler_view.visibility = View.VISIBLE
-        recycler_view_result.visibility = View.GONE
-        originDataList = dataList
-        hotSearchAdapter.setList(dataList)
-    }
-
-    override fun setPreSearchResult(dataList: MutableList<HotSearchEntity>) {
-        status_view.showContentView()
-        recycler_view.visibility = View.VISIBLE
-        recycler_view_result.visibility = View.GONE
-        if (dataList.isNotEmpty()) {
-            hotSearchAdapter.setList(dataList)
-        }
-    }
-
-    override fun setSearchResult(searchEntity: SearchEntity) {
-        et_search.addTextChangedListener(this)
-        status_view.showContentView()
-        searchAdapter.loadMoreModule.isEnableLoadMore = true
-        if (isFirst) {
-            searchAdapter.setList(searchEntity.itemList)
-            searchAdapter.loadMoreModule.loadMoreEnd()
-        }
-        recycler_view.visibility = View.GONE
-        recycler_view_result.visibility = View.VISIBLE
-    }
-
-    override fun showLoading() {
-    }
-
-    override fun hideLoading() {
     }
 
     override fun onClick(v: View?) {
@@ -155,7 +160,7 @@ class SearchActivity : BaseMvpActivity<SearchContract.Presenter, SearchContract.
             hotSearchAdapter.setList(originDataList)
             return
         }
-        mPresenter?.doPreSearchData(text)
+        viewModel.doPreSearchData(text)
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -169,6 +174,6 @@ class SearchActivity : BaseMvpActivity<SearchContract.Presenter, SearchContract.
 
     override fun onBackPressedSupport() {
         super.onBackPressedSupport()
-        overridePendingTransition(R.anim.top_slient,R.anim.out_from_top)
+        overridePendingTransition(R.anim.top_slient, R.anim.out_from_top)
     }
 }

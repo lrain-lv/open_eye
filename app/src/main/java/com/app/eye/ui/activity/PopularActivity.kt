@@ -10,7 +10,7 @@ import com.blankj.utilcode.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_rank_avtivity.*
 import me.yokeyword.fragmentation.SupportFragment
 
-class PopularActivity : BaseActivity() {
+class PopularActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     companion object {
         fun startActivity(id: String) {
@@ -39,21 +39,8 @@ class PopularActivity : BaseActivity() {
         view_pager.currentItem = 0
         tab_layout.setViewPager(view_pager)
         tab_layout.currentTab = 0
-        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
+        view_pager.addOnPageChangeListener(this)
 
-            override fun onPageSelected(position: Int) {
-                tab_layout.currentTab = position
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-        })
         tab_layout.getTitleView(0).paint.isFakeBoldText = true
     }
 
@@ -61,6 +48,20 @@ class PopularActivity : BaseActivity() {
     }
 
     override fun reConnect() {
+    }
+
+    override fun onPageScrolled(
+        position: Int,
+        positionOffset: Float,
+        positionOffsetPixels: Int
+    ) {
+    }
+
+    override fun onPageSelected(position: Int) {
+        tab_layout.currentTab = position
+    }
+
+    override fun onPageScrollStateChanged(state: Int) {
     }
 
 }

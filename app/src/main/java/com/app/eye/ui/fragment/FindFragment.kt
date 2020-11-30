@@ -11,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
-import com.app.eye.http.mvvm.Result
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.DiscoverAdapter
@@ -125,7 +125,7 @@ class FindFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun startObserver() {
         viewModel.paramData.observe(viewLifecycleOwner, Observer {
-            if (it is Result.Success) {
+            if (it is EyeResult.Success) {
                 val entity = it.data
                 if (entity.itemList.isEmpty()) {
                     status_view.showEmptyView()

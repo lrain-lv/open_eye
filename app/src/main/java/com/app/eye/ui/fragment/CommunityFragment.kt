@@ -4,7 +4,10 @@ import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
 import com.app.eye.ui.adapter.TabFragmentAdapter
+import kotlinx.android.synthetic.main.fragment_community.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.tab_layout
+import kotlinx.android.synthetic.main.fragment_home.view_pager
 import me.yokeyword.fragmentation.SupportFragment
 
 
@@ -37,9 +40,7 @@ class CommunityFragment : BaseFragment(), ViewPager.OnPageChangeListener {
     companion object {
         @JvmStatic
         fun newInstance() =
-            CommunityFragment().apply {
-
-            }
+            CommunityFragment()
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -50,5 +51,10 @@ class CommunityFragment : BaseFragment(), ViewPager.OnPageChangeListener {
     }
 
     override fun onPageScrollStateChanged(state: Int) {
+    }
+
+    override fun onDestroyView() {
+        view_pager.removeOnPageChangeListener(this)
+        super.onDestroyView()
     }
 }

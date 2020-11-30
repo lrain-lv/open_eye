@@ -4,22 +4,34 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.LightTopicAdapter
 import com.app.eye.ui.mvp.contract.LightTopicContract
 import com.app.eye.ui.mvp.model.entity.LightTopicInternalEntity
 import com.app.eye.ui.mvp.presenter.LightTopicPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.LightTopViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
 import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_light_topic_internal.*
+import kotlinx.android.synthetic.main.activity_light_topic_internal.recycler_view
+import kotlinx.android.synthetic.main.activity_light_topic_internal.status_view
+import kotlinx.android.synthetic.main.fragment_push.*
 
-class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTopicContract.View>(),
-    LightTopicContract.View {
+class LightTopicActivity : BaseVMActivity() {
 
     companion object {
         fun startActivity(title: String, id: Int) {
@@ -29,6 +41,13 @@ class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTo
             }
             ActivityUtils.startActivity(bundle, LightTopicActivity::class.java)
         }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getLightTopVMFactory()
+        ).get(LightTopViewModel::class.java)
     }
 
     private val title: String by lazy { intent.extras?.getString("title", "")!! }
@@ -66,7 +85,8 @@ class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTo
             override fun onChildViewDetachedFromWindow(view: View) {
                 val jzvd: Jzvd? = view.findViewById(R.id.jzvd)
                 if (jzvd != null && Jzvd.CURRENT_JZVD != null && jzvd.jzDataSource.containsTheUrl(
-                        Jzvd.CURRENT_JZVD.jzDataSource.currentUrl)
+                        Jzvd.CURRENT_JZVD.jzDataSource.currentUrl
+                    )
                 ) {
                     if (Jzvd.CURRENT_JZVD != null && (Jzvd.CURRENT_JZVD.screen != Jzvd.SCREEN_FULLSCREEN)) {
                         Jzvd.releaseAllVideos()
@@ -78,9 +98,11 @@ class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTo
     }
 
     private fun initHeaderView() {
-        headerView = layoutInflater.inflate(R.layout.layout_light_topic_header,
+        headerView = layoutInflater.inflate(
+            R.layout.layout_light_topic_header,
             recycler_view,
-            false)
+            false
+        )
         imgBg = headerView.findViewById<ImageView>(R.id.iv_bg)
         tvTitleSm = headerView.findViewById<TextView>(R.id.tv_title_sm)
         tvDec = headerView.findViewById<TextView>(R.id.tv_dec)
@@ -88,7 +110,7 @@ class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTo
 
     override fun initData() {
         recycler_view.post {
-            mPresenter?.getLightTopicRequest(id)
+            viewModel.onRefresh(id, isFirst = true)
         }
     }
 
@@ -107,20 +129,35 @@ class LightTopicActivity : BaseMvpActivity<LightTopicContract.Presenter, LightTo
     override fun reConnect() {
     }
 
-    override fun createPresenter(): LightTopicContract.Presenter? = LightTopicPresenter()
+    override fun startObserver() {
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
+            }
+        })
 
-    override fun setLightTopicResponse(entity: LightTopicInternalEntity?) {
-        entity ?: status_view.showEmptyView()
-        imgBg.loadImageCommon(mContext, entity?.headerImage)
-        tvDec.text = entity?.text
-        tvTitleSm.text = entity?.brief
-        adapter.setList(entity?.itemList)
-        adapter.loadMoreModule.isEnableLoadMore = true
-        adapter.loadMoreModule.loadMoreEnd()
+        viewModel.entityLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+                imgBg.loadImageCommon(mContext, entity.headerImage)
+                tvDec.text = entity.text
+                tvTitleSm.text = entity.brief
+                adapter.setList(entity.itemList)
+                adapter.loadMoreModule.isEnableLoadMore = true
+                adapter.loadMoreModule.loadMoreEnd()
+            }, onError = {
+                status_view.showErrorView()
+            })
+        })
     }
-
-    override fun hideLoading() {
-        status_view.showContentView()
-    }
-
 }

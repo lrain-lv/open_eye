@@ -8,11 +8,15 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.getAgentWeb
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageCommon
@@ -22,6 +26,12 @@ import com.app.eye.ui.mvp.contract.BrandWallContract
 import com.app.eye.ui.mvp.model.entity.BrandListItemX
 import com.app.eye.ui.mvp.model.entity.BrandWallEntity
 import com.app.eye.ui.mvp.presenter.BrandWallPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.SpanUtils
@@ -37,8 +47,8 @@ import kotlinx.android.synthetic.main.activity_brand_wall.tv_title
 import kotlinx.android.synthetic.main.layout_brand_detail_header.*
 import kotlinx.android.synthetic.main.layout_brand_detail_header.view
 
-class BrandDetailActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWallContract.View>(),
-    BrandWallContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
+class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener,
+    OnLoadMoreListener {
 
 
     companion object {
@@ -48,6 +58,13 @@ class BrandDetailActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWa
             }
             ActivityUtils.startActivity(bundle, BrandDetailActivity::class.java)
         }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getBrandWallVMFactory()
+        ).get(BrandWallViewModel::class.java)
     }
 
     private var isRefresh = true
@@ -133,92 +150,108 @@ class BrandDetailActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWa
             "page_type" to "card"
         )
         recycler_view.post {
-            status_view.showLoadingView()
-            mPresenter?.getRequest(map, true)
+            viewModel.onRefresh(map, isFirst = true)
         }
     }
 
-    override fun createPresenter(): BrandWallContract.Presenter? = BrandWallPresenter()
-
-    override fun setBrandWallData(entity: BrandWallEntity?) {
-        if (null == entity || !StringUtils.equals("0", entity.code)) {
-            status_view.showEmptyView()
-            return
-        }
-        if (isRefresh) {
-            brandAdapter.loadMoreModule.isEnableLoadMore = true
-            val cardList = entity.result.card_list
-            cardList.forEachIndexed { index, brandCard ->
-                val type = brandCard.type
-                when {
-                    index == 0 -> {
-                        val brandMetro = brandCard.card_data.body.metro_list[0]
-                        val metroData = brandMetro.metro_data
-                        tvTitle.text = metroData.title
-                        tvContent.text = metroData.desc
-                        metroData.tags.forEach {
-                            tvTag.append("${it.title} ")
-                        }
-                        img.loadImageCommon(this@BrandDetailActivity, metroData.background.url)
-                        imgIcon.loadImageCircle(this@BrandDetailActivity, metroData.avatar.url, 80f)
-                    }
-                    index == 1 -> {
-                        val cardData = brandCard.card_data
-                        val header = cardData.header
-                        val brandLeft = header.left[0]
-                        val create = SpanUtils.with(tvText)
-                            .append(brandLeft.metro_data.text)
-                            .setBold()
-                            .setForegroundColor(Color.BLACK)
-                            .setFontSize(18, true)
-                            .append(" ")
-                            .append(brandLeft.metro_data.subtitle)
-                            .setFontSize(14, true)
-                            .setForegroundColor(Color.GRAY)
-                            .create()
-                        tvText.text = create
-                        val metroList = cardData.body.metro_list
-                        brandAdapter.setList(metroList)
-                    }
-                    StringUtils.equals("call_metro_list", type) -> {
-                        val apiRequest = brandCard.card_data.body.api_request
-                        paramsMap["type"] = apiRequest.params.type
-                        paramsMap["last_item_id"] = apiRequest.params.last_item_id
-                        paramsMap["num"] = apiRequest.params.num.toString()
-                        paramsMap["card"] = apiRequest.params.card
-                        paramsMap["card_index"] = apiRequest.params.card_index.toString()
-                        paramsMap["material_index"] = apiRequest.params.material_index.toString()
-                        paramsMap["material_relative_index"] =
-                            apiRequest.params.material_relative_index.toString()
-                        paramsMap["start_last_item_id"] = apiRequest.params.start_last_item_id
-                        paramsMap["related_tag_id"] = apiRequest.params.related_tag_id.toString()
-                    }
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
                 }
             }
-        } else {
-            brandAdapter.loadMoreModule.isEnableLoadMore = true
-            val lastItemId = entity.result.last_item_id
-            paramsMap["last_item_id"] = lastItemId ?: ""
-            brandAdapter.addData(entity.result.item_list)
-            if (entity.result.last_item_id.isNullOrEmpty()) {
-                brandAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                brandAdapter.loadMoreModule.loadMoreComplete()
-            }
-        }
-        refresh_layout.isEnabled = true
-    }
-
-    override fun setBrandListData(
-        list: MutableList<BrandListItemX>,
-        indexList: MutableList<String>
-    ) {
-    }
-
-    override fun hideLoading() {
-        super.hideLoading()
-        refresh_layout.isRefreshing = false
-        status_view.showContentView()
+        })
+        viewModel.brandWallLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+                if (isRefresh) {
+                    brandAdapter.loadMoreModule.isEnableLoadMore = true
+                    val cardList = entity.result.card_list
+                    cardList.forEachIndexed { index, brandCard ->
+                        val type = brandCard.type
+                        when {
+                            index == 0 -> {
+                                val brandMetro = brandCard.card_data.body.metro_list[0]
+                                val metroData = brandMetro.metro_data
+                                tvTitle.text = metroData.title
+                                tvContent.text = metroData.desc
+                                metroData.tags.forEach {
+                                    tvTag.append("${it.title} ")
+                                }
+                                img.loadImageCommon(
+                                    this@BrandDetailActivity,
+                                    metroData.background.url
+                                )
+                                imgIcon.loadImageCircle(
+                                    this@BrandDetailActivity,
+                                    metroData.avatar.url,
+                                    80f
+                                )
+                            }
+                            index == 1 -> {
+                                val cardData = brandCard.card_data
+                                val header = cardData.header
+                                val brandLeft = header.left[0]
+                                val create = SpanUtils.with(tvText)
+                                    .append(brandLeft.metro_data.text)
+                                    .setBold()
+                                    .setForegroundColor(Color.BLACK)
+                                    .setFontSize(18, true)
+                                    .append(" ")
+                                    .append(brandLeft.metro_data.subtitle)
+                                    .setFontSize(14, true)
+                                    .setForegroundColor(Color.GRAY)
+                                    .create()
+                                tvText.text = create
+                                val metroList = cardData.body.metro_list
+                                brandAdapter.setList(metroList)
+                            }
+                            StringUtils.equals("call_metro_list", type) -> {
+                                val apiRequest = brandCard.card_data.body.api_request
+                                paramsMap["type"] = apiRequest.params.type
+                                paramsMap["last_item_id"] = apiRequest.params.last_item_id
+                                paramsMap["num"] = apiRequest.params.num.toString()
+                                paramsMap["card"] = apiRequest.params.card
+                                paramsMap["card_index"] = apiRequest.params.card_index.toString()
+                                paramsMap["material_index"] =
+                                    apiRequest.params.material_index.toString()
+                                paramsMap["material_relative_index"] =
+                                    apiRequest.params.material_relative_index.toString()
+                                paramsMap["start_last_item_id"] =
+                                    apiRequest.params.start_last_item_id
+                                paramsMap["related_tag_id"] =
+                                    apiRequest.params.related_tag_id.toString()
+                            }
+                        }
+                    }
+                } else {
+                    brandAdapter.loadMoreModule.isEnableLoadMore = true
+                    val lastItemId = entity.result.last_item_id
+                    paramsMap["last_item_id"] = lastItemId ?: ""
+                    brandAdapter.addData(entity.result.item_list)
+                    if (entity.result.last_item_id.isNullOrEmpty()) {
+                        brandAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        brandAdapter.loadMoreModule.loadMoreComplete()
+                    }
+                }
+                refresh_layout.isEnabled = true
+            }, onError = {
+                status_view.showErrorView()
+            })
+        })
     }
 
     override fun onRefresh() {
@@ -229,12 +262,12 @@ class BrandDetailActivity : BaseMvpActivity<BrandWallContract.Presenter, BrandWa
             "resource_id" to id,
             "page_type" to "card"
         )
-        mPresenter?.getRequest(map, true)
+        viewModel.onRefresh(map, isFirst = true)
     }
 
     override fun onLoadMore() {
         isRefresh = false
         refresh_layout.isEnabled = false
-        mPresenter?.getRequest(paramsMap, false)
+        viewModel.onLoadMore(paramsMap)
     }
 }

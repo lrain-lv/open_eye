@@ -2,11 +2,15 @@ package com.app.eye.ui.fragment
 
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.event.LoginEvent
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.LoginActivity
@@ -16,17 +20,26 @@ import com.app.eye.ui.mvp.model.entity.MessageEntity
 import com.app.eye.ui.mvp.model.entity.PushEntity
 import com.app.eye.ui.mvp.model.entity.RecFriendEntity
 import com.app.eye.ui.mvp.presenter.PushPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.MessageViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SPUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_message.*
+import kotlinx.android.synthetic.main.fragment_message.recycler_view
+import kotlinx.android.synthetic.main.fragment_message.refresh_layout
+import kotlinx.android.synthetic.main.fragment_message.status_view
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class MessageFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(),
-    PushContract.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,
+class MessageFragment : BaseVMFragment(), View.OnClickListener,
+    SwipeRefreshLayout.OnRefreshListener,
     OnLoadMoreListener, OnItemClickListener {
 
     companion object {
@@ -34,6 +47,12 @@ class MessageFragment : BaseMvpFragment<PushContract.Presenter, PushContract.Vie
         fun newInstance() =
             MessageFragment().apply {
             }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, InjectorUtil.getMessageVMFactory()).get(
+            MessageViewModel::class.java
+        )
     }
 
     private val isLogin: Boolean by lazy {
@@ -47,6 +66,7 @@ class MessageFragment : BaseMvpFragment<PushContract.Presenter, PushContract.Vie
     private var isRefresh: Boolean = true
 
     override fun getLayoutRes(): Int = R.layout.fragment_message
+
 
     override fun reConnect() {
     }
@@ -71,45 +91,53 @@ class MessageFragment : BaseMvpFragment<PushContract.Presenter, PushContract.Vie
     override fun initData() {
         if (isLogin) {
             refresh_layout.post {
-                mPresenter?.getPrivateMsgRequest(hashMapOf())
+                viewModel.onRefresh(hashMapOf(), isFirst = true)
             }
         }
     }
 
-
-    override fun createPresenter(): PushContract.Presenter? = PushPresenter()
-
-    override fun setPushResponse(pushEntity: PushEntity?) {
-    }
-
-    override fun setPrivateMsgResponse(entity: MessageEntity?) {
-        entity ?: status_view.showEmptyView()
-        nextPageUrl = entity?.nextPageUrl
-        if (isRefresh) {
-            msgAdapter.loadMoreModule.isEnableLoadMore = true
-            msgAdapter.setList(entity?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) msgAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            msgAdapter.loadMoreModule.isEnableLoadMore = true
-            msgAdapter.addData(entity?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                msgAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                msgAdapter.loadMoreModule.loadMoreComplete()
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
             }
-        }
-        refresh_layout.isEnabled = true
+        })
+        viewModel.entityLiveData.observe(this, Observer {
+            if (it is EyeResult.Success) {
+                val entity = it.data
+                nextPageUrl = entity.nextPageUrl
+                if (isRefresh) {
+                    msgAdapter.loadMoreModule.isEnableLoadMore = true
+                    msgAdapter.setList(entity.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) msgAdapter.loadMoreModule.loadMoreEnd()
+                } else {
+                    msgAdapter.loadMoreModule.isEnableLoadMore = true
+                    msgAdapter.addData(entity.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) {
+                        msgAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        msgAdapter.loadMoreModule.loadMoreComplete()
+                    }
+                }
+                refresh_layout.isEnabled = true
+            }
+        })
     }
 
-    override fun setRecFriendResponse(entity: RecFriendEntity?) {
-
-
-    }
-
-    override fun hideLoading() {
-        refresh_layout.isRefreshing = false
-        status_view.showContentView()
-    }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
@@ -127,7 +155,7 @@ class MessageFragment : BaseMvpFragment<PushContract.Presenter, PushContract.Vie
             layout_login.visibility = View.GONE
             status_view.showLoadingView()
             isRefresh = true
-            mPresenter?.getPrivateMsgRequest(hashMapOf())
+            viewModel.onRefresh(hashMapOf())
         } else {
             layout_login.visibility = View.VISIBLE
         }
@@ -136,7 +164,7 @@ class MessageFragment : BaseMvpFragment<PushContract.Presenter, PushContract.Vie
     override fun onRefresh() {
         msgAdapter.loadMoreModule.isEnableLoadMore = false
         isRefresh = true
-        mPresenter?.getPrivateMsgRequest(hashMapOf())
+        viewModel.onRefresh(hashMapOf())
     }
 
     override fun onLoadMore() {
@@ -144,7 +172,7 @@ class MessageFragment : BaseMvpFragment<PushContract.Presenter, PushContract.Vie
             refresh_layout.isEnabled = false
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            mPresenter?.getPrivateMsgRequest(map)
+            viewModel.onLoadMore(map)
         }
     }
 

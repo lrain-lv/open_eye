@@ -9,7 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
-import com.app.eye.http.mvvm.Result
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.CategoryActivity
@@ -51,7 +51,7 @@ class DailyFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, On
             refresh_layout.isRefreshing = it
         })
         viewModel.paramData.observe(this, Observer {
-            if (it is Result.Success) {
+            if (it is EyeResult.Success) {
                 status_view.showContentView()
                 val entity = it.data
                 entity.itemList.isEmpty() ?: status_view.showEmptyView()

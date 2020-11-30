@@ -1,12 +1,17 @@
 package com.app.eye.ui.fragment
 
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.event.ChangeTabEvent
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
+import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.PushMessageAdapter
 import com.app.eye.ui.mvp.contract.PushContract
@@ -14,20 +19,29 @@ import com.app.eye.ui.mvp.model.entity.MessageEntity
 import com.app.eye.ui.mvp.model.entity.PushEntity
 import com.app.eye.ui.mvp.model.entity.RecFriendEntity
 import com.app.eye.ui.mvp.presenter.PushPresenter
-import com.app.eye.widgets.MultipleStatusView
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.PushViewModel
+import com.app.eye.widgets.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_push.*
 import org.greenrobot.eventbus.EventBus
+import javax.xml.transform.Result
 
-class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(),
-    PushContract.View, OnItemClickListener, OnLoadMoreListener,
+class PushFragment : BaseVMFragment(),
+    OnItemClickListener, OnLoadMoreListener,
     SwipeRefreshLayout.OnRefreshListener,
     MultipleStatusView.OnRetryClickListener {
 
+    private val viewModel by lazy {
+        ViewModelProvider(this, InjectorUtil.getPushVMFactory()).get(
+            PushViewModel::class.java
+        )
+    }
 
-    private lateinit var pushMessageAdapter: PushMessageAdapter
+    private val pushMessageAdapter: PushMessageAdapter =
+        PushMessageAdapter(mutableListOf())
 
     private var map = hashMapOf<String, String>()
 
@@ -44,7 +58,6 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
     override fun initView() {
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
-        pushMessageAdapter = PushMessageAdapter(mutableListOf())
         pushMessageAdapter.setOnItemClickListener(this)
         status_view.setOnRetryClickListener(this)
         pushMessageAdapter.loadMoreModule.setOnLoadMoreListener(this)
@@ -52,19 +65,50 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
         recycler_view.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler_view.adapter = pushMessageAdapter
-//        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (!_mActivity.isFinishing) {
-//                    if (newState == RecyclerView.SCROLL_STATE_IDLE || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-//                        Glide.with(_mActivity)
-//                            .resumeRequests()
-//                    } else {
-//                        Glide.with(_mActivity)
-//                            .pauseRequests()
-//                    }
-//                }
-//            }
-//        })
+
+    }
+
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
+            }
+        })
+        viewModel.entityLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+                when (isRefresh) {
+                    true -> {
+                        pushMessageAdapter.loadMoreModule.isEnableLoadMore =
+                            true
+                        pushMessageAdapter.setList(entity.messageList)
+                    }
+                    false -> {
+                        pushMessageAdapter.loadMoreModule.isEnableLoadMore =
+                            true
+                        pushMessageAdapter.addData(entity.messageList)
+                        if (entity.nextPageUrl.isNullOrEmpty()) pushMessageAdapter.loadMoreModule.loadMoreEnd()
+                        else pushMessageAdapter.loadMoreModule.loadMoreComplete()
+                    }
+                }
+                refresh_layout.isEnabled = true
+            },onError = {
+                status_view.showErrorView()
+            })
+        })
     }
 
     override fun initData() {
@@ -74,7 +118,7 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
             start = 0
             map["start"] = start.toString()
             map["num"] = "10"
-            mPresenter?.getPushRequest(map)
+            viewModel.onRefresh(map, true)
         }
     }
 
@@ -85,39 +129,8 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
             }
     }
 
-    override fun createPresenter(): PushContract.Presenter? = PushPresenter()
-    override fun setPushResponse(pushEntity: PushEntity?) {
-        pushEntity ?: status_view.showEmptyView()
-
-        when (isRefresh) {
-            true -> {
-                pushMessageAdapter.loadMoreModule.isEnableLoadMore =
-                    true
-                pushMessageAdapter.setList(pushEntity?.messageList)
-            }
-            false -> {
-                pushMessageAdapter.loadMoreModule.isEnableLoadMore =
-                    true
-                pushMessageAdapter.addData(pushEntity?.messageList!!)
-                if (pushEntity.nextPageUrl.isNullOrEmpty()) pushMessageAdapter.loadMoreModule.loadMoreEnd()
-                else pushMessageAdapter.loadMoreModule.loadMoreComplete()
-            }
-        }
-        refresh_layout.isEnabled = true
-    }
-
-    override fun setPrivateMsgResponse(entity: MessageEntity?) {
-
-    }
-
-    override fun setRecFriendResponse(entity: RecFriendEntity?) {
-
-
-    }
-
     override fun showLoading() {
     }
-
 
     override fun hideLoading() {
         status_view.showContentView()
@@ -142,7 +155,7 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
         start += 10
         map["start"] = start.toString()
         map["num"] = "10"
-        mPresenter?.getPushRequest(map)
+        viewModel.onLoadMore(map)
     }
 
     override fun onRefresh() {
@@ -151,7 +164,7 @@ class PushFragment : BaseMvpFragment<PushContract.Presenter, PushContract.View>(
         start = 0
         map["start"] = start.toString()
         map["num"] = "10"
-        mPresenter?.getPushRequest(map)
+        viewModel.onRefresh(map)
     }
 
 

@@ -10,7 +10,7 @@ import com.app.eye.R
 import com.app.eye.base.BaseActivity
 import com.app.eye.http.RetrofitManager
 import com.app.eye.http.mvvm.ApiService
-import com.app.eye.http.mvvm.Result
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.rx.SchedulerUtils
 import com.app.eye.rx.setOnClickListener
@@ -50,24 +50,24 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
         immersionBar.hideBar(BarHide.FLAG_HIDE_BAR).init()
         job = GlobalScope.launch(Dispatchers.IO) {
             val result = ServiceHelper.getInstance().getConfigs()
-            if (result is Result.Success) {
+            if (result is EyeResult.Success) {
                 SPUtils.getInstance("eye").put("splash", result.data.startPageAd.imageUrl)
             }
-        }
-        if (EasyPermissions.hasPermissions(this, *perms)) {
-            init()
-        } else {
-            EasyPermissions.requestPermissions(this, "必要的权限~", 1000, *perms)
         }
         setOnClickListener(tv_skip) {
             ActivityUtils.startActivity(MainActivity::class.java)
             finish()
         }
+        if (EasyPermissions.hasPermissions(this, *perms)) {
+            init()
+        } else {
+            EasyPermissions.requestPermissions(this, "运行APP需要申请响应的权限", 1000, *perms)
+        }
+
     }
 
     private lateinit var subscribe: Disposable
     private fun init() {
-
         subscribe = Observable.intervalRange(0, 4, 0, 1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {

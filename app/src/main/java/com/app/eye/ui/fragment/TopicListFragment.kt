@@ -2,9 +2,13 @@ package com.app.eye.ui.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.TopicDetailActivity
 import com.app.eye.ui.adapter.TopicListAdapter
@@ -13,14 +17,20 @@ import com.app.eye.ui.mvp.model.entity.TabChildEntity
 import com.app.eye.ui.mvp.model.entity.TagTabEntity
 import com.app.eye.ui.mvp.model.entity.TopicListEntity
 import com.app.eye.ui.mvp.presenter.TopicPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.orhanobut.logger.Logger
+import kotlinx.android.synthetic.main.fragment_push.*
 import kotlinx.android.synthetic.main.fragment_rec.refresh_layout
 import kotlinx.android.synthetic.main.fragment_rec.status_view
 import kotlinx.android.synthetic.main.fragment_topic_square_child.*
 
-class TopicListFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact.View>(),
-    TopicContact.View,
+class TopicListFragment : BaseVMFragment(),
     SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
 
     companion object {
@@ -33,19 +43,18 @@ class TopicListFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact.V
             }
     }
 
+    private val viewModel by lazy {
+        ViewModelProvider(this, InjectorUtil.getTopicVMFactory()).get(
+            TopicViewModel::class.java
+        )
+    }
+
     private var nextPageUrl: String? = ""
 
     private lateinit var topicListAdapter: TopicListAdapter
 
     private var isRefresh: Boolean = true
 
-    override fun showLoading() {
-    }
-
-    override fun hideLoading() {
-        refresh_layout.isRefreshing = false
-        status_view.showContentView()
-    }
 
     override fun getLayoutRes(): Int = R.layout.fragment_topic_list
 
@@ -74,46 +83,58 @@ class TopicListFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact.V
         isRefresh = true
         status_view.showLoadingView()
         refresh_layout.post {
-            mPresenter?.getTopicListRequest(
-                hashMapOf()
-            )
+            viewModel.getTopicList(hashMapOf(), isFirst = true, isLoadMore = false)
         }
     }
 
-    override fun setTabResponse(data: TagTabEntity?) {
-    }
-
-    override fun setTabChildResponse(data: TabChildEntity?) {
-    }
-
-    override fun setTopicListResponse(data: TopicListEntity?) {
-        data ?: status_view.showEmptyView()
-        nextPageUrl = data?.nextPageUrl
-        Logger.e("ddd$nextPageUrl")
-        if (isRefresh) {
-            topicListAdapter.loadMoreModule.isEnableLoadMore = true
-            topicListAdapter.setList(data?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) topicListAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            topicListAdapter.loadMoreModule.isEnableLoadMore = true
-            topicListAdapter.addData(data?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                topicListAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                topicListAdapter.loadMoreModule.loadMoreComplete()
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
             }
-        }
-        refresh_layout.isEnabled = true
-    }
+        })
 
-    override fun createPresenter(): TopicContact.Presenter? = TopicPresenter()
+        viewModel.topicListLiveData.observe(this, Observer {
+            it.checkSuccess({ data ->
+                nextPageUrl = data.nextPageUrl
+                if (isRefresh) {
+                    topicListAdapter.loadMoreModule.isEnableLoadMore = true
+                    topicListAdapter.setList(data.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) topicListAdapter.loadMoreModule.loadMoreEnd()
+                } else {
+                    topicListAdapter.loadMoreModule.isEnableLoadMore = true
+                    topicListAdapter.addData(data.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) {
+                        topicListAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        topicListAdapter.loadMoreModule.loadMoreComplete()
+                    }
+                }
+                refresh_layout.isEnabled = true
+            }, onError = {
+                status_view.showErrorView()
+            })
+        })
+    }
 
     override fun onRefresh() {
         topicListAdapter.loadMoreModule.isEnableLoadMore = false
         isRefresh = true
-        mPresenter?.getTopicListRequest(
-            hashMapOf()
-        )
+        viewModel.getTopicList(hashMapOf(), isFirst = false, isLoadMore = false)
     }
 
     override fun onLoadMore() {
@@ -121,7 +142,7 @@ class TopicListFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact.V
             refresh_layout.isEnabled = false
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            mPresenter?.getTopicListRequest(map)
+            viewModel.getTopicList(map, isFirst = false, isLoadMore = true)
         }
     }
 }

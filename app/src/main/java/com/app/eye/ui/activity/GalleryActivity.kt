@@ -6,25 +6,30 @@ import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.event.callback.OnItemClickCallback
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.GalleryAdapter
 import com.app.eye.ui.mvp.contract.CommunityContract
 import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
 import com.app.eye.ui.mvp.model.entity.ComRecEntity
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
+import com.app.eye.ui.mvvm.viewmodel.GalleryViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_gallery.*
 
 
-class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityContract.View>(),
-    View.OnClickListener,
-    OnItemClickCallback, CommunityContract.View {
+class GalleryActivity : BaseVMActivity(), View.OnClickListener, OnItemClickCallback {
 
     companion object {
         fun startGalleryActivity(data: ComRecEntity, pos: Int) {
@@ -32,12 +37,22 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
                 putSerializable("data", data)
                 putInt("pos", pos)
             }
-            ActivityUtils.startActivity(bundle,
+            ActivityUtils.startActivity(
+                bundle,
                 GalleryActivity::class.java,
                 R.anim.in_from_bottom,
-                R.anim.top_slient)
+                R.anim.top_slient
+            )
         }
     }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getGalleryVMFactory()
+        ).get(GalleryViewModel::class.java)
+    }
+
 
     private lateinit var data: ComRecEntity
     private lateinit var galleryAdapter: GalleryAdapter
@@ -76,7 +91,7 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
         tv_content.movementMethod = object : ScrollingMovementMethod() {}
         view_pager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
-                Logger.e("ddd--onPageScrollStateChanged")
+
                 if (state == ViewPager2.SCROLL_STATE_IDLE && isPageSelected) {
                     Glide.with(this@GalleryActivity).resumeRequests()
                     updateView()
@@ -84,7 +99,7 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
                     isPageSelected = false
                     if (data.itemList.size - currentPos <= 2) {
                         val map = data.nextPageUrl?.urlToMap() as HashMap<String, String>
-                        mPresenter?.getRecRequest(false, map)
+                        viewModel.onLoadMore(map)
                     }
                 }
             }
@@ -96,7 +111,7 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
             ) {
                 stopAnim()
                 Glide.with(this@GalleryActivity).pauseRequests()
-                Logger.e("ddd--onPageScrolled")
+
                 if (defaultIndex == position && positionOffsetPixels == 0) {
                     //进入页面后，调用setCurrentItem函数，手动触发onPageScrollStateChanged函数。
                     onPageScrollStateChanged(ViewPager2.SCROLL_STATE_IDLE)
@@ -105,7 +120,7 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
             }
 
             override fun onPageSelected(position: Int) {
-                Logger.e("ddd--onPageSelected$position")
+
                 isPageSelected = true
                 currentPos = position
             }
@@ -173,14 +188,14 @@ class GalleryActivity : BaseMvpActivity<CommunityContract.Presenter, CommunityCo
             if (layout.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
-    override fun createPresenter(): CommunityContract.Presenter? = CommunityPresenter()
-
-    override fun setComRecResponse(comRecEntity: ComRecEntity?) {
-        galleryAdapter.addData(comRecEntity?.itemList!!)
-        data.nextPageUrl = comRecEntity.nextPageUrl
+    override fun startObserver() {
+        viewModel.entityLiveData.observe(this, Observer {
+            it.checkSuccess({ comRecEntity ->
+                galleryAdapter.addData(comRecEntity.itemList)
+                data.nextPageUrl = comRecEntity.nextPageUrl
+            })
+        })
     }
 
-    override fun setComAttentionResponse(entity: ComAttentionEntity?) {
-    }
 
 }

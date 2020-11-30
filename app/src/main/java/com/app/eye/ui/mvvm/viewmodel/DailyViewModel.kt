@@ -2,13 +2,12 @@ package com.app.eye.ui.mvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
-import com.app.eye.http.mvvm.Result
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.ui.mvp.model.entity.DailyEntity
-import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 
 class DailyViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
-    var paramData = MutableLiveData<Result<DailyEntity>>()
+    var paramData = MutableLiveData<EyeResult<DailyEntity>>()
 
     var isRefresh = MutableLiveData<Boolean>()
 
@@ -26,5 +25,9 @@ class DailyViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel()
             val dailyEntity = serviceHelper.getDaily(map)
             paramData.value = dailyEntity
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

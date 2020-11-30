@@ -18,8 +18,14 @@ import com.orhanobut.logger.Logger
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_mine.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.concurrent.thread
+import kotlin.coroutines.coroutineContext
 
 class MineFragment : BaseFragment() {
 
@@ -29,24 +35,24 @@ class MineFragment : BaseFragment() {
     private lateinit var avatar: String
     private lateinit var nick: String
 
+    private val spUtils: SPUtils by lazy { SPUtils.getInstance("eye") }
+
     override fun initView() {
         initListener()
-        Observable.just(SPUtils.getInstance("eye"))
-            .map {
-                avatar = it.getString("avatar", "")
-                nick = it.getString("nick", "")
-                ""
+        GlobalScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.IO) {
+                avatar = spUtils.getString("avatar", "")
+                nick = spUtils.getString("nick", "")
             }
-            .compose(SchedulerUtils.ioToMain())
-            .subscribe {
-                Glide.with(mContext)
-                    .load(avatar)
-                    .error(R.mipmap.pgc_default_avatar)
-                    .circleCrop()
-                    .override(SizeUtils.dp2px(80f), SizeUtils.dp2px(80f))
-                    .into(iv_header)
-                tv_login.text = if (nick.isNotEmpty()) nick else "点击登录即可评论及发布内容"
-            }
+            Glide.with(mContext)
+                .load(avatar)
+                .error(R.mipmap.pgc_default_avatar)
+                .circleCrop()
+                .override(SizeUtils.dp2px(80f), SizeUtils.dp2px(80f))
+                .into(iv_header)
+            tv_login.text = if (nick.isNotEmpty()) nick else "点击登录即可评论及发布内容"
+        }
+
         tv_version.text = "Version ${AppUtils.getAppVersionName()}"
     }
 
@@ -88,17 +94,13 @@ class MineFragment : BaseFragment() {
         avatar = loginEntity.member?.avatar!!
         nick = loginEntity.member.nick
         iv_header.loadImageCircle(mContext, loginEntity.member.avatar, 80f)
-        tv_login.text = loginEntity.member?.nick
-        Logger.e(loginEntity.member?.avatar + loginEntity.member?.nick)
-        Observable.just(loginEntity)
-            .observeOn(Schedulers.io())
-            .subscribe {
-                SPUtils.getInstance("eye").put("isLogin", true)
-                SPUtils.getInstance("eye")
-                    .put("avatar", loginEntity.member?.avatar)
-                SPUtils.getInstance("eye")
-                    .put("nick", loginEntity.member?.nick)
-            }
+        tv_login.text = loginEntity.member.nick
+        Logger.e(loginEntity.member.avatar + loginEntity.member.nick)
+        GlobalScope.launch(Dispatchers.IO) {
+            spUtils.put("isLogin", true)
+            spUtils.put("avatar", loginEntity.member.avatar)
+            spUtils.put("nick", loginEntity.member.nick)
+        }
     }
 
 

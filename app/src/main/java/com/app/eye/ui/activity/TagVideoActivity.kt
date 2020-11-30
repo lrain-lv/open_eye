@@ -3,9 +3,13 @@ package com.app.eye.ui.activity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.TopicFragmentAdapter
 import com.app.eye.ui.fragment.TagDynamicFragment
@@ -14,6 +18,8 @@ import com.app.eye.ui.mvp.contract.TagVideoContract
 import com.app.eye.ui.mvp.model.entity.TagIndexEntity
 import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import com.app.eye.ui.mvp.presenter.TagVideoPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.appbar.AppBarLayout
@@ -21,8 +27,8 @@ import kotlinx.android.synthetic.main.activity_tag_video.*
 import me.yokeyword.fragmentation.SupportFragment
 import kotlin.math.abs
 
-class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoContract.View>(),
-    TagVideoContract.View, AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+class TagVideoActivity : BaseVMActivity(), AppBarLayout.OnOffsetChangedListener,
+    View.OnClickListener {
 
     companion object {
         fun startActivity(id: String, title: String, icon: String, dec: String) {
@@ -34,6 +40,13 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
             }
             ActivityUtils.startActivity(bundle, TagVideoActivity::class.java)
         }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getTagDynamicVMFactory()
+        ).get(TagVideoViewModel::class.java)
     }
 
     private val fragmentList = mutableListOf<SupportFragment>()
@@ -98,33 +111,25 @@ class TagVideoActivity : BaseMvpActivity<TagVideoContract.Presenter, TagVideoCon
 
     override fun initData() {
         tv_follow_count.post {
-            mPresenter?.getTagIndexRequest(id)
+            viewModel.getTagIndex(id)
         }
     }
 
+    override fun startObserver() {
+        viewModel.indexEntityLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+                tv_follow_count.text =
+                    "${entity.tagInfo.tagFollowCount}人关注 / ${entity!!.tagInfo.lookCount}人参与"
+                tv_title_big.text = entity.tagInfo.name
+                tv_title.text = entity.tagInfo.name
+                tv_dec.text = entity.tagInfo.description
+                iv_bg.loadImageCommon(mContext, entity.tagInfo.bgPicture)
+
+            })
+        })
+    }
+
     override fun reConnect() {
-    }
-
-    override fun createPresenter(): TagVideoContract.Presenter? = TagVideoPresenter()
-
-    override fun setTagIndexResponse(entity: TagIndexEntity?) {
-        entity ?: onBackPressedSupport()
-        tv_follow_count.text =
-            "${entity!!.tagInfo.tagFollowCount}人关注 / ${entity!!.tagInfo.lookCount}人参与"
-        tv_title_big.text = entity.tagInfo.name
-        tv_title.text = entity.tagInfo.name
-        tv_dec.text = entity.tagInfo.description
-        iv_bg.loadImageCommon(mContext, entity.tagInfo.bgPicture)
-    }
-
-    override fun setTagVideoResponse(entity: TagVideoEntity?) {
-
-    }
-
-    override fun setTagDynamicResponse(entity: TagVideoEntity?) {
-    }
-
-    override fun hideLoading() {
     }
 
     override fun onDestroy() {

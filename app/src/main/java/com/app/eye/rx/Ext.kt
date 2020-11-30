@@ -7,6 +7,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.ui.mvp.model.entity.BrandApiRequest
 import com.blankj.utilcode.util.EncodeUtils
 import com.blankj.utilcode.util.GsonUtils
@@ -74,4 +75,15 @@ fun String.actionUrlToRequest(): BrandApiRequest {
 
 fun setOnClickListener(vararg v: View?, block: View.() -> Unit) {
     v.forEach { it?.setOnClickListener(block) }
+}
+
+fun <T : Any> EyeResult<T>.checkSuccess(
+    onSuccess: (T) -> Unit,
+    onError: ((String?) -> Unit)? = null
+) {
+    if (this is EyeResult.Success) {
+        onSuccess(this.data)
+    } else {
+        onError?.let { it }
+    }
 }

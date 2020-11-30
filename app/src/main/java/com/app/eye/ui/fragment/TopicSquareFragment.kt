@@ -1,28 +1,40 @@
 package com.app.eye.ui.fragment
 
 import android.app.Activity
+import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.TabFragmentAdapter
 import com.app.eye.ui.mvp.contract.TopicContact
 import com.app.eye.ui.mvp.model.entity.TabChildEntity
 import com.app.eye.ui.mvp.model.entity.TagTabEntity
 import com.app.eye.ui.mvp.model.entity.TopicListEntity
 import com.app.eye.ui.mvp.presenter.TopicPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
 import com.blankj.utilcode.util.ActivityUtils
+import kotlinx.android.synthetic.main.fragment_rec.*
 import kotlinx.android.synthetic.main.fragment_topic_square.*
 import me.yokeyword.fragmentation.SupportFragment
 
-class TopicSquareFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact.View>(),
-    TopicContact.View, ViewPager.OnPageChangeListener {
+class TopicSquareFragment : BaseVMFragment(), ViewPager.OnPageChangeListener {
 
     companion object {
         @JvmStatic
         fun newInstance() = TopicSquareFragment()
     }
 
+    private val viewModel by lazy {
+        ViewModelProvider(this, InjectorUtil.getTopicVMFactory()).get(
+            TopicViewModel::class.java
+        )
+    }
     private var titles: MutableList<String> = mutableListOf()
     private var fragments: MutableList<SupportFragment> = mutableListOf()
 
@@ -39,43 +51,33 @@ class TopicSquareFragment : BaseMvpFragment<TopicContact.Presenter, TopicContact
 
     override fun initData() {
         tab_layout.post {
-            mPresenter?.getTabRequest()
+            viewModel.getTab()
         }
     }
 
-    override fun createPresenter(): TopicContact.Presenter? = TopicPresenter()
-
-    override fun setTabResponse(data: TagTabEntity?) {
-        data ?: ActivityUtils.finishActivity(mContext as Activity)
-        tab_layout.visibility = View.VISIBLE
-        val tabList = data!!.tabInfo.tabList
-        tabList.forEach {
-            titles.add(it.name)
-            fragments.add(TopicSquareChildFragment.newInstance(id = it.id))
-        }
-        tabFragmentAdapter = TabFragmentAdapter(childFragmentManager, fragments, titles)
-        view_pager.adapter = tabFragmentAdapter
-        tab_layout.setViewPager(view_pager)
-        tab_layout.currentTab = 0
-        tab_layout.getTitleView(0).paint.isFakeBoldText = true
-        view_pager.offscreenPageLimit = fragments.size
-        view_pager.addOnPageChangeListener(this)
-    }
-
-    override fun setTabChildResponse(data: TabChildEntity?) {
-    }
-
-    override fun setTopicListResponse(data: TopicListEntity?) {
-    }
-
-    override fun showLoading() {
-    }
-
-    override fun hideLoading() {
+    override fun startObserver() {
+        viewModel.tabLiveData.observe(this, Observer {
+            it.checkSuccess({ data ->
+                tab_layout.visibility = View.VISIBLE
+                val tabList = data.tabInfo.tabList
+                tabList.forEach { tab ->
+                    titles.add(tab.name)
+                    fragments.add(TopicSquareChildFragment.newInstance(id = tab.id))
+                }
+                tabFragmentAdapter = TabFragmentAdapter(childFragmentManager, fragments, titles)
+                view_pager.adapter = tabFragmentAdapter
+                tab_layout.setViewPager(view_pager)
+                tab_layout.currentTab = 0
+                tab_layout.getTitleView(0).paint.isFakeBoldText = true
+                view_pager.offscreenPageLimit = fragments.size
+                view_pager.addOnPageChangeListener(this)
+            }, onError = {
+                ActivityUtils.finishActivity(mContext as Activity)
+            })
+        })
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
     }
 
     override fun onPageSelected(position: Int) {

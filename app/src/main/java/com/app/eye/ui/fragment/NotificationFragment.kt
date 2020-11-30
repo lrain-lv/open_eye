@@ -10,7 +10,7 @@ import me.yokeyword.fragmentation.SupportFragment
 
 class NotificationFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
-    private val titleList = mutableListOf("推送","私信")
+    private val titleList = mutableListOf("推送", "私信")
     override fun getLayoutRes(): Int = R.layout.fragment_notification
 
     override fun initView() {
@@ -19,11 +19,13 @@ class NotificationFragment : BaseFragment(), ViewPager.OnPageChangeListener {
             add(MessageFragment.newInstance())
         }
         val fragmentAdapter = TabFragmentAdapter(childFragmentManager, fragmentList, titleList)
-        view_pager.offscreenPageLimit = fragmentList.size
-        view_pager.adapter = fragmentAdapter
+        view_pager.apply {
+            addOnPageChangeListener(this@NotificationFragment)
+            offscreenPageLimit = fragmentList.size
+            adapter = fragmentAdapter
+        }
         tab_layout.setViewPager(view_pager)
         tab_layout.currentTab = 0
-        view_pager.addOnPageChangeListener(this)
     }
 
 
@@ -33,9 +35,7 @@ class NotificationFragment : BaseFragment(), ViewPager.OnPageChangeListener {
     companion object {
         @JvmStatic
         fun newInstance() =
-            NotificationFragment().apply {
-
-            }
+            NotificationFragment()
     }
 
     override fun reConnect() {

@@ -2,13 +2,13 @@ package com.app.eye.ui.mvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
-import com.app.eye.http.mvvm.Result
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.ui.mvp.model.entity.HomeRecEntity
 
 class RecommendViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
 
-    var entityLiveData = MutableLiveData<Result<HomeRecEntity>>()
+    var entityLiveData = MutableLiveData<EyeResult<HomeRecEntity>>()
 
     var isRefresh = MutableLiveData<Boolean>()
 

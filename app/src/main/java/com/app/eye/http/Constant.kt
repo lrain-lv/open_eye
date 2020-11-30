@@ -8,10 +8,10 @@ object Constant {
 
     const val X_THEFAIR_APPID = "ahpagrcrf2p7m6rg"
     const val X_THEFAIR_AUTH =
-        "JtyvXLdqbcx2AWfX04C6XpCJMnq7zkCRSJn/0Fxx9TUMMUQrFPV+luSRZhMy/7HhDrnYR146S3LoEQlBzViRhQcPbnlKGtwcnLC3qdOnqpndZ5m9Hd6smCsT0VgBRsdTv1ON9ySY9ICo/8/2w+iG1c76AOGYZyifIT8DNNwM90EwDGa4uunqxYg7zLlbquGSMleDDDR5kMaK+ZqsxGLGsSYNRUoxIFVd3O7dlkfIvXq7liQT2BSQLIRM8h1HUeH0pa6BB+De9wtDfc4UZDiE+Q=="
-    const val X_THEFAIR_CID = "0bb34b4265e88268cc5187c593f7814e"
+        "Td6EyI0axFLyxoRC7S+NLXPV4/eHxNmHDilRdZBEgSs2yn8OoAfY4QiegC24PrfRyzxijX2MusS+QpZC03Jw2h4vDBCrIrW5bzZPYfU8h3Jgtl5gfeeOI+J3hvIxyeJur4/QOXk39AnooWQTkwW5kvVV6xaqlfNxfKJhye0MigVDhzVZD7J5Bt8c+Tl2PeQk+cRCSTwcjxZBTfGLdbEqOAh9zbM9vAOa/E5h+MDPd6LmEKGEsgLokx+EFZALF2px/FN4woOlF5/JaCPsWjvg9g=="
+    const val X_THEFAIR_CID = "033cb043aa2cb1b29b370d9783dc4821"
     const val X_THEFAIR_UA =
-        "EYEPETIZER/6040004 (ALP-AL00;android;10;zh_CN_#Hans;android;6.4.0;cn-bj;yingyongbao;0bb34b4265e88268cc5187c593f7814e;WIFI;1080*1920) native/1.0"
+        "EYEPETIZER/6040004 (ALP-AL00;android;10;zh_CN_#Hans;android;6.4.0;cn-bj;huawei;033cb043aa2cb1b29b370d9783dc4821;WIFI;1440*2560) native/1.0"
     const val x_api_key = "0530ee4341324ce2b26c23fcece80ea2"
 
     const val LOGIN = "v1/api/login"
@@ -46,7 +46,7 @@ object Constant {
     const val TAG_MEDALS =
         "api/v6/medal/tag/medals?uid=304200827&udid=b5aab67021c9477db32b8a3e5f587b72e9f8039d&vc=6040004&vn=6.4.0&size=1080X1920&deviceModel=ALP-AL00&first_channel=yingyongbao&last_channel=yingyongbao&system_version_code=29"
 
-    const val BRAND_LIST="v1/content/brand/get_all_brand_list"
+    const val BRAND_LIST = "v1/content/brand/get_all_brand_list"
 
     const val HOME_REC =
         "api/v5/index/tab/allRec?udid=7a5bd452383b40a1804972422eef008361cf87b8&vc=6030101&vn=6.3.10&size=1080X1920&deviceModel=ALP-AL00&first_channel=huawei&last_channel=huawei&system_version_code=29"

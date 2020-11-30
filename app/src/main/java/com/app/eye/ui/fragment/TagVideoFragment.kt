@@ -4,24 +4,33 @@ import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.PopularActivity
 import com.app.eye.ui.adapter.TagVideoAdapter
 import com.app.eye.ui.mvp.contract.TagVideoContract
 import com.app.eye.ui.mvp.model.entity.TagIndexEntity
 import com.app.eye.ui.mvp.presenter.TagVideoPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_tag_video.*
 
-class TagVideoFragment : BaseMvpFragment<TagVideoContract.Presenter, TagVideoContract.View>(),
-    TagVideoContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
+class TagVideoFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
     OnItemClickListener {
 
     companion object {
@@ -32,6 +41,13 @@ class TagVideoFragment : BaseMvpFragment<TagVideoContract.Presenter, TagVideoCon
                     putString("id", id)
                 }
             }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getTagDynamicVMFactory()
+        ).get(TagVideoViewModel::class.java)
     }
 
     override fun getLayoutRes(): Int = R.layout.fragment_tag_video
@@ -78,53 +94,58 @@ class TagVideoFragment : BaseMvpFragment<TagVideoContract.Presenter, TagVideoCon
 
     override fun initData() {
         isRefresh = true
-        status_view.showLoadingView()
         refresh_layout.post {
-            mPresenter?.getTagVideoRequest(
-                hashMapOf("id" to id)
-            )
+            viewModel.onRefresh(0, hashMapOf("id" to id), isFirst = true)
         }
     }
 
-    override fun createPresenter(): TagVideoContract.Presenter? = TagVideoPresenter()
-
-    override fun setTagIndexResponse(entity: TagIndexEntity?) {
-    }
-
-    override fun setTagVideoResponse(entity: TagVideoEntity?) {
-
-        entity ?: status_view.showEmptyView()
-        nextPageUrl = entity?.nextPageUrl
-        if (isRefresh) {
-            tagVideoAdapter.loadMoreModule.isEnableLoadMore = true
-            tagVideoAdapter.setList(entity?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) tagVideoAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            tagVideoAdapter.loadMoreModule.isEnableLoadMore = true
-            tagVideoAdapter.addData(entity?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                tagVideoAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                tagVideoAdapter.loadMoreModule.loadMoreComplete()
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
             }
-        }
-        refresh_layout.isEnabled = true
-    }
-
-    override fun setTagDynamicResponse(entity: TagVideoEntity?) {
-    }
-
-    override fun hideLoading() {
-        refresh_layout.isRefreshing = false
-        status_view.showContentView()
+        })
+        viewModel.entityLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+                nextPageUrl = entity.nextPageUrl
+                if (isRefresh) {
+                    tagVideoAdapter.loadMoreModule.isEnableLoadMore = true
+                    tagVideoAdapter.setList(entity.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) tagVideoAdapter.loadMoreModule.loadMoreEnd()
+                } else {
+                    tagVideoAdapter.loadMoreModule.isEnableLoadMore = true
+                    tagVideoAdapter.addData(entity.itemList)
+                    if (TextUtils.isEmpty(nextPageUrl)) {
+                        tagVideoAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        tagVideoAdapter.loadMoreModule.loadMoreComplete()
+                    }
+                }
+                refresh_layout.isEnabled = true
+            }, {
+                status_view.showErrorView()
+            })
+        })
     }
 
     override fun onRefresh() {
         tagVideoAdapter.loadMoreModule.isEnableLoadMore = false
         isRefresh = true
-        mPresenter?.getTagVideoRequest(
-            hashMapOf("id" to id)
-        )
+        viewModel.onRefresh(0, hashMapOf("id" to id), isFirst = false)
     }
 
     override fun onLoadMore() {
@@ -132,7 +153,7 @@ class TagVideoFragment : BaseMvpFragment<TagVideoContract.Presenter, TagVideoCon
             refresh_layout.isEnabled = false
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            mPresenter?.getTagVideoRequest(map)
+            viewModel.onRefresh(0, map)
         }
     }
 

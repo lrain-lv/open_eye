@@ -2,24 +2,33 @@ package com.app.eye.ui.fragment
 
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.AttentionAdapter
 import com.app.eye.ui.mvp.contract.CommunityContract
 import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
 import com.app.eye.ui.mvp.model.entity.ComRecEntity
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
-import com.app.eye.widgets.MultipleStatusView
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
+import com.app.eye.widgets.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_com_attention.*
+import kotlinx.android.synthetic.main.fragment_com_attention.recycler_view
+import kotlinx.android.synthetic.main.fragment_com_attention.refresh_layout
+import kotlinx.android.synthetic.main.fragment_com_attention.status_view
+import kotlinx.android.synthetic.main.fragment_rec.*
 
-class ComAttentionFragment : BaseMvpFragment<CommunityContract.Presenter, CommunityContract.View>(),
-    CommunityContract.View, SwipeRefreshLayout.OnRefreshListener,
+class ComAttentionFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
     MultipleStatusView.OnRetryClickListener, OnLoadMoreListener, OnItemClickListener {
     companion object {
         @JvmStatic
@@ -29,6 +38,12 @@ class ComAttentionFragment : BaseMvpFragment<CommunityContract.Presenter, Commun
             }
     }
 
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getCommunityVMFactory()
+        ).get(CommunityViewModel::class.java)
+    }
     private var nextPageUrl: String? = ""
 
     private var isRefresh: Boolean = true
@@ -53,51 +68,65 @@ class ComAttentionFragment : BaseMvpFragment<CommunityContract.Presenter, Commun
         isRefresh = true
         status_view.showLoadingView()
         refresh_layout.post {
-            mPresenter?.getComAttentionRequest(
-                hashMapOf()
-            )
+            viewModel.onRefresh(1, hashMapOf(), isFirst = true)
         }
     }
 
-
-    override fun createPresenter(): CommunityContract.Presenter? = CommunityPresenter()
-
-    override fun setComRecResponse(comRecEntity: ComRecEntity?) {
-    }
-
-    override fun setComAttentionResponse(entity: ComAttentionEntity?) {
-        entity ?: status_view.showEmptyView()
-        nextPageUrl = entity?.nextPageUrl
-        if (isRefresh) {
-            attentionAdapter.loadMoreModule.isEnableLoadMore = true
-            attentionAdapter.setList(entity?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) attentionAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            attentionAdapter.loadMoreModule.isEnableLoadMore = true
-            attentionAdapter.addData(entity?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                attentionAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                attentionAdapter.loadMoreModule.loadMoreComplete()
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
             }
-        }
-        refresh_layout.isEnabled = true
-    }
-
-    override fun hideLoading() {
-        refresh_layout.isRefreshing = false
-        status_view.showContentView()
+        })
+        viewModel.comAttLiveData.observe(this, Observer {
+            it.checkSuccess(
+                onSuccess = { entity ->
+                    nextPageUrl = entity.nextPageUrl
+                    if (isRefresh) {
+                        attentionAdapter.loadMoreModule.isEnableLoadMore = true
+                        attentionAdapter.setList(entity.itemList)
+                        if (TextUtils.isEmpty(nextPageUrl)) attentionAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        attentionAdapter.loadMoreModule.isEnableLoadMore = true
+                        attentionAdapter.addData(entity.itemList)
+                        if (TextUtils.isEmpty(nextPageUrl)) {
+                            attentionAdapter.loadMoreModule.loadMoreEnd()
+                        } else {
+                            attentionAdapter.loadMoreModule.loadMoreComplete()
+                        }
+                    }
+                    refresh_layout.isEnabled = true
+                },
+                onError = { status_view.showErrorView() }
+            )
+        })
     }
 
     override fun onRefresh() {
         attentionAdapter.loadMoreModule.isEnableLoadMore = false
         isRefresh = true
-        mPresenter?.getComAttentionRequest(
-            hashMapOf()
-        )
+        viewModel.onRefresh(1, hashMapOf())
     }
 
     override fun onRetryClick() {
+        attentionAdapter.loadMoreModule.isEnableLoadMore = false
+        status_view.showLoadingView()
+        isRefresh = true
+        viewModel.onRefresh(1, hashMapOf())
     }
 
     override fun onLoadMore() {
@@ -105,7 +134,7 @@ class ComAttentionFragment : BaseMvpFragment<CommunityContract.Presenter, Commun
             refresh_layout.isEnabled = false
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            mPresenter?.getComAttentionRequest(map)
+            viewModel.onLoadMore(1, map)
         }
     }
 

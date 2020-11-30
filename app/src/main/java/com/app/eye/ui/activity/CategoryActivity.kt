@@ -2,11 +2,16 @@ package com.app.eye.ui.activity
 
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
+import com.app.eye.base.mvvm.BaseVMFragment
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.CategoryAdapter
@@ -19,18 +24,28 @@ import com.app.eye.ui.mvp.model.entity.InformationEntity
 import com.app.eye.ui.mvp.model.entity.RecFriendEntity
 import com.app.eye.ui.mvp.model.entity.SpecialTopicEntity
 import com.app.eye.ui.mvp.presenter.CategoryPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.CategoryViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_category.*
+import kotlinx.android.synthetic.main.activity_category.recycler_view
+import kotlinx.android.synthetic.main.activity_category.refresh_layout
+import kotlinx.android.synthetic.main.activity_category.status_view
+import kotlinx.android.synthetic.main.fragment_push.*
 
 /**
  * 分类 专题策划 全部资讯 发现好友
  */
-class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryContract.View>(),
-    CategoryContract.View, SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
+class CategoryActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener,
+    OnLoadMoreListener {
 
     companion object {
         fun startActivity(title: String, type: Int) {
@@ -40,6 +55,13 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
             }
             ActivityUtils.startActivity(bundle, CategoryActivity::class.java)
         }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getCategoryVMFactory()
+        ).get(CategoryViewModel::class.java)
     }
 
     private lateinit var title: String
@@ -56,6 +78,7 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
     private var isRefresh: Boolean = true
 
     override fun getLayoutRes(): Int = R.layout.activity_category
+
 
     override fun initView() {
         immersionBar.statusBarDarkFont(false).statusBarColor(R.color.black).init()
@@ -102,7 +125,8 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
                                 id,
                                 item.data.title,
                                 item.data.image,
-                                item.data.description ?: "")
+                                item.data.description ?: ""
+                            )
                         }
                     }
                 }
@@ -154,21 +178,120 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
 
     override fun initData() {
         recycler_view.post {
-            when (type) {
-                0 -> {
-                    mPresenter?.getCategoryRequest()
+            viewModel.onRefresh(type, hashMapOf(), isFirst = true)
+        }
+    }
+
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
                 }
-                1 -> {
-                    isRefresh = true
-                    mPresenter?.getSpecialTopicRequest(hashMapOf())
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
                 }
-                2 -> {
-                    isRefresh = true
-                    mPresenter?.getInformationRequest(hashMapOf())
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
                 }
-                3 -> {
-                    mPresenter?.getRecFriendRequest(hashMapOf())
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
                 }
+            }
+        })
+        when (type) {
+            0 -> {
+                viewModel.categoryLiveData.observe(this, Observer {
+                    if (it is EyeResult.Success) {
+                        categoryAdapter.loadMoreModule.isEnableLoadMore = true
+                        categoryAdapter.setList(it.data.itemList)
+                        categoryAdapter.loadMoreModule.loadMoreEnd()
+                    }
+                })
+            }
+            1 -> {
+                viewModel.specialTopicLiveData.observe(this, Observer {
+                    if (!isRefresh && it is EyeResult.Error) {
+                        specialTopicAdapter.loadMoreModule.isEnableLoadMore = true
+                        specialTopicAdapter.loadMoreModule.loadMoreFail()
+                        return@Observer
+                    }
+                    if (it is EyeResult.Success) {
+                        val data = it.data
+                        nextPageUrl = data.nextPageUrl
+                        if (isRefresh) {
+                            specialTopicAdapter.loadMoreModule.isEnableLoadMore = true
+                            specialTopicAdapter.setList(data.itemList)
+                            if (TextUtils.isEmpty(nextPageUrl)) specialTopicAdapter.loadMoreModule.loadMoreEnd()
+                        } else {
+                            specialTopicAdapter.loadMoreModule.isEnableLoadMore = true
+                            specialTopicAdapter.addData(data.itemList)
+                            if (TextUtils.isEmpty(nextPageUrl)) {
+                                specialTopicAdapter.loadMoreModule.loadMoreEnd()
+                            } else {
+                                specialTopicAdapter.loadMoreModule.loadMoreComplete()
+                            }
+                        }
+                        refresh_layout.isEnabled = true
+                    }
+                })
+            }
+            2 -> {
+                viewModel.informationLiveData.observe(this, Observer {
+                    if (!isRefresh && it is EyeResult.Error) {
+                        informationAdapter.loadMoreModule.isEnableLoadMore = true
+                        informationAdapter.loadMoreModule.loadMoreFail()
+                        return@Observer
+                    }
+                    if (it is EyeResult.Success) {
+                        val data = it.data
+                        nextPageUrl = data.nextPageUrl
+                        if (isRefresh) {
+                            informationAdapter.loadMoreModule.isEnableLoadMore = true
+                            informationAdapter.setList(data.itemList)
+                            if (TextUtils.isEmpty(nextPageUrl)) informationAdapter.loadMoreModule.loadMoreEnd()
+                        } else {
+                            informationAdapter.loadMoreModule.isEnableLoadMore = true
+                            informationAdapter.addData(data.itemList)
+                            if (TextUtils.isEmpty(nextPageUrl)) {
+                                informationAdapter.loadMoreModule.loadMoreEnd()
+                            } else {
+                                informationAdapter.loadMoreModule.loadMoreComplete()
+                            }
+                        }
+                        refresh_layout.isEnabled = true
+                    }
+                })
+            }
+            else -> {
+                viewModel.recFriendLiveData.observe(this, Observer {
+                    if (!isRefresh && it is EyeResult.Error) {
+                        specialTopicAdapter.loadMoreModule.isEnableLoadMore = true
+                        specialTopicAdapter.loadMoreModule.loadMoreFail()
+                        return@Observer
+                    }
+                    if (it is EyeResult.Success) {
+                        val entity = it.data
+                        nextPageUrl = entity.nextPageUrl
+                        if (isRefresh) {
+                            recFriendAdapter.loadMoreModule.isEnableLoadMore = true
+                            recFriendAdapter.setList(entity.itemList)
+                            if (TextUtils.isEmpty(nextPageUrl)) recFriendAdapter.loadMoreModule.loadMoreEnd()
+                        } else {
+                            recFriendAdapter.loadMoreModule.isEnableLoadMore = true
+                            recFriendAdapter.addData(entity.itemList)
+                            if (TextUtils.isEmpty(nextPageUrl)) {
+                                recFriendAdapter.loadMoreModule.loadMoreEnd()
+                            } else {
+                                recFriendAdapter.loadMoreModule.loadMoreComplete()
+                            }
+                        }
+                        refresh_layout.isEnabled = true
+                    }
+                })
             }
         }
     }
@@ -176,88 +299,8 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
     override fun reConnect() {
     }
 
-    override fun createPresenter(): CategoryContract.Presenter? = CategoryPresenter()
-
-    override fun setCategoryResponse(data: CategoryEntity?) {
-        data ?: status_view.showEmptyView()
-        categoryAdapter.loadMoreModule.isEnableLoadMore = true
-        categoryAdapter.setList(data?.itemList)
-        categoryAdapter.loadMoreModule.loadMoreEnd()
-    }
-
-    override fun setSpecialTopicResponse(data: SpecialTopicEntity?) {
-        data ?: status_view.showEmptyView()
-        nextPageUrl = data?.nextPageUrl
-        if (isRefresh) {
-            specialTopicAdapter.loadMoreModule.isEnableLoadMore = true
-            specialTopicAdapter.setList(data?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) specialTopicAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            specialTopicAdapter.loadMoreModule.isEnableLoadMore = true
-            specialTopicAdapter.addData(data?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                specialTopicAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                specialTopicAdapter.loadMoreModule.loadMoreComplete()
-            }
-        }
-        refresh_layout.isEnabled = true
-    }
-
-    override fun setInformationResponse(data: InformationEntity?) {
-        data ?: status_view.showEmptyView()
-        nextPageUrl = data?.nextPageUrl
-        if (isRefresh) {
-            informationAdapter.loadMoreModule.isEnableLoadMore = true
-            informationAdapter.setList(data?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) informationAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            informationAdapter.loadMoreModule.isEnableLoadMore = true
-            informationAdapter.addData(data?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                informationAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                informationAdapter.loadMoreModule.loadMoreComplete()
-            }
-        }
-        refresh_layout.isEnabled = true
-    }
-
-    override fun setRecFriendResponse(entity: RecFriendEntity?) {
-        entity ?: status_view.showEmptyView()
-        nextPageUrl = entity?.nextPageUrl
-        if (isRefresh) {
-            recFriendAdapter.loadMoreModule.isEnableLoadMore = true
-            recFriendAdapter.setList(entity?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) recFriendAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            recFriendAdapter.loadMoreModule.isEnableLoadMore = true
-            recFriendAdapter.addData(entity?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                recFriendAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                recFriendAdapter.loadMoreModule.loadMoreComplete()
-            }
-        }
-        refresh_layout.isEnabled = true
-    }
-
     override fun onRefresh() {
-        isRefresh = true
-        when (type) {
-            0 -> {
-                mPresenter?.getCategoryRequest()
-            }
-            1 -> {
-                mPresenter?.getSpecialTopicRequest(hashMapOf())
-            }
-            2 -> {
-                mPresenter?.getInformationRequest(hashMapOf())
-            }
-            3 -> {
-                mPresenter?.getRecFriendRequest(hashMapOf())
-            }
-        }
+        viewModel.onRefresh(type, hashMapOf())
     }
 
     override fun onLoadMore() {
@@ -266,25 +309,8 @@ class CategoryActivity : BaseMvpActivity<CategoryContract.Presenter, CategoryCon
             refresh_layout.isEnabled = false
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            when (type) {
-                1 -> {
-
-                    mPresenter?.getSpecialTopicRequest(map)
-                }
-                2 -> {
-                    mPresenter?.getInformationRequest(map)
-                }
-                3 -> {
-                    mPresenter?.getRecFriendRequest(map)
-                }
-            }
+            viewModel.onLoadMore(type, map)
         }
-
-    }
-
-    override fun hideLoading() {
-        status_view.showContentView()
-        refresh_layout.isRefreshing = false
     }
 
 }

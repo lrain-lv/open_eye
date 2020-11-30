@@ -11,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
-import com.app.eye.http.mvvm.Result
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.HomeRecAdapter
@@ -89,7 +89,7 @@ class RecommendFragment : BaseVMFragment(),
     }
     override fun startObserver() {
         viewModel.entityLiveData.observe(this, Observer {
-            if (it is Result.Success) {
+            if (it is EyeResult.Success) {
                 status_view.showContentView()
                 val entity = it.data
                 nextPageUrl = entity.nextPageUrl

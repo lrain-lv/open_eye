@@ -2,12 +2,12 @@ package com.app.eye.ui.mvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
-import com.app.eye.http.mvvm.Result
+import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.ui.mvp.model.entity.DiscoverEntity
 
 class FindViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
-    var paramData = MutableLiveData<Result<DiscoverEntity>>()
+    var paramData = MutableLiveData<EyeResult<DiscoverEntity>>()
 
 
     var isRefresh = MutableLiveData<Boolean>(false)
