@@ -1,30 +1,23 @@
 package com.app.eye.ui.activity
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
-import com.app.eye.rx.getAgentWeb
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.BrandWallAdapter
 import com.app.eye.ui.adapter.BrandWallHeaderAdapter
 import com.app.eye.ui.mvp.contract.BrandWallContract
-import com.app.eye.ui.mvp.model.entity.BrandListItemX
-import com.app.eye.ui.mvp.model.entity.BrandWallEntity
 import com.app.eye.ui.mvp.presenter.BrandWallPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
@@ -37,15 +30,10 @@ import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.SpanUtils
 import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_brand_detail.*
-import kotlinx.android.synthetic.main.activity_brand_wall.*
 import kotlinx.android.synthetic.main.activity_brand_wall.recycler_view
 import kotlinx.android.synthetic.main.activity_brand_wall.refresh_layout
 import kotlinx.android.synthetic.main.activity_brand_wall.status_view
-import kotlinx.android.synthetic.main.activity_brand_wall.tv_title
-import kotlinx.android.synthetic.main.layout_brand_detail_header.*
-import kotlinx.android.synthetic.main.layout_brand_detail_header.view
 
 class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener,
     OnLoadMoreListener {

@@ -1,6 +1,6 @@
 package com.app.eye.event
 
-import com.app.eye.ui.mvp.model.entity.LoginEntity
+import com.app.eye.ui.entity.LoginEntity
 
 data class LoginEvent(val isLogin: Boolean = true, val loginEntity: LoginEntity) {
     override fun toString(): String {

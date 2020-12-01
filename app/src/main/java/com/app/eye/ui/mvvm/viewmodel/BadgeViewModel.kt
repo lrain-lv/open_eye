@@ -4,9 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.ui.mvp.model.entity.BadgeEntity
-import com.app.eye.ui.mvp.model.entity.MessageEntity
-import com.app.eye.ui.mvp.model.entity.PushEntity
+import com.app.eye.ui.entity.BadgeEntity
 import com.app.eye.widgets.*
 
 class BadgeViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {

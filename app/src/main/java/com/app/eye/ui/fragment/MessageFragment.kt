@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.event.LoginEvent
 import com.app.eye.http.mvvm.EyeResult
@@ -16,9 +15,6 @@ import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.LoginActivity
 import com.app.eye.ui.adapter.PrivateMsgAdapter
 import com.app.eye.ui.mvp.contract.PushContract
-import com.app.eye.ui.mvp.model.entity.MessageEntity
-import com.app.eye.ui.mvp.model.entity.PushEntity
-import com.app.eye.ui.mvp.model.entity.RecFriendEntity
 import com.app.eye.ui.mvp.presenter.PushPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.MessageViewModel

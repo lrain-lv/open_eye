@@ -8,14 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.RankAdapter
 import com.app.eye.ui.mvp.contract.RankContract
-import com.app.eye.ui.mvp.model.entity.RankEntity
 import com.app.eye.ui.mvp.presenter.RankPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.RankViewModel
@@ -26,8 +24,6 @@ import com.app.eye.widgets.STATUS_LOADING
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import kotlinx.android.synthetic.main.fragment_push.*
-import kotlinx.android.synthetic.main.fragment_rank_list.*
 import kotlinx.android.synthetic.main.fragment_rank_list.recycler_view
 import kotlinx.android.synthetic.main.fragment_rank_list.refresh_layout
 import kotlinx.android.synthetic.main.fragment_rank_list.status_view

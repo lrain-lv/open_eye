@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
-import com.app.eye.ui.mvp.model.entity.ComRecEntity
+import com.app.eye.ui.entity.ComAttentionEntity
+import com.app.eye.ui.entity.ComRecEntity
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_ERROR
 import com.app.eye.widgets.STATUS_LOADING

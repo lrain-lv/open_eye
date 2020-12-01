@@ -7,8 +7,8 @@ import android.widget.TextView
 import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
-import com.app.eye.ui.mvp.model.entity.PopItem
-import com.app.eye.ui.mvp.model.entity.PopTag
+import com.app.eye.ui.entity.PopItem
+import com.app.eye.ui.entity.PopTag
 import com.app.eye.widgets.videoplayer.EyeVideoPlayer
 import com.app.eye.widgets.videoplayer.JzViewOutlineProvider
 import com.blankj.utilcode.util.SizeUtils

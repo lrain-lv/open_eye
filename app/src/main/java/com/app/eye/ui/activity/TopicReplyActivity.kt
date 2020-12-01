@@ -3,23 +3,31 @@ package com.app.eye.ui.activity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicReplyAdapter
 import com.app.eye.ui.mvp.contract.TopicDetailContract
-import com.app.eye.ui.mvp.model.entity.ReplyVideoEntity
-import com.app.eye.ui.mvp.model.entity.TopicDetailEntity
 import com.app.eye.ui.mvp.presenter.TopicDetailPresenter
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TopicDetailViewModel
+import com.app.eye.widgets.STATUS_CONTENT
+import com.app.eye.widgets.STATUS_EMPTY
+import com.app.eye.widgets.STATUS_ERROR
+import com.app.eye.widgets.STATUS_LOADING
 import com.blankj.utilcode.util.ActivityUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_topic_reply.*
+import kotlinx.android.synthetic.main.activity_topic_reply.refresh_layout
+import kotlinx.android.synthetic.main.activity_topic_reply.status_view
 
 class TopicReplyActivity :
-    BaseMvpActivity<TopicDetailContract.Presenter, TopicDetailContract.View>(),
-    TopicDetailContract.View, View.OnClickListener, OnLoadMoreListener,
+    BaseVMActivity(), View.OnClickListener, OnLoadMoreListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
@@ -53,6 +61,13 @@ class TopicReplyActivity :
 
     private var isRefresh: Boolean = true
 
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getTopicDetailVMFactory()
+        ).get(TopicDetailViewModel::class.java)
+    }
+
     override fun getLayoutRes(): Int = R.layout.activity_topic_reply
 
     override fun initView() {
@@ -63,7 +78,7 @@ class TopicReplyActivity :
         type = intent?.extras!!.getInt("type", 0)
         videoId = intent?.extras!!.getInt("videoId", -1)
         replyId = intent?.extras!!.getLong("replyId", -1)
-        replyType = intent?.extras!!.getString("replyId", "")
+        replyType = intent?.extras!!.getString("replyType", "")
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
         tv_title.text = if (type == 0) "查看热门评论" else "查看全部对话"
@@ -80,72 +95,66 @@ class TopicReplyActivity :
 
     override fun initData() {
         recycler.post {
-            when (type) {
-                0 -> {
-                    mPresenter?.getReplyHotRequest(
-                        hashMapOf(
-                            "videoId" to videoId.toString(),
-                            "type" to replyType
-                        )
-                    )
-                }
-                1 -> {
-                    mPresenter?.getReplyConversationRequest(hashMapOf("replyId" to replyId.toString(),
-                        "type" to replyType))
-                }
-            }
+            viewModel.getReplyRequest(
+                type, if (type == 0) hashMapOf(
+                    "videoId" to videoId.toString(),
+                    "type" to replyType
+                ) else hashMapOf(
+                    "replyId" to replyId.toString(),
+                    "type" to replyType
+                ), isFirst = true
+            )
 
         }
-
     }
 
     override fun reConnect() {
     }
 
-    override fun createPresenter(): TopicDetailContract.Presenter? = TopicDetailPresenter()
-
-    override fun setTopicDetailResponse(entity: TopicDetailEntity?) {
-    }
-
-    override fun setReplyVideoResponse(entity: ReplyVideoEntity?) {
-    }
-
-    override fun setReplyConversationResponse(entity: ReplyVideoEntity?) {
-        entity ?: status_view.showEmptyView()
-        nextPageUrl = entity?.nextPageUrl
-        if (isRefresh) {
-            topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-            topicDetailAdapter.setList(entity?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) topicDetailAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-            topicDetailAdapter.addData(entity?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                topicDetailAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                topicDetailAdapter.loadMoreModule.loadMoreComplete()
+    override fun startObserver() {
+        viewModel.refreshLiveData.observe(this, Observer {
+            refresh_layout.isRefreshing = it
+        })
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
             }
-        }
-        refresh_layout.isEnabled = true
-    }
+        })
 
-    override fun setReplyHotResponse(entity: ReplyVideoEntity?) {
-        entity ?: status_view.showEmptyView()
-        nextPageUrl = entity?.nextPageUrl
-        if (isRefresh) {
-            topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-            topicDetailAdapter.setList(entity?.itemList)
-            if (TextUtils.isEmpty(nextPageUrl)) topicDetailAdapter.loadMoreModule.loadMoreEnd()
-        } else {
-            topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-            topicDetailAdapter.addData(entity?.itemList!!)
-            if (TextUtils.isEmpty(nextPageUrl)) {
-                topicDetailAdapter.loadMoreModule.loadMoreEnd()
-            } else {
-                topicDetailAdapter.loadMoreModule.loadMoreComplete()
-            }
-        }
-        refresh_layout.isEnabled = true
+        viewModel.replyVideoLiveData.observe(this, Observer {
+            it.checkSuccess(
+                { entity ->
+                    nextPageUrl = entity.nextPageUrl
+                    if (isRefresh) {
+                        topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
+                        topicDetailAdapter.setList(entity.itemList)
+                        if (TextUtils.isEmpty(nextPageUrl)) topicDetailAdapter.loadMoreModule.loadMoreEnd()
+                    } else {
+                        topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
+                        topicDetailAdapter.addData(entity.itemList)
+                        if (TextUtils.isEmpty(nextPageUrl)) {
+                            topicDetailAdapter.loadMoreModule.loadMoreEnd()
+                        } else {
+                            topicDetailAdapter.loadMoreModule.loadMoreComplete()
+                        }
+                    }
+                    refresh_layout.isEnabled = true
+                }, {
+                    status_view.showErrorView()
+                }
+            )
+        })
     }
 
     override fun onBackPressedSupport() {
@@ -166,38 +175,21 @@ class TopicReplyActivity :
             refresh_layout.isEnabled = false
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            when (type) {
-                0 -> {
-                    mPresenter?.getReplyHotRequest(map)
-                }
-                1 -> {
-                    mPresenter?.getReplyConversationRequest(map)
-                }
-            }
+            viewModel.getReplyRequestMore(type, map)
         }
     }
 
     override fun onRefresh() {
         topicDetailAdapter.loadMoreModule.isEnableLoadMore = false
         isRefresh = true
-        when (type) {
-            0 -> {
-                mPresenter?.getReplyHotRequest(
-                    hashMapOf(
-                        "videoId" to videoId.toString(),
-                        "type" to replyType
-                    )
-                )
-            }
-            1 -> {
-                mPresenter?.getReplyConversationRequest(hashMapOf("replyId" to replyId.toString(),
-                    "type" to replyType))
-            }
-        }
-    }
-
-    override fun hideLoading() {
-        status_view.showContentView()
-        refresh_layout.isRefreshing = false
+        viewModel.getReplyRequest(
+            type, if (type == 0) hashMapOf(
+                "videoId" to videoId.toString(),
+                "type" to replyType
+            ) else hashMapOf(
+                "replyId" to replyId.toString(),
+                "type" to replyType
+            ), isFirst = false
+        )
     }
 }

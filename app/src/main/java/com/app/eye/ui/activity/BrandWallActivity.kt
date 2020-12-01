@@ -1,8 +1,5 @@
 package com.app.eye.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -12,15 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.getAgentWeb
 import com.app.eye.ui.adapter.BrandWallAdapter
 import com.app.eye.ui.adapter.BrandWallHeaderAdapter
 import com.app.eye.ui.mvp.contract.BrandWallContract
-import com.app.eye.ui.mvp.model.entity.BrandListItemX
-import com.app.eye.ui.mvp.model.entity.BrandWallEntity
 import com.app.eye.ui.mvp.presenter.BrandWallPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
@@ -30,15 +24,11 @@ import com.app.eye.widgets.STATUS_ERROR
 import com.app.eye.widgets.STATUS_LOADING
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.StringUtils
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_brand_wall.*
 import kotlinx.android.synthetic.main.activity_brand_wall.recycler_view
 import kotlinx.android.synthetic.main.activity_brand_wall.refresh_layout
 import kotlinx.android.synthetic.main.activity_brand_wall.status_view
-import kotlinx.android.synthetic.main.fragment_push.*
-import kotlinx.android.synthetic.main.fragment_rank_list.*
 
 class BrandWallActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener,
     OnLoadMoreListener {

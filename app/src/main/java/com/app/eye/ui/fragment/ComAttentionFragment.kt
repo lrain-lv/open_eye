@@ -7,14 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.AttentionAdapter
 import com.app.eye.ui.mvp.contract.CommunityContract
-import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
-import com.app.eye.ui.mvp.model.entity.ComRecEntity
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
@@ -22,11 +19,9 @@ import com.app.eye.widgets.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import kotlinx.android.synthetic.main.fragment_com_attention.*
 import kotlinx.android.synthetic.main.fragment_com_attention.recycler_view
 import kotlinx.android.synthetic.main.fragment_com_attention.refresh_layout
 import kotlinx.android.synthetic.main.fragment_com_attention.status_view
-import kotlinx.android.synthetic.main.fragment_rec.*
 
 class ComAttentionFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
     MultipleStatusView.OnRetryClickListener, OnLoadMoreListener, OnItemClickListener {

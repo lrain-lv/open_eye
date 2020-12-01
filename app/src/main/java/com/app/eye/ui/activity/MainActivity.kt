@@ -4,7 +4,7 @@ import com.app.eye.R
 import com.app.eye.base.BaseActivity
 import com.app.eye.event.ChangeTabEvent
 import com.app.eye.ui.fragment.*
-import com.app.eye.ui.mvp.model.entity.TabEntity
+import com.app.eye.ui.entity.TabEntity
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.SPUtils

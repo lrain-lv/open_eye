@@ -3,7 +3,7 @@ package com.app.eye.ui.adapter
 import android.widget.ImageView
 import com.app.eye.R
 import com.app.eye.rx.loadImageRound
-import com.app.eye.ui.mvp.model.entity.SpecialTopicItem
+import com.app.eye.ui.entity.SpecialTopicItem
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder

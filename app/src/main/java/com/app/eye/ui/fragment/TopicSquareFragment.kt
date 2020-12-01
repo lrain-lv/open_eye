@@ -1,25 +1,19 @@
 package com.app.eye.ui.fragment
 
 import android.app.Activity
-import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.TabFragmentAdapter
 import com.app.eye.ui.mvp.contract.TopicContact
-import com.app.eye.ui.mvp.model.entity.TabChildEntity
-import com.app.eye.ui.mvp.model.entity.TagTabEntity
-import com.app.eye.ui.mvp.model.entity.TopicListEntity
 import com.app.eye.ui.mvp.presenter.TopicPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
 import com.blankj.utilcode.util.ActivityUtils
-import kotlinx.android.synthetic.main.fragment_rec.*
 import kotlinx.android.synthetic.main.fragment_topic_square.*
 import me.yokeyword.fragmentation.SupportFragment
 

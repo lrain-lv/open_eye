@@ -1,6 +1,6 @@
 package com.app.eye
 
-import com.app.eye.ui.mvp.model.entity.BrandApiRequest
+import com.app.eye.ui.entity.BrandApiRequest
 import com.blankj.utilcode.util.EncodeUtils
 import com.blankj.utilcode.util.GsonUtils
 

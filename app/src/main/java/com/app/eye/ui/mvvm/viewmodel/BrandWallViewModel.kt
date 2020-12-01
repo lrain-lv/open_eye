@@ -4,12 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.ui.mvp.model.entity.BrandListItemX
-import com.app.eye.ui.mvp.model.entity.BrandWallEntity
-import com.app.eye.ui.mvp.model.entity.MessageEntity
-import com.app.eye.ui.mvp.model.entity.PushEntity
+import com.app.eye.ui.entity.BrandListItemX
+import com.app.eye.ui.entity.BrandWallEntity
 import com.app.eye.widgets.*
-import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

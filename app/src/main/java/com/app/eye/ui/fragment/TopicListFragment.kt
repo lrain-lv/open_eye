@@ -6,16 +6,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.TopicDetailActivity
 import com.app.eye.ui.adapter.TopicListAdapter
 import com.app.eye.ui.mvp.contract.TopicContact
-import com.app.eye.ui.mvp.model.entity.TabChildEntity
-import com.app.eye.ui.mvp.model.entity.TagTabEntity
-import com.app.eye.ui.mvp.model.entity.TopicListEntity
 import com.app.eye.ui.mvp.presenter.TopicPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
@@ -24,8 +20,6 @@ import com.app.eye.widgets.STATUS_EMPTY
 import com.app.eye.widgets.STATUS_ERROR
 import com.app.eye.widgets.STATUS_LOADING
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.orhanobut.logger.Logger
-import kotlinx.android.synthetic.main.fragment_push.*
 import kotlinx.android.synthetic.main.fragment_rec.refresh_layout
 import kotlinx.android.synthetic.main.fragment_rec.status_view
 import kotlinx.android.synthetic.main.fragment_topic_square_child.*

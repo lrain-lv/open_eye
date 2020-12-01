@@ -11,7 +11,6 @@ import com.app.eye.event.LoginEvent
 import com.app.eye.http.Constant
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.ui.mvp.contract.LoginContract
-import com.app.eye.ui.mvp.model.entity.LoginEntity
 import com.app.eye.ui.mvp.presenter.LoginPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.LoginViewModel

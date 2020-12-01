@@ -1,6 +1,5 @@
 package com.app.eye.ui.fragment
 
-import com.app.eye.ui.mvp.model.entity.TagVideoEntity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -9,14 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.PopularActivity
 import com.app.eye.ui.adapter.TagVideoAdapter
 import com.app.eye.ui.mvp.contract.TagVideoContract
-import com.app.eye.ui.mvp.model.entity.TagIndexEntity
 import com.app.eye.ui.mvp.presenter.TagVideoPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel

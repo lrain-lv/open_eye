@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
 import com.app.eye.base.mvvm.BaseVMActivity
-import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.urlToMap
@@ -19,10 +17,6 @@ import com.app.eye.ui.adapter.InformationAdapter
 import com.app.eye.ui.adapter.RecFriendAdapter
 import com.app.eye.ui.adapter.SpecialTopicAdapter
 import com.app.eye.ui.mvp.contract.CategoryContract
-import com.app.eye.ui.mvp.model.entity.CategoryEntity
-import com.app.eye.ui.mvp.model.entity.InformationEntity
-import com.app.eye.ui.mvp.model.entity.RecFriendEntity
-import com.app.eye.ui.mvp.model.entity.SpecialTopicEntity
 import com.app.eye.ui.mvp.presenter.CategoryPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.CategoryViewModel
@@ -39,7 +33,6 @@ import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.android.synthetic.main.activity_category.recycler_view
 import kotlinx.android.synthetic.main.activity_category.refresh_layout
 import kotlinx.android.synthetic.main.activity_category.status_view
-import kotlinx.android.synthetic.main.fragment_push.*
 
 /**
  * 分类 专题策划 全部资讯 发现好友

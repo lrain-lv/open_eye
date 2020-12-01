@@ -1,41 +1,24 @@
 package com.app.eye.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.eye.R
-import com.app.eye.base.BaseActivity
-import com.app.eye.base.BaseMvpActivity
 import com.app.eye.base.mvvm.BaseVMActivity
-import com.app.eye.http.RetrofitManager
-import com.app.eye.rx.SchedulerUtils
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.HotSearchAdapter
 import com.app.eye.ui.adapter.SearchAdapter
 import com.app.eye.ui.mvp.contract.SearchContract
-import com.app.eye.ui.mvp.model.entity.HotSearchEntity
-import com.app.eye.ui.mvp.model.entity.SearchEntity
+import com.app.eye.ui.entity.HotSearchEntity
 import com.app.eye.ui.mvp.presenter.SearchPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.SearchViewModel
-import com.blankj.utilcode.util.CacheDiskUtils
 import com.blankj.utilcode.util.KeyboardUtils
-import com.blankj.utilcode.util.TimeUtils
-import com.blankj.utilcode.util.ToastUtils
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.orhanobut.logger.Logger
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_search.*
-import java.util.concurrent.TimeUnit
 
 class SearchActivity : BaseVMActivity(),
     View.OnClickListener, TextWatcher, OnLoadMoreListener {

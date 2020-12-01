@@ -10,22 +10,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.event.callback.OnItemClickCallback
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.GalleryAdapter
 import com.app.eye.ui.mvp.contract.CommunityContract
-import com.app.eye.ui.mvp.model.entity.ComAttentionEntity
-import com.app.eye.ui.mvp.model.entity.ComRecEntity
+import com.app.eye.ui.entity.ComRecEntity
 import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
-import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
 import com.app.eye.ui.mvvm.viewmodel.GalleryViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.bumptech.glide.Glide
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_gallery.*
 
 

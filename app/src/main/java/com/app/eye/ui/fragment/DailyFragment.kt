@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
@@ -17,8 +16,7 @@ import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.DailyAdapter
 import com.app.eye.ui.mvp.contract.DailyContract
-import com.app.eye.ui.mvp.model.entity.DailyEntity
-import com.app.eye.ui.mvp.model.entity.ItemDaily
+import com.app.eye.ui.entity.ItemDaily
 import com.app.eye.ui.mvp.presenter.DailyPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.DailyViewModel

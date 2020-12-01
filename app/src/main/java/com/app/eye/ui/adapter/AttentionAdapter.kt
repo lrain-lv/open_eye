@@ -8,8 +8,8 @@ import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
 import com.app.eye.rx.loadImageWithTransform
-import com.app.eye.ui.mvp.model.entity.AttItem
-import com.app.eye.ui.mvp.model.entity.TagVideoItem
+import com.app.eye.ui.entity.AttItem
+import com.app.eye.ui.entity.TagVideoItem
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils
 import com.blankj.utilcode.util.TimeUtils

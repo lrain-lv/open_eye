@@ -1,7 +1,7 @@
 package com.app.eye.ui.adapter
 
 import com.app.eye.R
-import com.app.eye.ui.mvp.model.entity.Message
+import com.app.eye.ui.entity.Message
 import com.blankj.utilcode.util.TimeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule

@@ -1,23 +1,16 @@
 package com.app.eye.widgets
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.app.eye.R
-import com.app.eye.rx.loadImageCommon
 import com.app.eye.rx.loadImageWithTransform
-import com.app.eye.ui.mvp.model.entity.BadgeItem
+import com.app.eye.ui.entity.BadgeItem
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.orhanobut.logger.Logger
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.layout_comment.*
 import kotlinx.android.synthetic.main.layout_comment.iv_img
 import kotlinx.android.synthetic.main.layout_comment.tv_title
 import kotlinx.android.synthetic.main.layout_medal_dialog.*

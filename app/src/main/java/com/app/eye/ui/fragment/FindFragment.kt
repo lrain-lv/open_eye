@@ -1,23 +1,19 @@
 package com.app.eye.ui.fragment
 
 import android.view.View
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.mvp.contract.FindContract
-import com.app.eye.ui.mvp.model.entity.DiscoverEntity
-import com.app.eye.ui.mvp.model.entity.Item
+import com.app.eye.ui.entity.Item
 import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.FindViewModel
@@ -26,9 +22,7 @@ import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
 import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_find.*
-import org.w3c.dom.Entity
 
 class FindFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener {
 

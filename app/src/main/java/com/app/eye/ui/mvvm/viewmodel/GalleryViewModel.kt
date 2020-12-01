@@ -4,10 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.ui.mvp.model.entity.ComRecEntity
-import com.app.eye.ui.mvp.model.entity.MessageEntity
-import com.app.eye.ui.mvp.model.entity.PushEntity
-import com.app.eye.widgets.*
+import com.app.eye.ui.entity.ComRecEntity
 
 class GalleryViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
     var entityLiveData = MutableLiveData<EyeResult<ComRecEntity>>()

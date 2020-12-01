@@ -1,9 +1,8 @@
 package com.app.eye.ui.adapter
 
 import com.app.eye.R
-import com.app.eye.ui.mvp.model.entity.BrandListItemX
+import com.app.eye.ui.entity.BrandListItemX
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class BrandListAdapter(data: MutableList<BrandListItemX>) :

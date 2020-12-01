@@ -1,0 +1,302 @@
+package com.app.eye.ui.entity
+
+import com.chad.library.adapter.base.entity.MultiItemEntity
+import java.io.Serializable
+
+
+data class DiscoverEntity(
+    val adExist: Boolean,
+    val count: Int,
+    val itemList: MutableList<Item>,
+    val nextPageUrl: Any,
+    val total: Int
+) {
+    override fun toString(): String {
+        return "DiscoverEntity(adExist=$adExist, count=$count, itemMutableList=$itemList, nextPageUrl=$nextPageUrl, total=$total)"
+    }
+}
+
+class Item(
+    val adIndex: Int,
+    val `data`: Data,
+    val id: Int,
+    val tag: Any,
+    val trackingData: Any,
+    val type: String
+) : MultiItemEntity {
+    companion object {
+        const val DISCOVER_BANNER = 0
+        const val DISCOVER_SQUARE_CARD = 1
+        const val DISCOVER_COLUMN_CARD_LIST = 2
+        const val DISCOVER_TEXT_CARD = 3
+        const val DISCOVER_VIDEO_SMALL_CARD = 4
+        const val DISCOVER_BRIEF_CARD = 5
+        const val DISCOVER_AUTO_PLAY = 6
+        const val NONE = -1
+    }
+
+    override val itemType: Int
+        get() = when (type) {
+            "horizontalScrollCard", "banner" -> DISCOVER_BANNER
+            "specialSquareCardCollection" -> DISCOVER_SQUARE_CARD
+            "columnCardList" -> DISCOVER_COLUMN_CARD_LIST
+            "textCard" -> DISCOVER_TEXT_CARD
+            "videoSmallCard" -> DISCOVER_VIDEO_SMALL_CARD
+            "briefCard" -> DISCOVER_BRIEF_CARD
+            "autoPlayVideoAd" -> DISCOVER_AUTO_PLAY
+            else -> NONE
+        }
+}
+
+data class Data(
+    val actionUrl: String?,
+    val ad: Boolean,
+    val adTrack: Any,
+    val author: Author,
+    val brandWebsiteInfo: Any,
+    val campaign: Any,
+    val category: String,
+    val collected: Boolean,
+    val consumption: Consumption,
+    val count: Int,
+    val cover: Cover,
+    val dataType: String,
+    val detail: Detail,
+    val date: Long,
+    val description: String,
+    val descriptionEditor: String,
+    val descriptionPgc: Any,
+    val duration: Int,
+    val expert: Boolean,
+    val favoriteAdTrack: Any,
+    val follow: Follow,
+    val footer: Any,
+    val haveReward: Boolean,
+    val header: Header?,
+    val icon: String,
+    val iconType: String,
+    val autoPlay: Boolean,
+    val image: String,
+    val id: Int,
+    val idx: Int,
+    val ifLimitVideo: Boolean,
+    val ifNewest: Boolean,
+    val ifPgc: Boolean,
+    val ifShowNotificationIcon: Boolean,
+    val itemList: MutableList<ItemX>,
+    val label: Any,
+    val labelList: MutableList<Any>,
+    val lastViewTime: Any,
+    val library: String,
+    val medalIcon: Boolean,
+    val newestEndTime: Any,
+    val playInfo: MutableList<PlayInfo>,
+    val playUrl: String,
+    val played: Boolean,
+    val playlists: Any,
+    val promotion: Any,
+    val provider: Provider,
+    val reallyCollected: Boolean,
+    val recallSource: Any,
+    val recall_source: Any,
+    val releaseTime: Long,
+    val remark: Any,
+    val resourceType: String,
+    val rightText: String,
+    val searchWeight: Int,
+    val shareAdTrack: Any,
+    val slogan: Any,
+    val src: Any,
+    val subTitle: Any,
+    val subtitles: MutableList<Any>,
+    val switchStatus: Boolean,
+    val tags: MutableList<Tag>,
+    val text: String,
+    val thumbPlayUrl: Any,
+    val title: String,
+    val titlePgc: Any,
+    val type: String,
+    val uid: Int,
+    val videoPosterBean: Any,
+    val waterMarks: Any,
+    val webAdTrack: Any,
+    val webUrl: WebUrl
+)
+
+data class Detail(
+    val actionUrl: String,
+    val adaptiveImageUrls: String,
+    val adaptiveUrls: String,
+    val canSkip: Boolean,
+    val categoryId: Int,
+    val countdown: Boolean,
+    val cycleCount: Int,
+    val description: String,
+    val displayCount: Int,
+    val displayTimeDuration: Int,
+    val icon: String,
+    val id: Int,
+    val ifLinkage: Boolean,
+    val imageUrl: String,
+    val iosActionUrl: String,
+    val linkageAdId: Int,
+    val loadingMode: Int,
+    val openSound: Boolean,
+    val position: Int,
+    val showActionButton: Boolean,
+    val showImage: Boolean,
+    val showImageTime: Int,
+    val timeBeforeSkip: Int,
+    val title: String,
+    val url: String,
+    val videoAdType: String,
+    val videoType: String
+)
+
+data class Author(
+    val adTrack: Any,
+    val approvedNotReadyVideoCount: Int,
+    val description: String,
+    val expert: Boolean,
+    val follow: Follow,
+    val icon: String,
+    val id: Int,
+    val ifPgc: Boolean,
+    val latestReleaseTime: Long,
+    val link: String,
+    val name: String,
+    val recSort: Int,
+    val shield: Shield,
+    val videoNum: Int
+)
+
+data class Consumption(
+    val collectionCount: Int,
+    val realCollectionCount: Int,
+    val replyCount: Int,
+    val shareCount: Int
+)
+
+data class Cover(
+    val blurred: String,
+    val detail: String,
+    val feed: String,
+    val homepage: String,
+    val sharing: Any
+)
+
+data class Header(
+    val actionUrl: String,
+    val cover: Any,
+    val font: String,
+    val id: Int,
+    val label: Any,
+    val labelList: Any,
+    val rightText: String,
+    val subTitle: Any,
+    val subTitleFont: Any,
+    val textAlign: String,
+    val title: String
+)
+
+data class ItemX(
+    val `data`: DataX,
+    val id: Int,
+    val type: String
+): Serializable
+
+data class PlayInfo(
+    val height: Int,
+    val name: String,
+    val type: String,
+    val url: String,
+    val urlList: MutableList<Url>,
+    val width: Int
+)
+
+data class Provider(
+    val alias: String,
+    val icon: String,
+    val name: String
+)
+
+data class Tag(
+    val actionUrl: String,
+    val adTrack: Any,
+    val bgPicture: String,
+    val childTagIdList: Any,
+    val childTagList: Any,
+    val communityIndex: Int,
+    val desc: String,
+    val haveReward: Boolean,
+    val headerImage: String,
+    val id: Int,
+    val ifNewest: Boolean,
+    val name: String,
+    val newestEndTime: Any,
+    val tagRecType: String
+)
+
+data class WebUrl(
+    val forWeibo: String,
+    val raw: String
+)
+
+data class Follow(
+    val followed: Boolean,
+    val itemId: Int,
+    val itemType: String
+)
+
+data class Shield(
+    val itemId: Int,
+    val itemType: String,
+    val shielded: Boolean
+)
+
+data class DataX(
+    val actionUrl: String,
+    val autoPlay: Boolean,
+    val dataType: String,
+    val description: String?,
+    val header: HeaderX?,
+    val id: Int,
+    val image: String,
+    val label: Label?,
+    val labelList: MutableList<LabelX>,
+    val shade: Boolean,
+    val title: String,
+    val subTitle: String,
+    val bgPicture: String
+): Serializable
+
+data class AdTrack(
+    val clickUrl: String,
+    val id: Int,
+    val monitorPositions: String,
+    val needExtraParams: MutableList<String>,
+    val organization: String,
+    val playUrl: String,
+    val viewUrl: String
+)
+
+data class HeaderX(
+    val id: Int,
+    val textAlign: String
+): Serializable
+
+data class Label(
+    val card: String,
+    val text: String
+): Serializable
+
+data class LabelX(
+    val actionUrl: String?,
+    val text: String
+): Serializable
+
+data class Url(
+    val name: String,
+    val size: Int,
+    val url: String
+)

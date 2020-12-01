@@ -4,7 +4,7 @@ import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.app.eye.R
 import com.app.eye.event.callback.OnItemClickCallback
-import com.app.eye.ui.mvp.model.entity.ComItem
+import com.app.eye.ui.entity.ComItem
 import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule

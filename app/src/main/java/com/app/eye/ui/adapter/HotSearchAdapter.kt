@@ -1,15 +1,11 @@
 package com.app.eye.ui.adapter
 
-import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import com.app.eye.R
-import com.app.eye.ui.mvp.model.entity.HotSearchEntity
+import com.app.eye.ui.entity.HotSearchEntity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import java.util.regex.Pattern
 
 class HotSearchAdapter(mutableList: MutableList<HotSearchEntity>) :
     BaseQuickAdapter<HotSearchEntity, BaseViewHolder>(

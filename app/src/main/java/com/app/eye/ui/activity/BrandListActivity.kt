@@ -1,18 +1,14 @@
 package com.app.eye.ui.activity
 
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.actionUrlToRequest
-import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.BrandListAdapter
 import com.app.eye.ui.mvp.contract.BrandWallContract
-import com.app.eye.ui.mvp.model.entity.BrandListItemX
-import com.app.eye.ui.mvp.model.entity.BrandWallEntity
+import com.app.eye.ui.entity.BrandListItemX
 import com.app.eye.ui.mvp.presenter.BrandWallPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
@@ -22,12 +18,9 @@ import com.app.eye.widgets.STATUS_ERROR
 import com.app.eye.widgets.STATUS_LOADING
 import com.app.eye.widgets.sidebar.WaveSideBar
 import com.blankj.utilcode.util.StringUtils
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_brand_list.*
 import kotlinx.android.synthetic.main.activity_brand_list.recycler_view
 import kotlinx.android.synthetic.main.activity_brand_list.status_view
-import kotlinx.android.synthetic.main.fragment_push.*
 
 class BrandListActivity : BaseVMActivity(), WaveSideBar.OnSelectIndexItemListener {
 

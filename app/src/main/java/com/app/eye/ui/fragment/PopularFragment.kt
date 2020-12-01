@@ -7,14 +7,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.PopularAdapter
 import com.app.eye.ui.mvp.contract.PopularContract
-import com.app.eye.ui.mvp.model.entity.RecentPopularEntity
 import com.app.eye.ui.mvp.presenter.PopularPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.PopularViewModel
@@ -28,7 +26,6 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_popular.*
 import kotlinx.android.synthetic.main.fragment_popular.refresh_layout
 import kotlinx.android.synthetic.main.fragment_popular.status_view
-import kotlinx.android.synthetic.main.fragment_push.*
 
 // TODO: Rename parameter arguments, choose names that match
 private const val STRATEGY = "strategy"

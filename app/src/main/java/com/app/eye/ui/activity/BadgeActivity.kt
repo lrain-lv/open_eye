@@ -6,13 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseActivity
-import com.app.eye.base.BaseMvpActivity
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.MedalAdapter
 import com.app.eye.ui.mvp.contract.MineContract
-import com.app.eye.ui.mvp.model.entity.BadgeEntity
 import com.app.eye.ui.mvp.presenter.MinePresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BadgeViewModel
@@ -25,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_badge.*
 import kotlinx.android.synthetic.main.activity_badge.recycler_view
 import kotlinx.android.synthetic.main.activity_badge.refresh_layout
 import kotlinx.android.synthetic.main.activity_badge.status_view
-import kotlinx.android.synthetic.main.fragment_push.*
 
 class BadgeActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener, OnItemClickListener {
 

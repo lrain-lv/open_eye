@@ -3,35 +3,27 @@ package com.app.eye.ui.fragment
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.Switch
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.HomeRecAdapter
 import com.app.eye.ui.mvp.contract.HomeRecContract
-import com.app.eye.ui.mvp.model.entity.HomeRecEntity
-import com.app.eye.ui.mvp.model.entity.HomeRecItem
 import com.app.eye.ui.mvp.presenter.HomeRecPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
-import com.app.eye.ui.mvvm.factory.RecommendVMFactory
 import com.app.eye.ui.mvvm.viewmodel.RecommendViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
-import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_recommend.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.jvm.internal.ReflectionFactory
 
 class RecommendFragment : BaseVMFragment(),
     SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,

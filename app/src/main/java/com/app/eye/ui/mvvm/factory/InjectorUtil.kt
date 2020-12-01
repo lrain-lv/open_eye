@@ -22,4 +22,5 @@ object InjectorUtil {
     fun getGalleryVMFactory() = GalleryVMFactory(ServiceHelper.getInstance())
     fun getSearchVMFactory() = SearchVMFactory(ServiceHelper.getInstance())
     fun getTopicDetailVMFactory() = TopicDetailVMFactory(ServiceHelper.getInstance())
+    fun getVideoDetailVMFactory() = VideoDetailVMFactory(ServiceHelper.getInstance())
 }

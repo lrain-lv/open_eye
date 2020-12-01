@@ -1,9 +1,7 @@
 package com.app.eye.http.mvvm
 
 import com.app.eye.http.Constant
-import com.app.eye.ui.mvp.model.entity.*
-import io.reactivex.rxjava3.core.Observable
-import okhttp3.ResponseBody
+import com.app.eye.ui.entity.*
 import retrofit2.http.*
 
 interface ApiService {

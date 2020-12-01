@@ -6,13 +6,11 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.widget.LinearLayout
-import android.widget.TextView
 import com.app.eye.http.mvvm.EyeResult
-import com.app.eye.ui.mvp.model.entity.BrandApiRequest
+import com.app.eye.ui.entity.BrandApiRequest
 import com.blankj.utilcode.util.EncodeUtils
 import com.blankj.utilcode.util.GsonUtils
 import com.just.agentweb.AgentWeb
-import com.just.agentweb.WebChromeClient
 import com.just.agentweb.WebViewClient
 import com.orhanobut.logger.Logger
 
@@ -86,4 +84,8 @@ fun <T : Any> EyeResult<T>.checkSuccess(
     } else {
         onError?.let { it }
     }
+}
+
+fun <T : Any> EyeResult<T>.isSuccess(): Boolean {
+    return this is EyeResult.Success
 }

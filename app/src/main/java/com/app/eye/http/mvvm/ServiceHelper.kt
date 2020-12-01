@@ -1,9 +1,7 @@
 package com.app.eye.http.mvvm
 
 import com.app.eye.http.RetrofitManager
-import com.app.eye.ui.mvp.model.entity.ConfigEntity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.app.eye.ui.entity.ConfigEntity
 import java.io.IOException
 
 class ServiceHelper {

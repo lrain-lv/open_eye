@@ -3,7 +3,7 @@ package com.app.eye.ui.adapter
 import android.widget.ImageView
 import com.app.eye.R
 import com.app.eye.rx.loadImageCommon
-import com.app.eye.ui.mvp.model.entity.BadgeItem
+import com.app.eye.ui.entity.BadgeItem
 import com.blankj.utilcode.util.TimeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule

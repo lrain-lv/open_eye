@@ -4,7 +4,7 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.app.eye.R
 import com.app.eye.rx.loadImageRound
-import com.app.eye.ui.mvp.model.entity.ItemX
+import com.app.eye.ui.entity.ItemX
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter

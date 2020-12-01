@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.rx.loadImageRound
-import com.app.eye.ui.mvp.model.entity.ItemX
+import com.app.eye.ui.entity.ItemX
 import com.youth.banner.adapter.BannerAdapter
 
 

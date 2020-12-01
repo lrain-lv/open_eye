@@ -4,7 +4,7 @@ import android.widget.ImageView
 import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
-import com.app.eye.ui.mvp.model.entity.RankItem
+import com.app.eye.ui.entity.RankItem
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder

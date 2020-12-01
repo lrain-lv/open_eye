@@ -5,35 +5,35 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.*
 import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.adapter.VideoDetailHeaderAdapter
 import com.app.eye.ui.mvp.contract.VideoDetailContract
-import com.app.eye.ui.mvp.model.entity.ReplyVideoEntity
-import com.app.eye.ui.mvp.model.entity.VideoDetailHeaderEntity
-import com.app.eye.ui.mvp.model.entity.VrItem
+import com.app.eye.ui.entity.ReplyVideoEntity
+import com.app.eye.ui.entity.VideoDetailHeaderEntity
+import com.app.eye.ui.entity.VrItem
 import com.app.eye.ui.mvp.presenter.VideoDetailPresenter
-import com.app.eye.widgets.EyeCommentDialog
-import com.app.eye.widgets.NoScrollLinearLayoutManager
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.VideoDetailViewModel
+import com.app.eye.widgets.*
 import com.app.eye.widgets.videoplayer.Jzvd
 import com.app.eye.widgets.videoplayer.Jzvd.SCREEN_NORMAL
-import com.app.eye.widgets.videoplayer.JzvdStd
 import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.gyf.immersionbar.BarHide
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_video_detail.*
+import kotlinx.android.synthetic.main.activity_video_detail.recycler_view
+import kotlinx.android.synthetic.main.activity_video_detail.status_view
 
-class VideoDetailActivity :
-    BaseMvpActivity<VideoDetailContract.Presenter, VideoDetailContract.View>(),
-    VideoDetailContract.View, OnLoadMoreListener {
+class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
 
     companion object {
         fun startActivity(id: String) {
@@ -47,6 +47,13 @@ class VideoDetailActivity :
                 R.anim.top_slient
             )
         }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getVideoDetailVMFactory()
+        ).get(VideoDetailViewModel::class.java)
     }
 
     private lateinit var id: String
@@ -132,12 +139,43 @@ class VideoDetailActivity :
 
     override fun initData() {
         recycler_view.post {
-            mPresenter?.getVideoDetailRequest(id)
-            mPresenter?.getReplyVideoRequest(hashMapOf("videoId" to id, "type" to "video"))
+            viewModel.onGetVideoDetail(id, hashMapOf("videoId" to id, "type" to "video"))
         }
     }
 
-    override fun createPresenter(): VideoDetailContract.Presenter? = VideoDetailPresenter()
+    override fun startObserver() {
+
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
+            }
+        })
+        viewModel.replyVideoEntityLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+
+            })
+        })
+        viewModel.videoEntityLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+                val videoDetailHeaderEntity = entity.videoDetailHeaderEntity
+                val replyVideoEntity = entity.replyVideoEntity
+                setVideoDetailResponse(videoDetailHeaderEntity)
+                setReplyVideoResponse(replyVideoEntity)
+            })
+        })
+    }
+
 
     private fun initHeaderView() {
         headerView =
@@ -162,7 +200,7 @@ class VideoDetailActivity :
 
     }
 
-    override fun setVideoDetailResponse(entity: VideoDetailHeaderEntity) {
+     private fun setVideoDetailResponse(entity: VideoDetailHeaderEntity) {
         val videoIndexEntity = entity.videoIndexEntity
         val videoRelatedEntity = entity.videoRelatedEntity
         videoIndexEntity.apply {
@@ -195,17 +233,16 @@ class VideoDetailActivity :
         videoDetailHeaderAdapter.setList(showList)
     }
 
-    override fun setReplyVideoResponse(entity: ReplyVideoEntity?) {
-        entity ?: status_view.showEmptyView()
-        nextPageUrl = entity?.nextPageUrl
+    private fun setReplyVideoResponse(entity: ReplyVideoEntity) {
+        nextPageUrl = entity.nextPageUrl
         if (isRefresh) {
             topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-            topicDetailAdapter.setList(entity?.itemList)
+            topicDetailAdapter.setList(entity.itemList)
             topicDetailAdapter.addHeaderView(headerView)
             if (TextUtils.isEmpty(nextPageUrl)) topicDetailAdapter.loadMoreModule.loadMoreEnd()
         } else {
             topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-            topicDetailAdapter.addData(entity?.itemList!!)
+            topicDetailAdapter.addData(entity.itemList)
             if (TextUtils.isEmpty(nextPageUrl)) {
                 topicDetailAdapter.loadMoreModule.loadMoreEnd()
             } else {
@@ -214,23 +251,11 @@ class VideoDetailActivity :
         }
     }
 
-    override fun setReplyConversationResponse(entity: ReplyVideoEntity?) {
-
-    }
-
-    override fun setReplyHotResponse(entity: ReplyVideoEntity?) {
-
-    }
-
-    override fun hideLoading() {
-        status_view.showContentView()
-    }
-
     override fun onLoadMore() {
         if (!nextPageUrl.isNullOrEmpty()) {
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            mPresenter?.getReplyVideoRequest(map)
+            viewModel.onLoadMore(map)
         }
     }
 
@@ -249,9 +274,4 @@ class VideoDetailActivity :
     }
 
 
-    override fun onDestroy() {
-        KeyboardUtils.fixAndroidBug5497(this)
-        KeyboardUtils.fixSoftInputLeaks(this)
-        super.onDestroy()
-    }
 }

@@ -4,7 +4,7 @@ import android.widget.ImageView
 import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
-import com.app.eye.ui.mvp.model.entity.ComItem
+import com.app.eye.ui.entity.ComItem
 import com.blankj.utilcode.util.ScreenUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule

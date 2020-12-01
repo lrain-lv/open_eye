@@ -7,26 +7,30 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
-import com.app.eye.base.BaseMvpActivity
+import com.app.eye.base.mvvm.BaseVMActivity
+import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.mvp.contract.TopicDetailContract
-import com.app.eye.ui.mvp.model.entity.ReplyVideoEntity
-import com.app.eye.ui.mvp.model.entity.TopicDetailEntity
+import com.app.eye.ui.entity.ReplyVideoEntity
+import com.app.eye.ui.entity.TopicDetailEntity
 import com.app.eye.ui.mvp.presenter.TopicDetailPresenter
-import com.app.eye.widgets.EyeCommentDialog
+import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TopicDetailViewModel
+import com.app.eye.widgets.*
 import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_topic_detail.*
+import kotlinx.android.synthetic.main.activity_topic_detail.recycler_view
+import kotlinx.android.synthetic.main.activity_topic_detail.status_view
 
-class TopicDetailActivity :
-    BaseMvpActivity<TopicDetailContract.Presenter, TopicDetailContract.View>(),
-    TopicDetailContract.View, OnLoadMoreListener, View.OnClickListener {
+class TopicDetailActivity : BaseVMActivity(), OnLoadMoreListener, View.OnClickListener {
 
     companion object {
         fun startActivity(id: String) {
@@ -43,6 +47,13 @@ class TopicDetailActivity :
     private val barHeight = SizeUtils.dp2px(48f).toFloat()
     private var nextPageUrl: String? = ""
     private val topicDetailAdapter = TopicDetailAdapter(mutableListOf())
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            InjectorUtil.getTopicDetailVMFactory()
+        ).get(TopicDetailViewModel::class.java)
+    }
 
     override fun getLayoutRes(): Int = R.layout.activity_topic_detail
     private var isRefresh: Boolean = true
@@ -71,12 +82,12 @@ class TopicDetailActivity :
                 }
                 R.id.tv_get_converse -> {
                     TopicReplyActivity.startActivity(
-                        1, replyId = item.data.id,replyType = "topic"
+                        1, replyId = item.data.id, replyType = "topic"
                     )
                 }
                 R.id.tv_right_text -> {
                     TopicReplyActivity.startActivity(
-                        0, videoId = id.toInt(),replyType = "topic"
+                        0, videoId = id.toInt(), replyType = "topic"
                     )
                 }
             }
@@ -101,18 +112,50 @@ class TopicDetailActivity :
 
     override fun initData() {
         recycler_view.post {
-            mPresenter?.getTopicDetailRequest(id)
-            mPresenter?.getReplyVideoRequest(hashMapOf("videoId" to id, "type" to "topic"))
+            viewModel.onRefresh(id)
         }
 
+    }
+
+    override fun startObserver() {
+        viewModel.statusLiveData.observe(this, Observer {
+            when (it) {
+                STATUS_LOADING -> {
+                    status_view.showLoadingView()
+                }
+                STATUS_ERROR -> {
+                    status_view.showErrorView()
+                }
+                STATUS_EMPTY -> {
+                    status_view.showEmptyView()
+                }
+                STATUS_CONTENT -> {
+                    status_view.showContentView()
+                }
+            }
+        })
+
+        viewModel.topicEntityLiveData.observe(this, Observer {
+            it.checkSuccess({ entity ->
+                val replyVideoEntity = entity.replyVideoEntity
+                val topicDetailEntity = entity.topicDetailEntity
+                initTopicDetail(topicDetailEntity)
+                initReplyVideo(replyVideoEntity)
+            })
+        })
+
+        viewModel.replyVideoLiveData.observe(this, Observer {
+            it.checkSuccess({ it ->
+                initReplyVideo(it)
+            })
+        })
     }
 
     override fun reConnect() {
     }
 
-    override fun createPresenter(): TopicDetailContract.Presenter? = TopicDetailPresenter()
 
-    override fun setTopicDetailResponse(entity: TopicDetailEntity?) {
+    private fun initTopicDetail(entity: TopicDetailEntity) {
         headerView.findViewById<TextView>(R.id.tv_title_header).text = entity?.title
         headerView.findViewById<TextView>(R.id.tv_count).text =
             "${entity?.viewCount}人浏览 | ${entity?.joinCount}人讨论"
@@ -132,12 +175,11 @@ class TopicDetailActivity :
         }
         val ivBg = headerView.findViewById<ImageView>(R.id.iv_bg)
 
-        ivBg.loadImageCommon(mContext, entity?.headPicture)
+        ivBg.loadImageCommon(mContext, entity.headPicture)
         topicDetailAdapter.addHeaderView(headerView)
     }
 
-    override fun setReplyVideoResponse(entity: ReplyVideoEntity?) {
-        entity ?: status_view.showEmptyView()
+    private fun initReplyVideo(entity: ReplyVideoEntity?) {
         nextPageUrl = entity?.nextPageUrl
         if (isRefresh) {
             topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
@@ -154,30 +196,13 @@ class TopicDetailActivity :
         }
     }
 
-    override fun setReplyConversationResponse(entity: ReplyVideoEntity?) {
-    }
-
-    override fun setReplyHotResponse(entity: ReplyVideoEntity?) {
-    }
-
-    override fun hideLoading() {
-        status_view.showContentView()
-    }
-
     override fun onLoadMore() {
         if (!nextPageUrl.isNullOrEmpty()) {
             isRefresh = false
             val map = nextPageUrl!!.urlToMap()
-            mPresenter?.getReplyVideoRequest(map)
+            viewModel.onLoadMore(map)
         }
     }
-
-    override fun onDestroy() {
-        KeyboardUtils.fixAndroidBug5497(this)
-        KeyboardUtils.fixSoftInputLeaks(this)
-        super.onDestroy()
-    }
-
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_publish -> {

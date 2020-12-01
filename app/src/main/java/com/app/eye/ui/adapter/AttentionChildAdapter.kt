@@ -3,7 +3,7 @@ package com.app.eye.ui.adapter
 import android.widget.ImageView
 import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
-import com.app.eye.ui.mvp.model.entity.AttUser
+import com.app.eye.ui.entity.AttUser
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 

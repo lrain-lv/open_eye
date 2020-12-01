@@ -8,10 +8,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
 import com.app.eye.event.NetworkEvent
 import com.app.eye.receiver.NetworkChangeReceiver
-import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.SPUtils
-import com.blankj.utilcode.util.ToastUtils
-import com.blankj.utilcode.util.Utils
+import com.blankj.utilcode.util.*
 import com.gyf.immersionbar.ImmersionBar
 import me.yokeyword.fragmentation.SupportActivity
 import org.greenrobot.eventbus.EventBus
@@ -67,6 +64,8 @@ abstract class BaseActivity : SupportActivity() {
 
 
     override fun onDestroy() {
+        KeyboardUtils.fixAndroidBug5497(this)
+        KeyboardUtils.fixSoftInputLeaks(this)
         super.onDestroy()
         unregisterReceiver(receiver)
         if (isUseEventBus()) EventBus.getDefault().unregister(this)

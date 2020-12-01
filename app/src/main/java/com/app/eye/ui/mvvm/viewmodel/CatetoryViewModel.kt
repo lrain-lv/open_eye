@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.ui.mvp.model.entity.CategoryEntity
-import com.app.eye.ui.mvp.model.entity.InformationEntity
-import com.app.eye.ui.mvp.model.entity.RecFriendEntity
-import com.app.eye.ui.mvp.model.entity.SpecialTopicEntity
+import com.app.eye.ui.entity.CategoryEntity
+import com.app.eye.ui.entity.InformationEntity
+import com.app.eye.ui.entity.RecFriendEntity
+import com.app.eye.ui.entity.SpecialTopicEntity
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_ERROR
 import com.app.eye.widgets.STATUS_LOADING

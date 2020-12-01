@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.ui.mvp.model.entity.LoginEntity
+import com.app.eye.ui.entity.LoginEntity
 
 class LoginViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
     var loginEntity = MutableLiveData<EyeResult<LoginEntity>>()

@@ -1,10 +1,9 @@
 package com.app.eye.ui.adapter
 
-import android.media.Image
 import android.widget.ImageView
 import com.app.eye.R
 import com.app.eye.rx.loadImageCommon
-import com.app.eye.ui.mvp.model.entity.BrandMetro
+import com.app.eye.ui.entity.BrandMetro
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 

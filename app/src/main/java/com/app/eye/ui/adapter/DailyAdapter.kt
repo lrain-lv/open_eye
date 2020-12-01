@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageWithTransform
-import com.app.eye.ui.mvp.model.entity.ItemDaily
+import com.app.eye.ui.entity.ItemDaily
 import com.app.eye.widgets.NoScrollLinearLayoutManager
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.SizeUtils

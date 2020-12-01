@@ -2,21 +2,12 @@ package com.app.eye.ui.mvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.app.eye.base.mvvm.BaseViewModel
-import com.app.eye.http.RetrofitManager
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.ui.mvp.model.entity.HotSearchEntity
-import com.app.eye.ui.mvp.model.entity.MessageEntity
-import com.app.eye.ui.mvp.model.entity.PushEntity
-import com.app.eye.ui.mvp.model.entity.SearchEntity
-import com.app.eye.widgets.*
-import com.orhanobut.logger.Logger
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
+import com.app.eye.ui.entity.HotSearchEntity
+import com.app.eye.ui.entity.SearchEntity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.util.concurrent.TimeUnit
 
 class SearchViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
     var hotLiveData = MutableLiveData<MutableList<HotSearchEntity>>()

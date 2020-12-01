@@ -6,18 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.BaseMvpFragment
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.event.ChangeTabEvent
-import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.PushMessageAdapter
 import com.app.eye.ui.mvp.contract.PushContract
-import com.app.eye.ui.mvp.model.entity.MessageEntity
-import com.app.eye.ui.mvp.model.entity.PushEntity
-import com.app.eye.ui.mvp.model.entity.RecFriendEntity
 import com.app.eye.ui.mvp.presenter.PushPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.PushViewModel
@@ -27,7 +22,6 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_push.*
 import org.greenrobot.eventbus.EventBus
-import javax.xml.transform.Result
 
 class PushFragment : BaseVMFragment(),
     OnItemClickListener, OnLoadMoreListener,

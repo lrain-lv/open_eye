@@ -7,7 +7,7 @@ import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
 import com.app.eye.rx.loadImageRoundWithSize
-import com.app.eye.ui.mvp.model.entity.SearchItem
+import com.app.eye.ui.entity.SearchItem
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder

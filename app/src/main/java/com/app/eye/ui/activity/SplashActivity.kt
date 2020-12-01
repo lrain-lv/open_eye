@@ -1,6 +1,5 @@
 package com.app.eye.ui.activity
 
-import android.Manifest
 import android.Manifest.permission.*
 import android.graphics.Typeface
 import android.view.KeyEvent
@@ -8,19 +7,14 @@ import android.view.View
 import android.view.ViewPropertyAnimator
 import com.app.eye.R
 import com.app.eye.base.BaseActivity
-import com.app.eye.http.RetrofitManager
-import com.app.eye.http.mvvm.ApiService
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
-import com.app.eye.rx.SchedulerUtils
 import com.app.eye.rx.setOnClickListener
-import com.app.eye.ui.mvp.model.entity.Launch
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.BarHide
-import com.orhanobut.logger.Logger
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
