@@ -11,8 +11,6 @@ import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.AttentionAdapter
-import com.app.eye.ui.mvp.contract.CommunityContract
-import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
 import com.app.eye.widgets.*

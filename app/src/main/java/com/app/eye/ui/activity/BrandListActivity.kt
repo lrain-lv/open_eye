@@ -7,9 +7,7 @@ import com.app.eye.R
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.actionUrlToRequest
 import com.app.eye.ui.adapter.BrandListAdapter
-import com.app.eye.ui.mvp.contract.BrandWallContract
 import com.app.eye.ui.entity.BrandListItemX
-import com.app.eye.ui.mvp.presenter.BrandWallPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.widgets.STATUS_CONTENT

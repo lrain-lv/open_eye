@@ -14,8 +14,6 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.getAgentWeb
 import com.app.eye.ui.adapter.BrandWallAdapter
 import com.app.eye.ui.adapter.BrandWallHeaderAdapter
-import com.app.eye.ui.mvp.contract.BrandWallContract
-import com.app.eye.ui.mvp.presenter.BrandWallPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.widgets.STATUS_CONTENT

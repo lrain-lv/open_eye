@@ -13,8 +13,6 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.TagVideoActivity
 import com.app.eye.ui.adapter.TopicChildAdapter
-import com.app.eye.ui.mvp.contract.TopicContact
-import com.app.eye.ui.mvp.presenter.TopicPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
 import com.app.eye.widgets.STATUS_CONTENT

@@ -14,8 +14,6 @@ import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.LoginActivity
 import com.app.eye.ui.adapter.PrivateMsgAdapter
-import com.app.eye.ui.mvp.contract.PushContract
-import com.app.eye.ui.mvp.presenter.PushPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.MessageViewModel
 import com.app.eye.widgets.STATUS_CONTENT

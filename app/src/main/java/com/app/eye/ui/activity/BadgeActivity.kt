@@ -9,8 +9,6 @@ import com.app.eye.R
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.MedalAdapter
-import com.app.eye.ui.mvp.contract.MineContract
-import com.app.eye.ui.mvp.presenter.MinePresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BadgeViewModel
 import com.app.eye.widgets.*

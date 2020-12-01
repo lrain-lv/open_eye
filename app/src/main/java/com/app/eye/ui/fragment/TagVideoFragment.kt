@@ -13,8 +13,6 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.PopularActivity
 import com.app.eye.ui.adapter.TagVideoAdapter
-import com.app.eye.ui.mvp.contract.TagVideoContract
-import com.app.eye.ui.mvp.presenter.TagVideoPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.app.eye.widgets.STATUS_CONTENT

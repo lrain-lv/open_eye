@@ -12,8 +12,6 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.PopularAdapter
-import com.app.eye.ui.mvp.contract.PopularContract
-import com.app.eye.ui.mvp.presenter.PopularPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.PopularViewModel
 import com.app.eye.widgets.STATUS_CONTENT

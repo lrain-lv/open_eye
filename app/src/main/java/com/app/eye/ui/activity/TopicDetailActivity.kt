@@ -16,10 +16,8 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicDetailAdapter
-import com.app.eye.ui.mvp.contract.TopicDetailContract
 import com.app.eye.ui.entity.ReplyVideoEntity
 import com.app.eye.ui.entity.TopicDetailEntity
-import com.app.eye.ui.mvp.presenter.TopicDetailPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TopicDetailViewModel
 import com.app.eye.widgets.*

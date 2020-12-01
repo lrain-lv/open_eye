@@ -11,9 +11,7 @@ import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.HotSearchAdapter
 import com.app.eye.ui.adapter.SearchAdapter
-import com.app.eye.ui.mvp.contract.SearchContract
 import com.app.eye.ui.entity.HotSearchEntity
-import com.app.eye.ui.mvp.presenter.SearchPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.SearchViewModel
 import com.blankj.utilcode.util.KeyboardUtils

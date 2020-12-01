@@ -13,8 +13,6 @@ import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.LightTopicAdapter
-import com.app.eye.ui.mvp.contract.LightTopicContract
-import com.app.eye.ui.mvp.presenter.LightTopicPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.LightTopViewModel
 import com.app.eye.widgets.STATUS_CONTENT

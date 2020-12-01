@@ -13,8 +13,6 @@ import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.HomeRecAdapter
-import com.app.eye.ui.mvp.contract.HomeRecContract
-import com.app.eye.ui.mvp.presenter.HomeRecPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.RecommendViewModel
 import com.blankj.utilcode.util.ActivityUtils

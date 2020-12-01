@@ -15,9 +15,7 @@ import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.DailyAdapter
-import com.app.eye.ui.mvp.contract.DailyContract
 import com.app.eye.ui.entity.ItemDaily
-import com.app.eye.ui.mvp.presenter.DailyPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.DailyViewModel
 import com.app.eye.widgets.STATUS_NO_NETWORK

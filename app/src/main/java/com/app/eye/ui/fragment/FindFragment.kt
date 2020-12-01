@@ -12,9 +12,7 @@ import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.DiscoverAdapter
-import com.app.eye.ui.mvp.contract.FindContract
 import com.app.eye.ui.entity.Item
-import com.app.eye.ui.mvp.presenter.FindPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.FindViewModel
 import com.app.eye.widgets.STATUS_NO_NETWORK

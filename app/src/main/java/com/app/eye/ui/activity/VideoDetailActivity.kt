@@ -13,11 +13,9 @@ import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.*
 import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.adapter.VideoDetailHeaderAdapter
-import com.app.eye.ui.mvp.contract.VideoDetailContract
 import com.app.eye.ui.entity.ReplyVideoEntity
 import com.app.eye.ui.entity.VideoDetailHeaderEntity
 import com.app.eye.ui.entity.VrItem
-import com.app.eye.ui.mvp.presenter.VideoDetailPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.VideoDetailViewModel
 import com.app.eye.widgets.*

@@ -13,8 +13,6 @@ import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.TopicFragmentAdapter
 import com.app.eye.ui.fragment.TagDynamicFragment
 import com.app.eye.ui.fragment.TagVideoFragment
-import com.app.eye.ui.mvp.contract.TagVideoContract
-import com.app.eye.ui.mvp.presenter.TagVideoPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.blankj.utilcode.util.ActivityUtils

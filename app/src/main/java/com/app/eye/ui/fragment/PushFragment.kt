@@ -12,8 +12,6 @@ import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.PushMessageAdapter
-import com.app.eye.ui.mvp.contract.PushContract
-import com.app.eye.ui.mvp.presenter.PushPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.PushViewModel
 import com.app.eye.widgets.*

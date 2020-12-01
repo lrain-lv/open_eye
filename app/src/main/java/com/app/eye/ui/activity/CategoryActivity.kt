@@ -16,8 +16,6 @@ import com.app.eye.ui.adapter.CategoryAdapter
 import com.app.eye.ui.adapter.InformationAdapter
 import com.app.eye.ui.adapter.RecFriendAdapter
 import com.app.eye.ui.adapter.SpecialTopicAdapter
-import com.app.eye.ui.mvp.contract.CategoryContract
-import com.app.eye.ui.mvp.presenter.CategoryPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.CategoryViewModel
 import com.app.eye.widgets.STATUS_CONTENT

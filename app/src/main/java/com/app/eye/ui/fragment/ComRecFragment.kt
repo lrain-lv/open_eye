@@ -17,11 +17,9 @@ import com.app.eye.ui.activity.TopicSquareActivity
 import com.app.eye.ui.adapter.BannerItemAdapter
 import com.app.eye.ui.adapter.ComRecAdapter
 import com.app.eye.ui.adapter.SquareCardAdapter
-import com.app.eye.ui.mvp.contract.CommunityContract
 import com.app.eye.ui.entity.ComItem
 import com.app.eye.ui.entity.ComRecEntity
 import com.app.eye.ui.entity.ItemX
-import com.app.eye.ui.mvp.presenter.CommunityPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
 import com.app.eye.widgets.*

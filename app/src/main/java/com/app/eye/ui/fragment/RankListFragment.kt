@@ -13,8 +13,6 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.RankAdapter
-import com.app.eye.ui.mvp.contract.RankContract
-import com.app.eye.ui.mvp.presenter.RankPresenter
 import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.RankViewModel
 import com.app.eye.widgets.STATUS_CONTENT
