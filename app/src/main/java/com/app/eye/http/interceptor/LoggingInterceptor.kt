@@ -4,6 +4,7 @@ import com.orhanobut.logger.Logger
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import kotlin.jvm.Throws
 
 class LoggingInterceptor : Interceptor {
     @Throws(IOException::class)

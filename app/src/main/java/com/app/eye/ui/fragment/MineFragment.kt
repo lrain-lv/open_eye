@@ -1,10 +1,8 @@
 package com.app.eye.ui.fragment
 
-import android.view.View
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
 import com.app.eye.event.LoginEvent
-import com.app.eye.rx.SchedulerUtils
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.setOnClickListener
 import com.app.eye.ui.activity.BadgeActivity
@@ -15,8 +13,6 @@ import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_mine.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -24,8 +20,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import kotlin.concurrent.thread
-import kotlin.coroutines.coroutineContext
 
 class MineFragment : BaseFragment() {
 

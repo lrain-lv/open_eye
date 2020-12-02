@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.eye.R
 import com.app.eye.base.mvvm.BaseVMActivity
@@ -17,6 +18,10 @@ import com.app.eye.ui.mvvm.viewmodel.SearchViewModel
 import com.blankj.utilcode.util.KeyboardUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchActivity : BaseVMActivity(),
     View.OnClickListener, TextWatcher, OnLoadMoreListener {
@@ -33,7 +38,7 @@ class SearchActivity : BaseVMActivity(),
             SearchViewModel::class.java
         )
     }
-
+    private var debounceJob: Job? = null
     override fun getLayoutRes(): Int = R.layout.activity_search
 
     override fun initView() {
@@ -42,13 +47,15 @@ class SearchActivity : BaseVMActivity(),
         iv_del.setOnClickListener(this)
         hotSearchAdapter = HotSearchAdapter(mutableListOf())
         searchAdapter = SearchAdapter(mutableListOf())
-        recycler_view_result.layoutManager =
-            LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-        recycler_view_result.setHasFixedSize(true)
-        recycler_view_result.adapter = searchAdapter
         searchAdapter.loadMoreModule.setOnLoadMoreListener(this)
         searchAdapter.loadMoreModule.isEnableLoadMore = false
-        recycler_view_result.visibility = View.GONE
+        recycler_view_result.apply {
+            layoutManager =
+                LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+            setHasFixedSize(true)
+            adapter = searchAdapter
+            visibility = View.GONE
+        }
         recycler_view.layoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler_view.adapter = hotSearchAdapter
@@ -138,10 +145,15 @@ class SearchActivity : BaseVMActivity(),
         if (text.isEmpty()) iv_del.visibility = View.GONE else iv_del.visibility =
             View.VISIBLE
         if (text.isEmpty()) {
+            debounceJob?.cancel()
             hotSearchAdapter.setList(originDataList)
             return
         }
-        viewModel.doPreSearchData(text)
+        debounceJob?.cancel()
+        debounceJob = lifecycleScope.launch {
+            delay(300L)
+            viewModel.doPreSearchData(text)
+        }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -156,5 +168,10 @@ class SearchActivity : BaseVMActivity(),
     override fun onBackPressedSupport() {
         super.onBackPressedSupport()
         overridePendingTransition(R.anim.top_slient, R.anim.out_from_top)
+    }
+
+    override fun onDestroy() {
+        et_search.removeTextChangedListener(this)
+        super.onDestroy()
     }
 }

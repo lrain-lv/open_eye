@@ -11,10 +11,9 @@ import com.app.eye.ui.entity.VideoEntity
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_ERROR
 import com.app.eye.widgets.STATUS_LOADING
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
+import com.orhanobut.logger.Logger
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
 class VideoDetailViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
@@ -26,16 +25,18 @@ class VideoDetailViewModel(private val serviceHelper: ServiceHelper) : BaseViewM
     fun onGetVideoDetail(id: String, map: Map<String, String>) {
         statusLiveData.value = STATUS_LOADING
         launchOnUi {
-            val request = getRequest(id, map)
+            val request = withContext(Dispatchers.IO) {
+                getRequest(id, map)
+            }
             videoEntityLiveData.value = request
             if (request.isSuccess()) {
                 statusLiveData.value = STATUS_CONTENT
             } else {
                 statusLiveData.value = STATUS_ERROR
             }
-
         }
     }
+
 
     private suspend fun getRequest(id: String, map: Map<String, String>) =
         withContext(Dispatchers.IO) {

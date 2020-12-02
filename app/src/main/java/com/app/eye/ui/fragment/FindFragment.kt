@@ -1,6 +1,7 @@
 package com.app.eye.ui.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,10 +37,10 @@ class FindFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener {
             InjectorUtil.getFindVMFactory()
         ).get(FindViewModel::class.java)
     }
-
     override fun getLayoutRes(): Int = R.layout.fragment_find
     private lateinit var discoverAdapter: DiscoverAdapter
     override fun initView() {
+
         initSwipeRefreshLayout(refresh_layout)
         refresh_layout.setOnRefreshListener(this)
         discoverAdapter = DiscoverAdapter(mutableListOf())

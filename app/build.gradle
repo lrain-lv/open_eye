@@ -1,19 +1,21 @@
+import com.app.buildsrc.Deps
+import com.app.buildsrc.Versions
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'koin'
-def ext = rootProject.ext
 
 android {
-    compileSdkVersion ext.android.compileSdkVersion
+    compileSdkVersion Versions.compileSdkVersion
 
     defaultConfig {
-        applicationId ext.android.applicationId
-        minSdkVersion ext.android.minSdkVersion
-        targetSdkVersion ext.android.targetSdkVersion
-        versionCode ext.android.versionCode
-        versionName ext.android.versionName
+        applicationId Versions.applicationId
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        versionCode Versions.versionCode
+        versionName Versions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,49 +49,46 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation ext.dependencies.appcompat
-    implementation ext.dependencies.kotlin
-    implementation ext.dependencies.core_ktx
-    implementation ext.dependencies.constraintlayout
-    implementation ext.dependencies.rxjava3
-    implementation ext.dependencies.retrofit
-    implementation ext.dependencies.converter_gson
-    implementation ext.dependencies.adapter_rxjava
-    implementation ext.dependencies.glide
-    implementation ext.dependencies.glide_annotations
-    implementation ext.dependencies.okhttp3_integration
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-//    annotationProcessor  ext.dependencies.glide_compiler
-    kapt ext.dependencies.glide_compiler
-    implementation ext.dependencies.adapterHelper
-    implementation ext.dependencies.logger
-    implementation ext.dependencies.immersionbar
-    implementation ext.dependencies.logging_interceptor
-    implementation ext.dependencies.rxandroid
-    implementation ext.dependencies.fragmentationx
-    implementation ext.dependencies.eventbus
-    implementation ext.dependencies.utilCode
-    implementation ext.dependencies.FlycoTabLayout
-//    implementation ext.dependencies.itemdecoration
-    implementation ext.dependencies.banner
-    implementation ext.dependencies.easypermissions
-    implementation ext.dependencies.agentweb
-    implementation ext.dependencies.material
-    implementation ext.dependencies.matisse
-    implementation ext.dependencies.photoView
-    implementation ext.dependencies.viewpager2
-    implementation ext.dependencies.gpuimage
-    implementation ext.dependencies.lottie
-    implementation ext.dependencies.viewmodel
-    implementation ext.dependencies.livedata
-    implementation ext.dependencies.extensions
-    implementation ext.dependencies.coroutines_core
-    implementation ext.dependencies.coroutines_android
-    implementation ext.dependencies.koin_scope
-    implementation ext.dependencies.koin_viewmodel
-    implementation ext.dependencies.koin_ext
-    implementation 'com.squareup.leakcanary:leakcanary-android:2.5'
-//    implementation (ext.dependencies.vlayout ){
-//        transitive = true
-//    }
+    implementation Deps.appcompat
+    implementation Deps.kotlin
+    implementation Deps.core_ktx
+    implementation Deps.constraintlayout
+    implementation Deps.rxjava3
+    implementation Deps.retrofit
+    implementation Deps.converter_gson
+    implementation Deps.adapter_rxjava
+    implementation Deps.glide
+    implementation Deps.glide_annotations
+    kapt Deps.glide_compiler
+    implementation Deps.okhttp3_integration
+    implementation Deps.legacy
+    implementation Deps.adapterHelper
+    implementation Deps.logger
+    implementation Deps.immersionbar
+    implementation Deps.logging_interceptor
+    implementation Deps.rxandroid
+    implementation Deps.fragmentationx
+    implementation Deps.eventbus
+    implementation Deps.utilCode
+    implementation Deps.FlycoTabLayout
+    implementation Deps.banner
+    implementation Deps.easypermissions
+    implementation Deps.agentweb
+    implementation Deps.material
+    implementation Deps.matisse
+    implementation Deps.photoView
+    implementation Deps.viewpager2
+    implementation Deps.gpuimage
+    implementation Deps.lottie
+    implementation Deps.viewmodel
+    implementation Deps.livedata
+    implementation Deps.extensions
+    implementation Deps.coroutines_core
+    implementation Deps.coroutines_android
+    implementation Deps.koin_scope
+    implementation Deps.koin_viewmodel
+    implementation Deps.koin_ext
+    implementation Deps.coil
+    implementation Deps.leakCanary
+
 }

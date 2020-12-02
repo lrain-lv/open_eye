@@ -9,12 +9,14 @@ import com.app.eye.R
 import com.app.eye.base.BaseActivity
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
+import com.app.eye.rx.isSuccess
 import com.app.eye.rx.setOnClickListener
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.BarHide
+import com.orhanobut.logger.Logger
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -27,7 +29,7 @@ import java.util.concurrent.TimeUnit
 class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
 
     override fun getLayoutRes(): Int = R.layout.activity_splash
-
+    private val scope = MainScope()
     private lateinit var animator: ViewPropertyAnimator
 
     private val perms = arrayOf(
@@ -38,14 +40,14 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
 
     private val splash: String by lazy { SPUtils.getInstance("eye").getString("splash", "") }
 
-    private lateinit var job: Job
 
     override fun initView() {
         immersionBar.hideBar(BarHide.FLAG_HIDE_BAR).init()
-        job = GlobalScope.launch(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
             val result = ServiceHelper.getInstance().getConfigs()
-            if (result is EyeResult.Success) {
-                SPUtils.getInstance("eye").put("splash", result.data.startPageAd.imageUrl)
+            if (result.isSuccess()) {
+                SPUtils.getInstance("eye")
+                    .put("splash", (result as EyeResult.Success).data.startPageAd.imageUrl)
             }
         }
         setOnClickListener(tv_skip) {
@@ -122,8 +124,8 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
 
     override fun onDestroy() {
         animator.cancel()
-        if (job.isActive) {
-            job.cancel()
+        if (scope.isActive) {
+            scope.cancel()
         }
         if (!subscribe.isDisposed)
             subscribe.dispose()

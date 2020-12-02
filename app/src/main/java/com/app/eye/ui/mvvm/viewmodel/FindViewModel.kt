@@ -5,6 +5,10 @@ import com.app.eye.base.mvvm.BaseViewModel
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.ui.entity.DiscoverEntity
+import com.orhanobut.logger.Logger
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 class FindViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() {
     var paramData = MutableLiveData<EyeResult<DiscoverEntity>>()
@@ -16,9 +20,11 @@ class FindViewModel(private val serviceHelper: ServiceHelper) : BaseViewModel() 
         if (!isFirst)
             isRefresh.value = true
         launchOnUi {
-            val discovery = serviceHelper.getDiscovery()
+            val discovery =
+                serviceHelper.getDiscovery()
             paramData.value = discovery
             isRefresh.value = false
+
         }
     }
 

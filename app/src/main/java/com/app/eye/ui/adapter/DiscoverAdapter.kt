@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
@@ -70,7 +71,6 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 player.setUp(detail.url, "")
             }
             DISCOVER_BANNER -> {
-                Logger.e("ddd1")
                 banner = holder.getView(R.id.banner)
                 val adapter = BannerItemAdapter(mutableListOf())
                 banner!!.apply {
@@ -90,7 +90,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                         ToastUtils.showShort(actionUrl)
                     }
                 }
-                banner!!.addBannerLifecycleObserver(context as MainActivity)
+                banner!!.addBannerLifecycleObserver(context as FragmentActivity)
                 if (TextUtils.equals("banner", item.type)) {
                     val itemX = ItemX(
                         DataX(
