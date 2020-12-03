@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp">
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_feed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,7 +30,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_muti"
         android:layout_width="17dp"
         android:layout_height="17dp"
@@ -39,7 +41,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_video"
         android:layout_width="17dp"
         android:layout_height="17dp"
@@ -70,7 +73,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_dec" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_header"
         android:layout_width="20dp"
         android:layout_height="20dp"
@@ -78,7 +82,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_dec" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_like"
         android:layout_width="16dp"
         android:layout_height="16dp"

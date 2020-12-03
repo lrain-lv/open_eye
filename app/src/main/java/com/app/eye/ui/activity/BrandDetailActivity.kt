@@ -177,11 +177,9 @@ class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListen
                                     tvTag.append("${it.title} ")
                                 }
                                 img.loadImageCommon(
-                                    this@BrandDetailActivity,
                                     metroData.background.url
                                 )
                                 imgIcon.loadImageCircle(
-                                    this@BrandDetailActivity,
                                     metroData.avatar.url,
                                     80f
                                 )

@@ -14,6 +14,6 @@ class SpecialTopicAdapter(data: MutableList<SpecialTopicItem>) :
     R.layout.layout_special_topic_item), LoadMoreModule {
     override fun convert(holder: BaseViewHolder, item: SpecialTopicItem) {
         val img = holder.getView<ImageView>(R.id.iv_img)
-        img.loadImageRound(context,item.data.image)
+        img.loadImageRound(item.data.image)
     }
 }

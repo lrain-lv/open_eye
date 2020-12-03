@@ -16,8 +16,8 @@ class MedalAdapter(data: MutableList<BadgeItem>) : BaseQuickAdapter<BadgeItem, B
     override fun convert(holder: BaseViewHolder, item: BadgeItem) {
         val img = holder.getView<ImageView>(R.id.iv_img)
         val imgBg = holder.getView<ImageView>(R.id.iv_img_bg)
-        img.loadImageCommon(context, item.data.medalIcon)
-        imgBg.loadImageCommon(context, item.data.tagBgPicture)
+        img.loadImageCommon( item.data.medalIcon)
+        imgBg.loadImageCommon( item.data.tagBgPicture)
         holder.setText(
             R.id.tv_time, if (item.data.receiveTime == null) "尚未获得" else
                 "${TimeUtils.millis2String(item.data.receiveTime, "yyyy/MM/dd")} 获得"

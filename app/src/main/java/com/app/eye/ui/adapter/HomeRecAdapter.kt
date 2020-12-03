@@ -62,26 +62,24 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
 
-                ivCover.loadImageWithTransform(context,
+                ivCover.loadImageWithTransform(
                     data.cover.feed,
-                    RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP
+                    coil.transform.RoundedCornersTransformation(
+                        topLeft = 5f.dp2px(),
+                        topRight = 5f.dp2px()
                     ))
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-                ivHeader.loadImageCircle(context, item.data.header?.icon, 36f)
+                ivHeader.loadImageCircle( item.data.header?.icon, 36f)
             }
             HOME_INFORMATION -> {
                 val data = item.data
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 val recycler = holder.getView<RecyclerView>(R.id.recycler)
-                ivCover.loadImageWithTransform(context,
+                ivCover.loadImageWithTransform(
                     data.backgroundImage,
-                    RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP
+                    coil.transform.RoundedCornersTransformation(
+                        topLeft = 5f.dp2px(),
+                        topRight = 5f.dp2px()
                     ))
                 val adapter = DailyInfoAdapter(data.titleList)
                 recycler.layoutManager = NoScrollLinearLayoutManager(context,
@@ -105,7 +103,7 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                 holder.setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
                     .setText(R.id.tv_duration, time)
-                img.loadImageRound(context, item.data.cover.feed)
+                img.loadImageRound( item.data.cover.feed)
             }
             HOME_UGC_SELECT_CARD -> {
                 val itemList = item.data.itemList
@@ -113,15 +111,15 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                     when (index) {
                         0 -> {
                             val imgleft = holder.getView<ImageView>(R.id.img_left)
-                            imgleft.loadImageCommon(context, homeRecItemX.data.cover.feed)
+                            imgleft.loadImageCommon( homeRecItemX.data.cover.feed)
                         }
                         1 -> {
                             val imgtop = holder.getView<ImageView>(R.id.img_top)
-                            imgtop.loadImageCommon(context, homeRecItemX.data.cover.feed)
+                            imgtop.loadImageCommon( homeRecItemX.data.cover.feed)
                         }
                         2 -> {
                             val imgbottom = holder.getView<ImageView>(R.id.img_bottom)
-                            imgbottom.loadImageCommon(context, homeRecItemX.data.cover.feed)
+                            imgbottom.loadImageCommon( homeRecItemX.data.cover.feed)
                         }
                     }
                 }
@@ -133,11 +131,11 @@ class HomeRecAdapter(data: MutableList<HomeRecItem>) :
                 tvAttention.text = "+关注"
                 holder.setText(R.id.tv_brief_title, item.data.title)
                     .setText(R.id.tv_dec, item.data.description)
-                img.loadImageRoundWithSize(context, item.data.icon, 70f)
+                img.loadImageRoundWithSize(item.data.icon, 70f)
             }
             HOME_TOPIC_BRIEF_CARD -> {
                 val ivIcon = holder.getView<ImageView>(R.id.iv_icon)
-                ivIcon.loadImageRound(context,item.data.icon)
+                ivIcon.loadImageRound(item.data.icon)
                 holder.setText(R.id.tv_title, item.data.title)
                     .setGone(R.id.iv_fire, !item.data.showHotSign)
                     .setText(R.id.tv_count, item.data.description)

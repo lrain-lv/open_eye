@@ -12,6 +12,6 @@ class AttentionChildAdapter(data: MutableList<AttUser>) : BaseQuickAdapter<AttUs
     layoutResId = R.layout.layout_attention_follow_child_item) {
     override fun convert(holder: BaseViewHolder, item: AttUser) {
         val img = holder.getView<ImageView>(R.id.iv_img)
-        img.loadImageCircle(context,item.avatar,40f)
+        img.loadImageCircle(item.avatar,40f)
     }
 }

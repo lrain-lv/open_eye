@@ -48,21 +48,21 @@ class TopicReplyAdapter(data: MutableList<ReplyItem>) :
             )
         val headerBig = holder.getView<ImageView>(R.id.iv_header_big)
 
-        headerBig.loadImageCircle(context,data.user.avatar,36f)
+        headerBig.loadImageCircle(data.user.avatar,36f)
         val ivMain = holder.getView<ImageView>(R.id.iv_main)
         if (!data.imageUrl.isNullOrEmpty()) {
 
-            ivMain.loadImageRound(context,data.imageUrl)
+            ivMain.loadImageRound(data.imageUrl)
         }
         if (data.parentReply != null) {
             val headerSm = holder.getView<ImageView>(R.id.iv_header_sm)
             val ivReply = holder.getView<ImageView>(R.id.iv_reply)
 
-            headerSm.loadImageCircle(context,data.parentReply.user.avatar,26f)
+            headerSm.loadImageCircle(data.parentReply.user.avatar,26f)
             holder.setText(R.id.tv_name_reply, data.parentReply.user.nickname)
                 .setText(R.id.tv_content_reply, data.parentReply.message)
             if (!data.parentReply.imageUrl.isNullOrEmpty()) {
-                ivReply.loadImageRound(context,data.parentReply.imageUrl)
+                ivReply.loadImageRound(data.parentReply.imageUrl)
             }
         }
     }

@@ -18,6 +18,11 @@ fun main(args: Array<String>) {
 
         delay(5000L)
     }
+    val s  = "Dd"
+    val run = s.run {
+        "dd"
+    }
+
 }
 
 suspend fun simple(): List<Int> {

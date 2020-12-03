@@ -24,6 +24,6 @@ class RecFriendAdapter(data: MutableList<RecItem>) :
         }
         holder.setText(R.id.tv_brief_title, item.data.title)
             .setText(R.id.tv_dec, item.data.description)
-        img.loadImageCircle(context, item.data.icon, 40f)
+        img.loadImageCircle( item.data.icon, 40f)
     }
 }

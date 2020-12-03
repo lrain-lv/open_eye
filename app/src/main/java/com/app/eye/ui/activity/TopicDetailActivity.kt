@@ -173,7 +173,7 @@ class TopicDetailActivity : BaseVMActivity(), OnLoadMoreListener, View.OnClickLi
         }
         val ivBg = headerView.findViewById<ImageView>(R.id.iv_bg)
 
-        ivBg.loadImageCommon(mContext, entity.headPicture)
+        ivBg.loadImageCommon( entity.headPicture)
         topicDetailAdapter.addHeaderView(headerView)
     }
 

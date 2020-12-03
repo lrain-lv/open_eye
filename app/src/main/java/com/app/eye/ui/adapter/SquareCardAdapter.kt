@@ -1,6 +1,7 @@
 package com.app.eye.ui.adapter
 
 import android.widget.ImageView
+import coil.load
 import com.app.eye.R
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.entity.ItemX
@@ -16,7 +17,7 @@ class SquareCardAdapter(dataList: MutableList<ItemX>) : BaseQuickAdapter<ItemX, 
 
     override fun convert(holder: BaseViewHolder, item: ItemX) {
         val imgPic = holder.getView<ImageView>(R.id.iv_pic)
-        imgPic.loadImageCommon(context, item.data.bgPicture)
+        imgPic.loadImageCommon(item.data.bgPicture)
         holder.setText(R.id.tv_title, item.data.title)
             .setText(R.id.tv_sub_title, item.data.subTitle)
     }

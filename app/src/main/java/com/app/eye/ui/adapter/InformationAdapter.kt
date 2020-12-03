@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
+import com.app.eye.rx.dp2px
 import com.app.eye.rx.loadImageWithTransform
 import com.app.eye.ui.entity.InfoItem
 import com.app.eye.ui.entity.ItemDaily.Companion.DAILY_INFORMATION
@@ -33,12 +34,11 @@ class InformationAdapter(data: MutableList<InfoItem>) :
                 val data = item.data
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 val recycler = holder.getView<RecyclerView>(R.id.recycler)
-                ivCover.loadImageWithTransform(context,
+                ivCover.loadImageWithTransform(
                     data.backgroundImage,
-                    RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP
+                    coil.transform.RoundedCornersTransformation(
+                        topLeft = 5f.dp2px(),
+                        topRight = 5f.dp2px()
                     ))
                 val adapter = DailyInfoAdapter(data.titleList)
                 recycler.layoutManager = NoScrollLinearLayoutManager(context,

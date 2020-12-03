@@ -10,10 +10,14 @@ import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.ui.entity.BrandApiRequest
 import com.blankj.utilcode.util.EncodeUtils
 import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.SizeUtils
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.WebViewClient
 import com.orhanobut.logger.Logger
 
+fun Float.dp2px(): Float {
+    return SizeUtils.dp2px(this).toFloat()
+}
 
 fun String.getAgentWeb(
     activity: Activity,

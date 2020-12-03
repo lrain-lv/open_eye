@@ -16,7 +16,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_close"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -43,7 +44,8 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="55dp" />
 
-        <ImageView
+                <ImageView
+        android:scaleType="centerCrop"
             android:id="@+id/iv_header"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -110,7 +112,8 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line2">
 
-            <ImageView
+                <ImageView
+        android:scaleType="centerCrop"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:src="@mipmap/ic_action_favorites_without_padding" />
@@ -124,7 +127,8 @@
                 android:textColor="@color/white"
                 android:textSize="16dp" />
 
-            <ImageView
+                <ImageView
+        android:scaleType="centerCrop"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="10dp"
@@ -139,7 +143,8 @@
                 android:textColor="@color/white"
                 android:textSize="16dp" />
 
-            <ImageView
+                <ImageView
+        android:scaleType="centerCrop"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="10dp"
@@ -158,7 +163,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <ImageView
+                <ImageView
+        android:scaleType="centerCrop"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:src="@mipmap/icon_share_white" />

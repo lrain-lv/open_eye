@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.app.eye.R
+import com.app.eye.rx.dp2px
 import com.app.eye.rx.loadImageWithTransform
 import com.app.eye.ui.entity.BadgeItem
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
@@ -46,13 +47,11 @@ class MedalDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val item = arguments?.getSerializable("data") as BadgeItem
         iv_img.loadImageWithTransform(
-            requireContext(), item.data.tagBgPicture,
-            RoundedCornersTransformation(
-                SizeUtils.dp2px(5f),
-                0,
-                RoundedCornersTransformation.CornerType.TOP
-            )
-        )
+           item.data.tagBgPicture,
+            coil.transform.RoundedCornersTransformation(
+                topLeft = 5f.dp2px(),
+                topRight = 5f.dp2px()
+            ))
         Logger.e(item.data.description)
         tv_title.text = item.data.title
         tv_dec.text = item.data.description

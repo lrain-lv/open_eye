@@ -23,6 +23,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     signingConfigs {
         releaseConfig {
             storeFile file('/Users/liuyan/Desktop/workspace/OpenEye/openeye.jks')
@@ -90,5 +93,6 @@ dependencies {
     implementation Deps.koin_ext
     implementation Deps.coil
     implementation Deps.leakCanary
+    implementation Deps.startUp
 
 }

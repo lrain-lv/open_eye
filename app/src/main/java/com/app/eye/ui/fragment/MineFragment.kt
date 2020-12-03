@@ -1,8 +1,11 @@
 package com.app.eye.ui.fragment
 
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.app.eye.R
 import com.app.eye.base.BaseFragment
 import com.app.eye.event.LoginEvent
+import com.app.eye.rx.dp2px
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.setOnClickListener
 import com.app.eye.ui.activity.BadgeActivity
@@ -38,12 +41,11 @@ class MineFragment : BaseFragment() {
                 avatar = spUtils.getString("avatar", "")
                 nick = spUtils.getString("nick", "")
             }
-            Glide.with(mContext)
-                .load(avatar)
-                .error(R.mipmap.pgc_default_avatar)
-                .circleCrop()
-                .override(SizeUtils.dp2px(80f), SizeUtils.dp2px(80f))
-                .into(iv_header)
+            iv_header.load(avatar) {
+                error(R.mipmap.pgc_default_avatar)
+                size(80f.dp2px().toInt())
+                transformations(CircleCropTransformation())
+            }
             tv_login.text = if (nick.isNotEmpty()) nick else "点击登录即可评论及发布内容"
         }
 
@@ -87,7 +89,7 @@ class MineFragment : BaseFragment() {
         val loginEntity = loginEvent.loginEntity
         avatar = loginEntity.member?.avatar!!
         nick = loginEntity.member.nick
-        iv_header.loadImageCircle(mContext, loginEntity.member.avatar, 80f)
+        iv_header.loadImageCircle(loginEntity.member.avatar, 80f)
         tv_login.text = loginEntity.member.nick
         Logger.e(loginEntity.member.avatar + loginEntity.member.nick)
         GlobalScope.launch(Dispatchers.IO) {

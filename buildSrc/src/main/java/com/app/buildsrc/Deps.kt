@@ -64,4 +64,5 @@ object Deps {
     const val coil = "io.coil-kt:coil:1.1.0"
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.5"
     const val legacy = "androidx.legacy:legacy-support-v4:1.0.0"
+    const val startUp = "androidx.startup:startup-runtime:1.0.0-alpha03"
 }

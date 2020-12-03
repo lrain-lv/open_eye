@@ -73,6 +73,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="15dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/ic_back_white"
         app:layout_constraintBottom_toTopOf="@id/line2"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -13,6 +13,6 @@ class CategoryAdapter(data: MutableList<CategoryItem>) :
     R.layout.layout_category_item), LoadMoreModule {
     override fun convert(holder: BaseViewHolder, item: CategoryItem) {
         val img = holder.getView<ImageView>(R.id.iv_img)
-        img.loadImageCommon(context,item.data.image)
+        img.loadImageCommon(item.data.image)
     }
 }

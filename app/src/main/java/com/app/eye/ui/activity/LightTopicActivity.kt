@@ -144,7 +144,7 @@ class LightTopicActivity : BaseVMActivity() {
 
         viewModel.entityLiveData.observe(this, Observer {
             it.checkSuccess({ entity ->
-                imgBg.loadImageCommon(mContext, entity.headerImage)
+                imgBg.loadImageCommon( entity.headerImage)
                 tvDec.text = entity.text
                 tvTitleSm.text = entity.brief
                 adapter.setList(entity.itemList)

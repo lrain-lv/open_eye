@@ -26,7 +26,8 @@
             android:textSize="16dp"
             android:textStyle="bold" />
 
-        <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
             android:id="@+id/iv_search"
             android:layout_width="30dp"
             android:layout_height="30dp"

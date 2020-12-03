@@ -39,7 +39,7 @@
         app:tl_textUnselectColor="@color/grayDark"
         app:tl_textsize="10dp" />
 
-    <ImageView
+        <ImageView
         android:id="@+id/iv_add"
         android:layout_width="0dp"
         android:layout_height="40dp"

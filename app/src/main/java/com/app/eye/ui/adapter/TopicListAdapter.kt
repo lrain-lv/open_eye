@@ -16,7 +16,7 @@ class TopicListAdapter(dataList: MutableList<TopicItem>) :
     ), LoadMoreModule {
     override fun convert(holder: BaseViewHolder, item: TopicItem) {
         val ivIcon = holder.getView<ImageView>(R.id.iv_icon)
-        ivIcon.loadImageRound(context,item.data.imageUrl)
+        ivIcon.loadImageRound(item.data.imageUrl)
         holder.setText(R.id.tv_title, item.data.title)
             .setGone(R.id.iv_fire, !item.data.showHotSign)
             .setText(R.id.tv_count, "${item.data.viewCount}人浏览/${item.data.joinCount}人参与")

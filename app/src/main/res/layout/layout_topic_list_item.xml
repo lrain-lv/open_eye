@@ -5,7 +5,8 @@
     android:layout_height="90dp"
     android:paddingHorizontal="15dp">
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_icon"
         android:layout_width="66dp"
         android:layout_height="66dp"
@@ -29,7 +30,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_fire"
         android:layout_width="13dp"
         android:layout_height="16dp"

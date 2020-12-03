@@ -10,7 +10,10 @@ import android.text.TextWatcher
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import coil.load
 import com.app.eye.R
+import com.app.eye.rx.dp2px
+import com.app.eye.rx.loadImageRound
 import com.app.eye.widgets.transformations.RoundedCornersTransformation
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.SizeUtils
@@ -119,10 +122,9 @@ class EyeCommentDialog : DialogFragment(),
             iv_img.visibility = View.VISIBLE
             iv_photo.visibility = View.GONE
             tv_photo.visibility = View.GONE
-            Glide.with(this@EyeCommentDialog)
-                .load(result)
-                .transform(CenterCrop(), RoundedCornersTransformation(SizeUtils.dp2px(5f), 0))
-                .into(iv_img)
+            iv_img.load(result) {
+                transformations(coil.transform.RoundedCornersTransformation(5f.dp2px()))
+            }
         }
     }
 

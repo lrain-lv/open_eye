@@ -1,6 +1,9 @@
 package com.app.eye
 
 import android.app.Application
+import coil.Coil
+import coil.ImageLoader
+import coil.util.CoilUtils
 import com.app.eye.widgets.EyeLoadMoreView
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.module.LoadMoreModuleConfig
@@ -15,27 +18,27 @@ class MainApp : Application() {
         @JvmStatic
         lateinit var mContext: Application
             private set
-
     }
 
     override fun onCreate() {
         super.onCreate()
         mContext = this
-        LoadMoreModuleConfig.defLoadMoreView = EyeLoadMoreView()
-        Logger.addLogAdapter(AndroidLogAdapter())
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        Glide.get(this).onLowMemory()
+        val imageLoader = Coil.imageLoader(AppHelper.mContext)
+        imageLoader.memoryCache.clear()
+        imageLoader.bitmapPool.clear()
     }
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
+        val imageLoader = Coil.imageLoader(AppHelper.mContext)
         if (level == TRIM_MEMORY_UI_HIDDEN) {
-            Glide.get(this).clearMemory()
+            imageLoader.memoryCache.clear()
+            imageLoader.bitmapPool.clear()
         }
-        Glide.get(this).onTrimMemory(level)
     }
 
 

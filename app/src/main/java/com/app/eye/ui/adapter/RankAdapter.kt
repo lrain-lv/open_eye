@@ -32,7 +32,7 @@ class RankAdapter(data: MutableList<RankItem>) :
         holder.setText(R.id.tv_title, item.data.header.title)
             .setText(R.id.tv_dec, item.data.header.description)
             .setText(R.id.tv_duration, time)
-        header.loadImageCircle(context, item.data.header.icon, 40f)
-        img.loadImageRound(context, item.data.content.data.cover.feed)
+        header.loadImageCircle( item.data.header.icon, 40f)
+        img.loadImageRound( item.data.content.data.cover.feed)
     }
 }

@@ -17,6 +17,6 @@ class SquareItemAdapter(var dataList: MutableList<ItemX>) : BaseQuickAdapter<Ite
         item ?: return
         var imageView = holder.getView<ImageView>(R.id.iv_image)
         holder.setText(R.id.tv_title, item.data.title)
-        imageView.loadImageRoundWithSize(context, item.data.image, 100f)
+        imageView.loadImageRoundWithSize( item.data.image, 100f)
     }
 }

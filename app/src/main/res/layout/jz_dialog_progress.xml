@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
             android:id="@+id/duration_image_tip"
             android:layout_width="36dp"
             android:layout_height="27dp"

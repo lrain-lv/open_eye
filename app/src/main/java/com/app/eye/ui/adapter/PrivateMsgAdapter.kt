@@ -13,7 +13,7 @@ class PrivateMsgAdapter(data: MutableList<MsgItem>) :
         layoutResId = R.layout.layout_private_msg_item), LoadMoreModule {
     override fun convert(holder: BaseViewHolder, item: MsgItem) {
         val img = holder.getView<ImageView>(R.id.iv_icon)
-        img.loadImageCircle(context, item.data.user.avatar, 35f)
+        img.loadImageCircle( item.data.user.avatar, 35f)
         holder.setText(R.id.tv_name, item.data.user.nickname)
             .setText(R.id.tv_time,
                 com.blankj.utilcode.util.TimeUtils.getFriendlyTimeSpanByNow(item.data.lastTime))

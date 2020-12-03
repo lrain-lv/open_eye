@@ -14,7 +14,7 @@ class BrandWallHeaderAdapter(data: MutableList<BrandMetro>) :
     ) {
     override fun convert(holder: BaseViewHolder, item: BrandMetro) {
         val img = holder.getView<ImageView>(com.app.eye.R.id.iv_img)
-        img.loadImageCommon(context, item.metro_data.cover.url)
+        img.loadImageCommon( item.metro_data.cover.url)
         holder.setText(R.id.tv_title, item.metro_data.title)
     }
 }

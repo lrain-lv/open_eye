@@ -6,7 +6,8 @@
     android:paddingHorizontal="15dp"
     android:paddingTop="10dp">
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_icon"
         android:layout_width="35dp"
         android:layout_height="35dp"
@@ -47,7 +48,8 @@
         app:layout_constraintRight_toLeftOf="@id/iv_next"
         app:layout_constraintTop_toBottomOf="@id/tv_time" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

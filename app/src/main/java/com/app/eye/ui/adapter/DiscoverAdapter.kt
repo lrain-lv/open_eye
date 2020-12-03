@@ -62,12 +62,12 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                     .setText(R.id.tv_dec, detail.description)
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
 
-                ivHeader.loadImageCircle(context, detail.icon, 36f)
+                ivHeader.loadImageCircle( detail.icon, 36f)
                 val player = holder.getView<EyeVideoPlayer>(R.id.player)
                 player.start_layout.visibility = View.GONE
                 player.outlineProvider = JzViewOutlineProvider(SizeUtils.dp2px(5f).toFloat())
                 player.clipToOutline = true
-                player.posterImageView.loadImageCommon(context, detail.imageUrl)
+                player.posterImageView.loadImageCommon( detail.imageUrl)
                 player.setUp(detail.url, "")
             }
             DISCOVER_BANNER -> {
@@ -172,7 +172,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 holder.setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
                     .setText(R.id.tv_duration, time)
-                img.loadImageRound(context, item.data.cover.feed)
+                img.loadImageRound( item.data.cover.feed)
             }
             DISCOVER_BRIEF_CARD -> {
                 var img = holder.getView<ImageView>(R.id.iv_icon)
@@ -187,7 +187,7 @@ class DiscoverAdapter(var datas: MutableList<Item>) :
                 holder.setText(R.id.tv_brief_title, item.data.title)
                     .setText(R.id.tv_dec, item.data.description)
 
-                img.loadImageRoundWithSize(context, item.data.icon, 70f)
+                img.loadImageRoundWithSize(item.data.icon, 70f)
             }
 
 

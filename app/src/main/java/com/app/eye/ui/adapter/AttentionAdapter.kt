@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
+import com.app.eye.rx.dp2px
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
 import com.app.eye.rx.loadImageWithTransform
@@ -41,7 +42,7 @@ class AttentionAdapter(data: MutableList<AttItem>) :
             val ivHeader = holder.getView<ImageView>(R.id.iv_header)
             val data = item.data.content!!.data
             val header = item.data.header
-            ivHeader.loadImageCircle(context, header.icon, 40f)
+            ivHeader.loadImageCircle(header.icon, 40f)
             holder.setText(R.id.tv_name, header.issuerName)
                 .setText(
                     R.id.tv_date,
@@ -58,43 +59,47 @@ class AttentionAdapter(data: MutableList<AttItem>) :
                 TagVideoItem.TYPE_VIDEO -> {
                     holder.setGone(R.id.iv_play, !TextUtils.equals("video", item.data.content.type))
                     val ivVideo = holder.getView<ImageView>(R.id.iv_video)
-                    ivVideo.loadImageRound(context, data.cover.feed, 5f)
+                    ivVideo.loadImageRound(data.cover.feed, 5f)
                 }
                 TagVideoItem.TYPE_PIC2 -> {
                     val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                     val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
 
-                    pic1.loadImageWithTransform(context, data.urls[0], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.LEFT
-                    ))
-                    pic2.loadImageWithTransform(context, data.urls[1], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.RIGHT
-                    ))
+                    pic1.loadImageWithTransform(
+                        data.urls[0],
+                        coil.transform.RoundedCornersTransformation(
+                            topLeft = 5f.dp2px(),
+                            bottomLeft = 5f.dp2px()
+                        )
+                    )
+                    pic2.loadImageWithTransform(
+                        data.urls[1], coil.transform.RoundedCornersTransformation(
+                            topRight = 5f.dp2px(),
+                            bottomRight = 5f.dp2px()
+                        )
+                    )
                 }
                 TagVideoItem.TYPE_PIC3 -> {
                     val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                     val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                     val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
 
-                    pic1.loadImageWithTransform(context, data.urls[0], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.LEFT
-                    ))
-                    pic2.loadImageWithTransform(context, data.urls[1], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP_RIGHT
-                    ))
-                    pic3.loadImageWithTransform(context, data.urls[2], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.BOTTOM_RIGHT
-                    ))
+                    pic1.loadImageWithTransform(
+                        data.urls[0], coil.transform.RoundedCornersTransformation(
+                            topLeft = 5f.dp2px(),
+                            bottomLeft = 5f.dp2px()
+                        )
+                    )
+                    pic2.loadImageWithTransform(
+                        data.urls[1], coil.transform.RoundedCornersTransformation(
+                            topRight = 5f.dp2px(),
+                        )
+                    )
+                    pic3.loadImageWithTransform(
+                        data.urls[2], coil.transform.RoundedCornersTransformation(
+                            bottomRight = 5f.dp2px(),
+                        )
+                    )
                 }
                 TagVideoItem.TYPE_PIC4 -> {
                     holder.setGone(R.id.tv_more, data.urls.size == 4)
@@ -107,27 +112,27 @@ class AttentionAdapter(data: MutableList<AttItem>) :
                     val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                     val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
 
-                    pic0.loadImageWithTransform(context, data.urls[0], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP_LEFT
-                    ))
-                    pic1.loadImageWithTransform(context, data.urls[1], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP_RIGHT
-                    ))
-                    pic2.loadImageWithTransform(context, data.urls[2], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.BOTTOM_LEFT
-                    ))
+                    pic0.loadImageWithTransform(
+                        data.urls[0], coil.transform.RoundedCornersTransformation(
+                            topLeft = 5f.dp2px(),
+                        )
+                    )
+                    pic1.loadImageWithTransform(
+                        data.urls[1], coil.transform.RoundedCornersTransformation(
+                            topRight = 5f.dp2px(),
+                        )
+                    )
+                    pic2.loadImageWithTransform(
+                        data.urls[2], coil.transform.RoundedCornersTransformation(
+                            bottomLeft = 5f.dp2px(),
+                        )
+                    )
 
-                    pic3.loadImageWithTransform(context, data.urls[3], RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.BOTTOM_RIGHT
-                    ))
+                    pic3.loadImageWithTransform(
+                        data.urls[3], coil.transform.RoundedCornersTransformation(
+                            bottomRight = 5f.dp2px(),
+                        )
+                    )
                 }
             }
         }

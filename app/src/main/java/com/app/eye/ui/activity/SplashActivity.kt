@@ -10,6 +10,7 @@ import com.app.eye.base.BaseActivity
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.rx.isSuccess
+import com.app.eye.rx.loadImageCommon
 import com.app.eye.rx.setOnClickListener
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SPUtils
@@ -82,9 +83,7 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
                 } else {
                     iv_account.visibility = View.GONE
                     layout.visibility = View.GONE
-                    Glide.with(this)
-                        .load(splash)
-                        .into(iv_splash)
+                    iv_splash.loadImageCommon(splash)
                     animator = iv_splash.animate()
                         .alpha(0.85f)
                         .scaleX(1.1f)

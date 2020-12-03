@@ -23,7 +23,7 @@ class ColumnItemAdapter(var dataList: MutableList<ItemX>) : BaseQuickAdapter<Ite
         val layoutParams = layout.layoutParams
         layoutParams.width = (ScreenUtils.getScreenWidth() - SizeUtils.dp2px(40f)) / 2
         holder.setText(R.id.tv_title, item.data.title)
-        imageView.loadImageRound(context,item.data.image,5f)
+        imageView.loadImageRound(item.data.image,5f)
 
     }
 }

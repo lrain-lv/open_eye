@@ -3,8 +3,11 @@ package com.app.eye.ui.adapter
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.app.eye.rx.loadImageRound
 import com.app.eye.ui.entity.ItemX
+import com.blankj.utilcode.util.SizeUtils
 import com.youth.banner.adapter.BannerAdapter
 
 
@@ -29,6 +32,8 @@ class BannerItemAdapter(dataList: MutableList<ItemX>) :
     }
 
     override fun onBindView(holder: MyHolder?, data: ItemX?, position: Int, size: Int) {
-        holder!!.imageView.loadImageRound(holder.imageView.context!!, data?.data?.image!!, 5f)
+        holder!!.imageView.load(data?.data?.image!!){
+            transformations(RoundedCornersTransformation(SizeUtils.dp2px(5f).toFloat()))
+        }
     }
 }

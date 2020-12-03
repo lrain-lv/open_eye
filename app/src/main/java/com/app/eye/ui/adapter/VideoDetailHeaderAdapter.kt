@@ -31,6 +31,6 @@ class VideoDetailHeaderAdapter(data: MutableList<VrItem>) :
         holder.setText(R.id.tv_video_title, item.data.title)
             .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
             .setText(R.id.tv_duration, time)
-        img.loadImageRound(context, item.data.cover.feed)
+        img.loadImageRound( item.data.cover.feed)
     }
 }

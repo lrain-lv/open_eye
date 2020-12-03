@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R
+import com.app.eye.rx.dp2px
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageWithTransform
 import com.app.eye.ui.entity.ItemDaily
@@ -52,28 +53,24 @@ class DailyAdapter(dataList: MutableList<ItemDaily>) :
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 ivCover.loadImageWithTransform(
-                    context,
                     data.cover.feed,
-                    RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP
+                    coil.transform.RoundedCornersTransformation(
+                        topLeft = 5f.dp2px(),
+                        topRight = 5f.dp2px()
                     )
                 )
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-                ivHeader.loadImageCircle(context, data.author.icon, 36f)
+                ivHeader.loadImageCircle(data.author.icon, 36f)
             }
             ItemDaily.DAILY_INFORMATION -> {
                 val data = item.data
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
                 val recycler = holder.getView<RecyclerView>(R.id.recycler)
                 ivCover.loadImageWithTransform(
-                    context,
                     data.backgroundImage,
-                    RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP
+                    coil.transform.RoundedCornersTransformation(
+                        topLeft = 5f.dp2px(),
+                        topRight = 5f.dp2px()
                     )
                 )
                 val adapter = DailyInfoAdapter(data.titleList)

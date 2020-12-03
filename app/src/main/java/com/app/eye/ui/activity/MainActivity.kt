@@ -17,7 +17,6 @@ import me.yokeyword.fragmentation.SupportFragment
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-
 class MainActivity : BaseActivity() {
     override fun getLayoutRes(): Int = R.layout.activity_main
 
@@ -34,7 +33,6 @@ class MainActivity : BaseActivity() {
     private var fragments = arrayOfNulls<SupportFragment>(5)
 
     private var firstPressTime = 0L
-
 
     private val selectedRes =
         listOf<Int>(

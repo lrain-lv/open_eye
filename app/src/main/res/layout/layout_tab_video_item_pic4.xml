@@ -16,7 +16,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_pic0"
         android:layout_width="0dp"
         android:layout_marginTop="8dp"
@@ -25,7 +26,8 @@
         app:layout_constraintRight_toLeftOf="@id/iv_pic1"
         app:layout_constraintTop_toBottomOf="@id/layout_header" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_pic2"
         android:layout_width="0dp"
         android:layout_height="89dp"
@@ -35,7 +37,8 @@
         app:layout_constraintTop_toBottomOf="@id/iv_pic0" />
 
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_pic1"
         android:layout_width="0dp"
         android:layout_height="89dp"
@@ -45,7 +48,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_header" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_pic3"
         android:layout_width="0dp"
         android:layout_height="89dp"

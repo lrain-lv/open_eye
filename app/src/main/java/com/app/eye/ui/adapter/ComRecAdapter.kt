@@ -1,11 +1,15 @@
 package com.app.eye.ui.adapter
 
 import android.widget.ImageView
+import coil.load
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.app.eye.R
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
 import com.app.eye.ui.entity.ComItem
 import com.blankj.utilcode.util.ScreenUtils
+import com.blankj.utilcode.util.SizeUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -17,7 +21,6 @@ class ComRecAdapter(dataList: MutableList<ComItem>) : BaseQuickAdapter<ComItem, 
 ), LoadMoreModule {
 
     override fun convert(holder: BaseViewHolder, item: ComItem) {
-        item ?: return
         holder.setText(R.id.tv_dec, item.data.content.data.description)
             .setText(R.id.tv_name, item.data.header.issuerName)
             .setGone(R.id.iv_video, !item.data.content.type.contains("video"))
@@ -30,7 +33,10 @@ class ComRecAdapter(dataList: MutableList<ComItem>) : BaseQuickAdapter<ComItem, 
             .setGone(R.id.tv_dec, item.data.content.data.description.isNullOrEmpty())
             .setText(R.id.tv_count, item.data.content.data.consumption.collectionCount.toString())
         val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-        ivHeader.loadImageCircle(context, item.data.header.icon, 30f)
+        ivHeader.load( item.data.header.icon){
+            size(SizeUtils.dp2px(30f))
+            transformations(CircleCropTransformation())
+        }
         val ivFeed = holder.getView<ImageView>(R.id.iv_feed)
         val width = item.data.content.data.width
         val height = item.data.content.data.height
@@ -38,6 +44,8 @@ class ComRecAdapter(dataList: MutableList<ComItem>) : BaseQuickAdapter<ComItem, 
         val ratio = (height.toFloat() / width.toFloat()).coerceAtMost(1.5f)
         layoutParams.height =
             (ScreenUtils.getScreenWidth() / 2 * (ratio)).toInt()
-        ivFeed.loadImageRound(context, item.data.content.data.cover.feed, isAnim = true)
+        ivFeed.load(item.data.content.data.cover.feed){
+            transformations(RoundedCornersTransformation(SizeUtils.dp2px(5F).toFloat()))
+        }
     }
 }

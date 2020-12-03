@@ -26,7 +26,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

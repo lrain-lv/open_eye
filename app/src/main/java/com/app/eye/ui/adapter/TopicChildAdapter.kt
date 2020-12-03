@@ -15,7 +15,7 @@ class TopicChildAdapter(dataList: MutableList<TabItem>) : BaseQuickAdapter<TabIt
 ), LoadMoreModule {
     override fun convert(holder: BaseViewHolder, item: TabItem) {
         val ivIcon = holder.getView<ImageView>(R.id.iv_icon)
-        ivIcon.loadImageRound(context,item.data.icon)
+        ivIcon.loadImageRound(item.data.icon)
         holder.setText(R.id.tv_title, item.data.title)
             .setText(R.id.tv_dec, item.data.description)
     }

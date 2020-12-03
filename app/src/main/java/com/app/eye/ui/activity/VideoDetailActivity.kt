@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.app.eye.R
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.*
@@ -47,6 +48,8 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
         }
     }
 
+    private val spUtils by lazy { SPUtils.getInstance("eye") }
+
     private val viewModel by lazy {
         ViewModelProvider(
             this,
@@ -81,13 +84,10 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
         val extras = intent.extras!!
         id = extras.getString("id", "")!!
         if (id.isEmpty()) onBackPressedSupport()
-        Glide.with(this)
-            .load(SPUtils.getInstance("eye").getString("avatar", ""))
-            .error(R.mipmap.pgc_default_avatar)
-            .centerCrop()
-            .override(SizeUtils.dp2px(30f), SizeUtils.dp2px(30f))
-            .into(iv_header)
-
+        iv_header.load(spUtils.getString("avatar", "")) {
+            size(30f.dp2px().toInt())
+            error(R.mipmap.pgc_default_avatar)
+        }
         setOnClickListener(tv_count, iv_comment, tv_comment) {
             when (this.id) {
                 R.id.tv_comment -> {
@@ -198,11 +198,11 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
 
     }
 
-     private fun setVideoDetailResponse(entity: VideoDetailHeaderEntity) {
+    private fun setVideoDetailResponse(entity: VideoDetailHeaderEntity) {
         val videoIndexEntity = entity.videoIndexEntity
         val videoRelatedEntity = entity.videoRelatedEntity
         videoIndexEntity.apply {
-            iv_blur.loadImageCommon(this@VideoDetailActivity, this.cover.blurred)
+            iv_blur.loadImageCommon(this.cover.blurred)
             tvTitle.text = this.title
             tvDec.text = this.description
             tvTag.text =
@@ -211,12 +211,12 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
                 this.consumption.collectionCount.toString()
             tare.text =
                 this.consumption.shareCount.toString()
-            icon.loadImageCircle(this@VideoDetailActivity, this.author.icon, 35f)
+            icon.loadImageCircle(this.author.icon, 35f)
             tautDec.text =
                 this.author.description
             tvAuthTitle.text = this.author.name
             jzvd.setUp(this.playUrl, "", SCREEN_NORMAL)
-            jzvd.posterImageView.loadImageCommon(this@VideoDetailActivity, this.cover.feed)
+            jzvd.posterImageView.loadImageCommon(this.cover.feed)
         }
         totalList.addAll(videoRelatedEntity.itemList.filter {
             TextUtils.equals("videoSmallCard", it.type)

@@ -10,6 +10,7 @@
         android:id="@+id/retry_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/ic_nodata" />
 
 </LinearLayout>

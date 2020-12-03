@@ -12,7 +12,7 @@
 
     </FrameLayout>
 
-    <ImageView
+        <ImageView
         android:id="@+id/poster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,7 +76,7 @@
             android:textAlignment="center"
             android:textColor="#ffffff" />
 
-        <ImageView
+            <ImageView
             android:id="@+id/fullscreen"
             android:layout_width="52.5dp"
             android:layout_height="fill_parent"
@@ -95,7 +95,8 @@
         android:max="100"
         android:progressDrawable="@drawable/jz_bottom_progress" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/back_tiny"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -116,7 +117,7 @@
         android:paddingLeft="10dp"
         android:visibility="gone">
 
-        <ImageView
+            <ImageView
             android:id="@+id/back"
             android:layout_width="26dp"
             android:layout_height="26dp"
@@ -156,7 +157,8 @@
             android:orientation="vertical"
             android:visibility="invisible">
 
-            <ImageView
+                <ImageView
+        android:scaleType="centerCrop"
                 android:id="@+id/battery_level"
                 android:layout_width="23dp"
                 android:layout_height="10dp"
@@ -192,7 +194,8 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical">
 
-        <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
             android:id="@+id/start"
             android:layout_width="@dimen/jz_start_button_w_h_normal"
             android:layout_height="@dimen/jz_start_button_w_h_normal"

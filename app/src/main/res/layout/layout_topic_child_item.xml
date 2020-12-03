@@ -5,7 +5,8 @@
     android:layout_height="75dp"
     android:paddingHorizontal="15dp">
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_icon"
         android:layout_width="45dp"
         android:layout_height="45dp"

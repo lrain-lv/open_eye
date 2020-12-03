@@ -13,7 +13,8 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="45dp" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_header_big"
         android:layout_width="36dp"
         android:layout_height="36dp"
@@ -51,7 +52,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_reply_name" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_main"
         android:layout_width="0dp"
         android:layout_height="100dp"
@@ -72,7 +74,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_main">
 
-        <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
             android:id="@+id/iv_header_sm"
             android:layout_width="26dp"
             android:layout_height="26dp" />
@@ -104,7 +107,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name_reply" />
 
-            <ImageView
+                <ImageView
+        android:scaleType="centerCrop"
                 android:id="@+id/iv_reply"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
@@ -170,7 +174,8 @@
         app:layout_constraintTop_toBottomOf="@id/layout_reply"
         app:layout_goneMarginStart="0dp" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_more"
         android:layout_width="28dp"
         android:layout_height="28dp"

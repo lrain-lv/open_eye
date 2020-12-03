@@ -8,7 +8,8 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.activity.LoginActivity">
 
-    <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_close"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -29,7 +30,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/header"
         android:layout_width="150dp"
         android:layout_height="66dp"
@@ -51,7 +53,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
-    <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_un"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -92,7 +95,8 @@
         app:layout_constraintWidth_percent="0.65" />
 
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_pwd"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -168,7 +172,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_wx"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -180,7 +185,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/iv_qq" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_qq"
         android:layout_width="45dp"
         android:layout_height="45dp"

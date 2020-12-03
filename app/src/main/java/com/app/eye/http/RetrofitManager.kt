@@ -1,6 +1,6 @@
 package com.app.eye.http
 
-import com.app.eye.MainApp
+import com.app.eye.AppHelper
 import com.app.eye.http.cookie.PersistentCookieJar
 import com.app.eye.http.cookie.SharedPrefsCookiePersistor
 import com.app.eye.http.cookie.cache.SetCookieCache
@@ -56,13 +56,10 @@ class RetrofitManager {
 
     private fun initOkHttpClient() {
 
-//        val httpLoggingInterceptor = HttpLoggingInterceptor()
-//        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
-
         val cookie =
-            PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(MainApp.mContext))
-        val cacheFile = File(MainApp.mContext.cacheDir, "eyeCache")
-        val cache = Cache(cacheFile, 1024 * 1024 * 100)
+            PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(AppHelper.mContext))
+        val cacheFile = File(AppHelper.mContext.cacheDir, "eyeCache")
+        val cache = Cache(cacheFile, 1024 * 1024 * 500)
         client = OkHttpClient.Builder()
             .cache(cache)
             .cookieJar(cookie)

@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.app.eye.R
+import com.app.eye.rx.dp2px
 import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageRound
 import com.app.eye.rx.loadImageWithTransform
@@ -39,8 +40,10 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
         when (item.itemType) {
             TagVideoItem.TYPE_TEXT_CARD -> {
                 holder.setText(R.id.tv_title, item.data.text)
-                    .setText(R.id.tv_right_text,
-                        if (item.data.actionUrl.isNullOrEmpty()) "" else "查看全部")
+                    .setText(
+                        R.id.tv_right_text,
+                        if (item.data.actionUrl.isNullOrEmpty()) "" else "查看全部"
+                    )
                     .setGone(R.id.tv_right_text, item.data.actionUrl.isNullOrEmpty())
             }
             TagVideoItem.TYPE_FOLLOW_CARD -> {
@@ -62,15 +65,15 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
                     .setText(R.id.tv_duration, time)
                 val ivCover = holder.getView<ImageView>(R.id.iv_cover)
 
-                ivCover.loadImageWithTransform(context,
+                ivCover.loadImageWithTransform(
                     data.cover.feed,
-                    RoundedCornersTransformation(
-                        SizeUtils.dp2px(5f),
-                        0,
-                        RoundedCornersTransformation.CornerType.TOP
-                    ))
+                    coil.transform.RoundedCornersTransformation(
+                        topLeft = 5f.dp2px(),
+                        topRight = 5f.dp2px()
+                    )
+                )
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
-                ivHeader.loadImageCircle(context, data.author.icon, 36f)
+                ivHeader.loadImageCircle(data.author.icon, 36f)
             }
             TagVideoItem.TYPE_VIDEO_SMALL_CARD -> {
                 val video_duration = item.data.duration
@@ -89,13 +92,13 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
                 holder.setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "${item.data.category} / ${item.data.author.name}")
                     .setText(R.id.tv_duration, time)
-                img.loadImageRound(context, item.data.cover.feed)
+                img.loadImageRound(item.data.cover.feed)
             }
             else -> {
                 val ivHeader = holder.getView<ImageView>(R.id.iv_header)
                 val data = item.data.content!!.data
                 val header = item.data.header
-                ivHeader.loadImageCircle(context, header.icon, 40f)
+                ivHeader.loadImageCircle(header.icon, 40f)
                 val tvDate = holder.getView<TextView>(R.id.tv_date)
                 var create: SpannableStringBuilder? = null
                 if (data.area.isNullOrEmpty()) {
@@ -122,79 +125,95 @@ class TagVideoAdapter(data: MutableList<TagVideoItem>) :
 
                 when (item.itemType) {
                     TagVideoItem.TYPE_VIDEO -> {
-                        holder.setGone(R.id.iv_play,
-                            !TextUtils.equals("video", item.data.content.type))
+                        holder.setGone(
+                            R.id.iv_play,
+                            !TextUtils.equals("video", item.data.content.type)
+                        )
                         val ivVideo = holder.getView<ImageView>(R.id.iv_video)
 
-                        ivVideo.loadImageRound(context, data.cover.feed)
+                        ivVideo.loadImageRound(data.cover.feed)
                     }
                     TagVideoItem.TYPE_PIC2 -> {
                         val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                         val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
 
-                        pic1.loadImageWithTransform(context,
+                        pic1.loadImageWithTransform(
                             data.urls?.get(0),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.LEFT))
-                        pic2.loadImageWithTransform(context,
+                            coil.transform.RoundedCornersTransformation(
+                                topLeft = 5f.dp2px(),
+                                bottomLeft = 5f.dp2px()
+                            )
+                        )
+                        pic2.loadImageWithTransform(
                             data.urls?.get(0),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.RIGHT))
+                            coil.transform.RoundedCornersTransformation(
+                                topRight = 5f.dp2px(),
+                                bottomRight = 5f.dp2px()
+                            )
+                        )
                     }
                     TagVideoItem.TYPE_PIC3 -> {
                         val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                         val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                         val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
 
-                        pic1.loadImageWithTransform(context,
+                        pic1.loadImageWithTransform(
                             data.urls?.get(0),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.LEFT))
-                        pic2.loadImageWithTransform(context,
+                            coil.transform.RoundedCornersTransformation(
+                                topLeft = 5f.dp2px(),
+                                bottomLeft = 5f.dp2px()
+                            )
+                        )
+                        pic2.loadImageWithTransform(
                             data.urls?.get(1),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.TOP_RIGHT))
+                            coil.transform.RoundedCornersTransformation(
+                                topRight = 5f.dp2px(),
+                            )
+                        )
 
-                        pic3.loadImageWithTransform(context,
+                        pic3.loadImageWithTransform(
                             data.urls?.get(2),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
+                            coil.transform.RoundedCornersTransformation(
+                                bottomRight = 5f.dp2px()
+                            )
+                        )
                     }
                     TagVideoItem.TYPE_PIC4 -> {
                         holder.setGone(R.id.tv_more, data.urls!!.size == 4)
-                            .setText(R.id.tv_more,
-                                if (data.urls.size > 4) "+${data.urls.size - 4}" else "")
+                            .setText(
+                                R.id.tv_more,
+                                if (data.urls.size > 4) "+${data.urls.size - 4}" else ""
+                            )
                         val pic1 = holder.getView<ImageView>(R.id.iv_pic1)
                         val pic0 = holder.getView<ImageView>(R.id.iv_pic0)
                         val pic2 = holder.getView<ImageView>(R.id.iv_pic2)
                         val pic3 = holder.getView<ImageView>(R.id.iv_pic3)
 
-                        pic0.loadImageWithTransform(context,
+                        pic0.loadImageWithTransform(
                             data.urls?.get(0),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.TOP_LEFT))
-                        pic1.loadImageWithTransform(context,
+                            coil.transform.RoundedCornersTransformation(
+                                topLeft = 5f.dp2px(),
+                            )
+                        )
+                        pic1.loadImageWithTransform(
                             data.urls?.get(1),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.TOP_RIGHT))
+                            coil.transform.RoundedCornersTransformation(
+                                topRight = 5f.dp2px(),
+                            )
+                        )
 
-                        pic2.loadImageWithTransform(context,
+                        pic2.loadImageWithTransform(
                             data.urls?.get(2),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.BOTTOM_LEFT))
-                        pic3.loadImageWithTransform(context,
+                            coil.transform.RoundedCornersTransformation(
+                                bottomLeft = 5f.dp2px(),
+                            )
+                        )
+                        pic3.loadImageWithTransform(
                             data.urls?.get(3),
-                            RoundedCornersTransformation(SizeUtils.dp2px(5f),
-                                0,
-                                RoundedCornersTransformation.CornerType.BOTTOM_RIGHT))
+                            coil.transform.RoundedCornersTransformation(
+                                bottomRight = 5f.dp2px(),
+                            )
+                        )
                     }
                 }
             }

@@ -28,7 +28,8 @@
                     android:layout_height="match_parent"
                     app:layout_collapseMode="parallax">
 
-                    <ImageView
+                        <ImageView
+        android:scaleType="centerCrop"
                         android:id="@+id/iv_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -65,7 +66,8 @@
                             android:textColor="@color/gray2" />
                     </LinearLayout>
 
-                    <ImageView
+                        <ImageView
+        android:scaleType="centerCrop"
                         android:id="@+id/iv_back"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -119,7 +121,8 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_publish"
         android:layout_width="140dp"
         android:layout_height="50dp"

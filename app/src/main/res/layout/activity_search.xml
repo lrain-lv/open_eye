@@ -51,7 +51,8 @@
             android:singleLine="true"
             android:textSize="12dp" />
 
-        <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
             android:id="@+id/iv_del"
             android:layout_width="20dp"
             android:layout_height="20dp"

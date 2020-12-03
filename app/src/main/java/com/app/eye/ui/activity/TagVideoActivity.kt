@@ -64,7 +64,7 @@ class TagVideoActivity : BaseVMActivity(), AppBarLayout.OnOffsetChangedListener,
         tv_title.text = title
         tv_title_big.text = title
         tv_dec.text = dec
-        iv_bg.loadImageCommon(mContext, icon)
+        iv_bg.loadImageCommon( icon)
         tool_bar.setNavigationOnClickListener {
             onBackPressedSupport()
         }
@@ -118,7 +118,7 @@ class TagVideoActivity : BaseVMActivity(), AppBarLayout.OnOffsetChangedListener,
                 tv_title_big.text = entity.tagInfo.name
                 tv_title.text = entity.tagInfo.name
                 tv_dec.text = entity.tagInfo.description
-                iv_bg.loadImageCommon(mContext, entity.tagInfo.bgPicture)
+                iv_bg.loadImageCommon( entity.tagInfo.bgPicture)
 
             })
         })

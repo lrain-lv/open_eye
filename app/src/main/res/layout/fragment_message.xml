@@ -35,7 +35,8 @@
         android:visibility="gone"
         android:orientation="vertical">
 
-        <ImageView
+            <ImageView
+        android:scaleType="centerCrop"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@mipmap/no_account_tip" />

@@ -6,11 +6,11 @@
     android:paddingHorizontal="15dp"
     android:paddingVertical="8dp">
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_icon"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:scaleType="centerCrop"
         android:src="@mipmap/icon_splash"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

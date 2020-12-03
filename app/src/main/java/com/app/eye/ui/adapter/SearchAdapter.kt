@@ -49,7 +49,7 @@ class SearchAdapter(dataList: MutableList<SearchItem>) :
                 holder.setText(R.id.tv_duration, time)
                     .setText(R.id.tv_video_title, item.data.title)
                     .setText(R.id.tv_category, "#${item.data.category}")
-                img.loadImageRound(context, item.data.cover.feed)
+                img.loadImageRound( item.data.cover.feed)
             }
             SearchItem.SEARCH_BRIEF_CARD -> {
                 val iconType = item.data.iconType
@@ -58,9 +58,9 @@ class SearchAdapter(dataList: MutableList<SearchItem>) :
                     .setGone(R.id.tv_attention, item.data.follow == null)
                 val ivIcon = holder.getView<ImageView>(R.id.iv_icon)
                 if (TextUtils.equals("round", iconType)) {
-                    ivIcon.loadImageCircle(context, item.data.icon, 70f)
+                    ivIcon.loadImageCircle( item.data.icon, 70f)
                 } else {
-                    ivIcon.loadImageRoundWithSize(context, item.data.icon, 70f)
+                    ivIcon.loadImageRoundWithSize(item.data.icon, 70f)
                 }
             }
         }

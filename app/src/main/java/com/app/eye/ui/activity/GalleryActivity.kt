@@ -13,6 +13,7 @@ import com.app.eye.R
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.event.callback.OnItemClickCallback
 import com.app.eye.rx.checkSuccess
+import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.GalleryAdapter
 import com.app.eye.ui.entity.ComRecEntity
@@ -87,7 +88,7 @@ class GalleryActivity : BaseVMActivity(), View.OnClickListener, OnItemClickCallb
             override fun onPageScrollStateChanged(state: Int) {
 
                 if (state == ViewPager2.SCROLL_STATE_IDLE && isPageSelected) {
-                    Glide.with(this@GalleryActivity).resumeRequests()
+//                    Glide.with(this@GalleryActivity).resumeRequests()
                     updateView()
                     startAnim()
                     isPageSelected = false
@@ -104,7 +105,7 @@ class GalleryActivity : BaseVMActivity(), View.OnClickListener, OnItemClickCallb
                 positionOffsetPixels: Int,
             ) {
                 stopAnim()
-                Glide.with(this@GalleryActivity).pauseRequests()
+//                Glide.with(this@GalleryActivity).pauseRequests()
 
                 if (defaultIndex == position && positionOffsetPixels == 0) {
                     //进入页面后，调用setCurrentItem函数，手动触发onPageScrollStateChanged函数。
@@ -123,10 +124,7 @@ class GalleryActivity : BaseVMActivity(), View.OnClickListener, OnItemClickCallb
 
     private fun updateView() {
         val comItem = data.itemList[currentPos]
-        Glide.with(this)
-            .load(comItem.data.header.icon)
-            .circleCrop()
-            .into(iv_header)
+        iv_header.loadImageCircle(comItem.data.header.icon, 40f)
         tv_name.text = comItem.data.header.issuerName.trim()
         tv_content.text = comItem.data.content.data.description?.trim()
         tv_like_count.text = comItem.data.content.data.consumption.collectionCount.toString()

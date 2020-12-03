@@ -31,14 +31,16 @@
             android:layout_marginEnd="15dp"
             android:orientation="horizontal">
 
-            <ImageView
+                    <ImageView
+        android:scaleType="centerCrop"
                 android:id="@+id/iv_like"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginEnd="15dp"
                 android:src="@mipmap/ic_action_like_heart_black" />
 
-            <ImageView
+                    <ImageView
+        android:scaleType="centerCrop"
                 android:id="@+id/iv_share"
                 android:layout_width="28dp"
                 android:layout_height="28dp"

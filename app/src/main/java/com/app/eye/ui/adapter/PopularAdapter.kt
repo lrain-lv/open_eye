@@ -67,11 +67,11 @@ class PopularAdapter(data: MutableList<PopItem>) :
             }
         }
 
-        header.loadImageCircle(context, item.data.header.icon, 45f)
+        header.loadImageCircle( item.data.header.icon, 45f)
         val jzvdStd = holder.getView<EyeVideoPlayer>(R.id.jzvd)
         jzvdStd.outlineProvider = JzViewOutlineProvider(SizeUtils.dp2px(5f).toFloat())
         jzvdStd.clipToOutline = true
         jzvdStd.setUp(data.playUrl, "")
-        jzvdStd.posterImageView.loadImageRound(context, data.cover.feed)
+        jzvdStd.posterImageView.loadImageRound( data.cover.feed)
     }
 }

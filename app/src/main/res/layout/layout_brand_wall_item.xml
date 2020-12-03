@@ -6,7 +6,8 @@
     android:paddingHorizontal="15dp"
     android:paddingVertical="8dp">
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/iv_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -48,7 +49,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageView
+        <ImageView
+        android:scaleType="centerCrop"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="4dp"
