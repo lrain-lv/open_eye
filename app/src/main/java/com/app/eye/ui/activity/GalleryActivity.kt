@@ -17,11 +17,11 @@ import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.GalleryAdapter
 import com.app.eye.ui.entity.ComRecEntity
-import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.GalleryViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_gallery.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class GalleryActivity : BaseVMActivity(), View.OnClickListener, OnItemClickCallback {
@@ -41,13 +41,7 @@ class GalleryActivity : BaseVMActivity(), View.OnClickListener, OnItemClickCallb
         }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getGalleryVMFactory()
-        ).get(GalleryViewModel::class.java)
-    }
-
+    private val viewModel by viewModel<GalleryViewModel>()
 
     private lateinit var data: ComRecEntity
     private lateinit var galleryAdapter: GalleryAdapter

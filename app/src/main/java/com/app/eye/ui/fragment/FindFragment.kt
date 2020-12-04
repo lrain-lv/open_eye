@@ -14,7 +14,7 @@ import com.app.eye.rx.actionUrlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.DiscoverAdapter
 import com.app.eye.ui.entity.Item
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.FindViewModel
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.app.eye.widgets.videoplayer.AutoPlayScrollListener
@@ -22,6 +22,7 @@ import com.app.eye.widgets.videoplayer.Jzvd
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
 import kotlinx.android.synthetic.main.fragment_find.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FindFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -31,12 +32,7 @@ class FindFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener {
             FindFragment().apply {}
     }
 
-    private val viewModel: FindViewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getFindVMFactory()
-        ).get(FindViewModel::class.java)
-    }
+    private val viewModel by viewModel<FindViewModel>()
     override fun getLayoutRes(): Int = R.layout.fragment_find
     private lateinit var discoverAdapter: DiscoverAdapter
     override fun initView() {

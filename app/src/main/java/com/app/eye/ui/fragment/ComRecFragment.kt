@@ -20,7 +20,7 @@ import com.app.eye.ui.adapter.SquareCardAdapter
 import com.app.eye.ui.entity.ComItem
 import com.app.eye.ui.entity.ComRecEntity
 import com.app.eye.ui.entity.ItemX
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
 import com.app.eye.widgets.*
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
@@ -30,6 +30,7 @@ import com.youth.banner.Banner
 import kotlinx.android.synthetic.main.fragment_rec.recycler_view
 import kotlinx.android.synthetic.main.fragment_rec.refresh_layout
 import kotlinx.android.synthetic.main.fragment_rec.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ComRecFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
     MultipleStatusView.OnRetryClickListener, OnLoadMoreListener {
@@ -40,12 +41,7 @@ class ComRecFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
             }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getCommunityVMFactory()
-        ).get(CommunityViewModel::class.java)
-    }
+    private val viewModel by viewModel<CommunityViewModel>()
 
     private var map = hashMapOf<String, String>()
 

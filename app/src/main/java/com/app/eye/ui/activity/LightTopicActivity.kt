@@ -13,7 +13,7 @@ import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.LightTopicAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.LightTopViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -25,6 +25,7 @@ import com.blankj.utilcode.util.ActivityUtils
 import kotlinx.android.synthetic.main.activity_light_topic_internal.*
 import kotlinx.android.synthetic.main.activity_light_topic_internal.recycler_view
 import kotlinx.android.synthetic.main.activity_light_topic_internal.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LightTopicActivity : BaseVMActivity() {
 
@@ -38,12 +39,7 @@ class LightTopicActivity : BaseVMActivity() {
         }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getLightTopVMFactory()
-        ).get(LightTopViewModel::class.java)
-    }
+    private val viewModel by viewModel<LightTopViewModel>()
 
     private val title: String by lazy { intent.extras?.getString("title", "")!! }
 

@@ -11,7 +11,7 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.TopicDetailActivity
 import com.app.eye.ui.adapter.TopicListAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -21,6 +21,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_rec.refresh_layout
 import kotlinx.android.synthetic.main.fragment_rec.status_view
 import kotlinx.android.synthetic.main.fragment_topic_square_child.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TopicListFragment : BaseVMFragment(),
     SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener {
@@ -35,11 +36,7 @@ class TopicListFragment : BaseVMFragment(),
             }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getTopicVMFactory()).get(
-            TopicViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<TopicViewModel>()
 
     private var nextPageUrl: String? = ""
 

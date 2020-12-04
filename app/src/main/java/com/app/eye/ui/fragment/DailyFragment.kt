@@ -16,7 +16,7 @@ import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.DailyAdapter
 import com.app.eye.ui.entity.ItemDaily
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.DailyViewModel
 import com.app.eye.widgets.STATUS_NO_NETWORK
 import com.blankj.utilcode.util.NetworkUtils
@@ -25,6 +25,7 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_daily.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DailyFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
     OnItemClickListener, OnItemChildClickListener {
@@ -35,11 +36,7 @@ class DailyFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, On
     }
 
     private lateinit var dailyAdapter: DailyAdapter
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getDailyVMFactory()).get(
-            DailyViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<DailyViewModel>()
 
     override fun getLayoutRes(): Int = R.layout.fragment_daily
     override fun startObserver() {

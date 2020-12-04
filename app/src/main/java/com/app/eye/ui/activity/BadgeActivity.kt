@@ -2,6 +2,7 @@ package com.app.eye.ui.activity
 
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -9,7 +10,6 @@ import com.app.eye.R
 import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.MedalAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BadgeViewModel
 import com.app.eye.widgets.*
 import com.app.eye.widgets.itemdecoration.LayoutMarginDecoration
@@ -20,16 +20,13 @@ import kotlinx.android.synthetic.main.activity_badge.*
 import kotlinx.android.synthetic.main.activity_badge.recycler_view
 import kotlinx.android.synthetic.main.activity_badge.refresh_layout
 import kotlinx.android.synthetic.main.activity_badge.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BadgeActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener, OnItemClickListener {
 
     private val medalAdapter = MedalAdapter(mutableListOf())
 
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getBadgeVMFactory()).get(
-            BadgeViewModel::class.java
-        )
-    }
+    private val viewModel  by viewModel<BadgeViewModel>()
 
     override fun getLayoutRes(): Int = R.layout.activity_badge
     override fun initView() {

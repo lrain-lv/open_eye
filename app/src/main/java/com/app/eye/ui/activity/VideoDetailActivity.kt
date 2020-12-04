@@ -17,7 +17,7 @@ import com.app.eye.ui.adapter.VideoDetailHeaderAdapter
 import com.app.eye.ui.entity.ReplyVideoEntity
 import com.app.eye.ui.entity.VideoDetailHeaderEntity
 import com.app.eye.ui.entity.VrItem
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
 import com.app.eye.ui.mvvm.viewmodel.VideoDetailViewModel
 import com.app.eye.widgets.*
 import com.app.eye.widgets.videoplayer.Jzvd
@@ -31,6 +31,7 @@ import com.gyf.immersionbar.BarHide
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import kotlinx.android.synthetic.main.activity_video_detail.recycler_view
 import kotlinx.android.synthetic.main.activity_video_detail.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
 
@@ -50,12 +51,7 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
 
     private val spUtils by lazy { SPUtils.getInstance("eye") }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getVideoDetailVMFactory()
-        ).get(VideoDetailViewModel::class.java)
-    }
+    private val viewModel by viewModel<VideoDetailViewModel>()
 
     private lateinit var id: String
     private var nextPageUrl: String? = ""

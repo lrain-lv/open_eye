@@ -35,9 +35,9 @@ class RetrofitManager {
             RetrofitManagerHolder.sInstance
         }
 
-        val service: ApiService by lazy {
-            sInstance.createService(ApiService::class.java)
-        }
+//        val service: ApiService by lazy {
+//            sInstance.createService(ApiService::class.java)
+//        }
 
     }
 

@@ -18,7 +18,7 @@ import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicDetailAdapter
 import com.app.eye.ui.entity.ReplyVideoEntity
 import com.app.eye.ui.entity.TopicDetailEntity
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.app.eye.ui.mvvm.viewmodel.TopicDetailViewModel
 import com.app.eye.widgets.*
 import com.blankj.utilcode.util.ActivityUtils
@@ -27,6 +27,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_topic_detail.*
 import kotlinx.android.synthetic.main.activity_topic_detail.recycler_view
 import kotlinx.android.synthetic.main.activity_topic_detail.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TopicDetailActivity : BaseVMActivity(), OnLoadMoreListener, View.OnClickListener {
 
@@ -46,12 +47,7 @@ class TopicDetailActivity : BaseVMActivity(), OnLoadMoreListener, View.OnClickLi
     private var nextPageUrl: String? = ""
     private val topicDetailAdapter = TopicDetailAdapter(mutableListOf())
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getTopicDetailVMFactory()
-        ).get(TopicDetailViewModel::class.java)
-    }
+    private val viewModel by viewModel<TopicDetailViewModel>()
 
     override fun getLayoutRes(): Int = R.layout.activity_topic_detail
     private var isRefresh: Boolean = true

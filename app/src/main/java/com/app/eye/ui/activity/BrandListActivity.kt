@@ -8,7 +8,6 @@ import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.actionUrlToRequest
 import com.app.eye.ui.adapter.BrandListAdapter
 import com.app.eye.ui.entity.BrandListItemX
-import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -19,6 +18,7 @@ import com.blankj.utilcode.util.StringUtils
 import kotlinx.android.synthetic.main.activity_brand_list.*
 import kotlinx.android.synthetic.main.activity_brand_list.recycler_view
 import kotlinx.android.synthetic.main.activity_brand_list.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BrandListActivity : BaseVMActivity(), WaveSideBar.OnSelectIndexItemListener {
 
@@ -26,12 +26,7 @@ class BrandListActivity : BaseVMActivity(), WaveSideBar.OnSelectIndexItemListene
 
     var list = mutableListOf<BrandListItemX>()
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getBrandWallVMFactory()
-        ).get(BrandWallViewModel::class.java)
-    }
+    private val viewModel by viewModel<BrandWallViewModel>()
 
     override fun getLayoutRes(): Int = R.layout.activity_brand_list
 

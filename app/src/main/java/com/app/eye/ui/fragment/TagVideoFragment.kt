@@ -13,7 +13,6 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.PopularActivity
 import com.app.eye.ui.adapter.TagVideoAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -24,6 +23,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_tag_video.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TagVideoFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
     OnItemClickListener {
@@ -38,13 +38,7 @@ class TagVideoFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
             }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getTagDynamicVMFactory()
-        ).get(TagVideoViewModel::class.java)
-    }
-
+    private val viewModel by viewModel<TagVideoViewModel>()
     override fun getLayoutRes(): Int = R.layout.fragment_tag_video
 
     private lateinit var id: String

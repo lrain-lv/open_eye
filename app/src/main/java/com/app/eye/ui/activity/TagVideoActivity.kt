@@ -13,13 +13,14 @@ import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.TopicFragmentAdapter
 import com.app.eye.ui.fragment.TagDynamicFragment
 import com.app.eye.ui.fragment.TagVideoFragment
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_tag_video.*
 import me.yokeyword.fragmentation.SupportFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
 class TagVideoActivity : BaseVMActivity(), AppBarLayout.OnOffsetChangedListener,
@@ -37,12 +38,7 @@ class TagVideoActivity : BaseVMActivity(), AppBarLayout.OnOffsetChangedListener,
         }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getTagDynamicVMFactory()
-        ).get(TagVideoViewModel::class.java)
-    }
+    private val viewModel by viewModel<TagVideoViewModel>()
 
     private val fragmentList = mutableListOf<SupportFragment>()
     private val titleList = mutableListOf<String>("推荐", "广场")

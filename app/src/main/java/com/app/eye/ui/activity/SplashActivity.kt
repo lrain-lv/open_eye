@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewPropertyAnimator
 import com.app.eye.R
 import com.app.eye.base.BaseActivity
+import com.app.eye.http.mvvm.ApiService
 import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.rx.isSuccess
@@ -24,6 +25,8 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
+import org.koin.core.scope.inject
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
 
@@ -41,11 +44,12 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
 
     private val splash: String by lazy { SPUtils.getInstance("eye").getString("splash", "") }
 
+    private val serviceHelper: ServiceHelper by inject()
 
     override fun initView() {
         immersionBar.hideBar(BarHide.FLAG_HIDE_BAR).init()
         scope.launch(Dispatchers.IO) {
-            val result = ServiceHelper.getInstance().getConfigs()
+            val result = serviceHelper.getConfigs()
             if (result.isSuccess()) {
                 SPUtils.getInstance("eye")
                     .put("splash", (result as EyeResult.Success).data.startPageAd.imageUrl)
@@ -60,7 +64,6 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
         } else {
             EasyPermissions.requestPermissions(this, "运行APP需要申请响应的权限", 1000, *perms)
         }
-
     }
 
     private lateinit var subscribe: Disposable

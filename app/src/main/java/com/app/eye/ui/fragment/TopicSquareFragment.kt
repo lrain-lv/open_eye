@@ -9,11 +9,11 @@ import com.app.eye.R
 import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.TabFragmentAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import kotlinx.android.synthetic.main.fragment_topic_square.*
 import me.yokeyword.fragmentation.SupportFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TopicSquareFragment : BaseVMFragment(), ViewPager.OnPageChangeListener {
 
@@ -22,11 +22,7 @@ class TopicSquareFragment : BaseVMFragment(), ViewPager.OnPageChangeListener {
         fun newInstance() = TopicSquareFragment()
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getTopicVMFactory()).get(
-            TopicViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<TopicViewModel>()
     private var titles: MutableList<String> = mutableListOf()
     private var fragments: MutableList<SupportFragment> = mutableListOf()
 

@@ -14,7 +14,7 @@ import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.CategoryActivity
 import com.app.eye.ui.activity.LoginActivity
 import com.app.eye.ui.adapter.PrivateMsgAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.MessageViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.fragment_message.refresh_layout
 import kotlinx.android.synthetic.main.fragment_message.status_view
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MessageFragment : BaseVMFragment(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener,
@@ -43,11 +44,7 @@ class MessageFragment : BaseVMFragment(), View.OnClickListener,
             }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getMessageVMFactory()).get(
-            MessageViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<MessageViewModel>()
 
     private val isLogin: Boolean by lazy {
         SPUtils.getInstance("eye").getString("avatar", "").isNotEmpty()

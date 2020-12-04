@@ -13,7 +13,7 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.adapter.HotSearchAdapter
 import com.app.eye.ui.adapter.SearchAdapter
 import com.app.eye.ui.entity.HotSearchEntity
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.SearchViewModel
 import com.blankj.utilcode.util.KeyboardUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
@@ -22,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : BaseVMActivity(),
     View.OnClickListener, TextWatcher, OnLoadMoreListener {
@@ -33,11 +34,7 @@ class SearchActivity : BaseVMActivity(),
 
     private lateinit var originDataList: MutableList<HotSearchEntity>
 
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getSearchVMFactory()).get(
-            SearchViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<SearchViewModel>()
     private var debounceJob: Job? = null
     override fun getLayoutRes(): Int = R.layout.activity_search
 

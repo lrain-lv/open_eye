@@ -12,7 +12,7 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.PopularAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.PopularViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -24,6 +24,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_popular.*
 import kotlinx.android.synthetic.main.fragment_popular.refresh_layout
 import kotlinx.android.synthetic.main.fragment_popular.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 // TODO: Rename parameter arguments, choose names that match
 private const val STRATEGY = "strategy"
@@ -41,12 +42,7 @@ class PopularFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, 
                 }
             }
     }
-
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getPopularVMFactory()).get(
-            PopularViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<PopularViewModel>()
     private var strategy: String? = ""
     private var id: String? = ""
 

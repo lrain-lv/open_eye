@@ -12,7 +12,7 @@ import com.app.eye.base.mvvm.BaseVMActivity
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicReplyAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.app.eye.ui.mvvm.viewmodel.TopicDetailViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -23,6 +23,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.activity_topic_reply.*
 import kotlinx.android.synthetic.main.activity_topic_reply.refresh_layout
 import kotlinx.android.synthetic.main.activity_topic_reply.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TopicReplyActivity :
     BaseVMActivity(), View.OnClickListener, OnLoadMoreListener,
@@ -59,12 +60,7 @@ class TopicReplyActivity :
 
     private var isRefresh: Boolean = true
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getTopicDetailVMFactory()
-        ).get(TopicDetailViewModel::class.java)
-    }
+    private val viewModel by viewModel<TopicDetailViewModel>()
 
     override fun getLayoutRes(): Int = R.layout.activity_topic_reply
 

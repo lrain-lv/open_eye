@@ -16,7 +16,7 @@ import com.app.eye.ui.adapter.CategoryAdapter
 import com.app.eye.ui.adapter.InformationAdapter
 import com.app.eye.ui.adapter.RecFriendAdapter
 import com.app.eye.ui.adapter.SpecialTopicAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.CategoryViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.android.synthetic.main.activity_category.recycler_view
 import kotlinx.android.synthetic.main.activity_category.refresh_layout
 import kotlinx.android.synthetic.main.activity_category.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * 分类 专题策划 全部资讯 发现好友
@@ -48,13 +49,7 @@ class CategoryActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener,
         }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getCategoryVMFactory()
-        ).get(CategoryViewModel::class.java)
-    }
-
+    private val viewModel by viewModel<CategoryViewModel>()
     private lateinit var title: String
     private var type: Int = 0
     private lateinit var categoryAdapter: CategoryAdapter

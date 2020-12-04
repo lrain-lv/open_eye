@@ -12,7 +12,7 @@ import com.app.eye.rx.actionUrlToMap
 import com.app.eye.rx.checkSuccess
 import com.app.eye.ui.activity.WebActivity
 import com.app.eye.ui.adapter.PushMessageAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.PushViewModel
 import com.app.eye.widgets.*
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -20,17 +20,14 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_push.*
 import org.greenrobot.eventbus.EventBus
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PushFragment : BaseVMFragment(),
     OnItemClickListener, OnLoadMoreListener,
     SwipeRefreshLayout.OnRefreshListener,
     MultipleStatusView.OnRetryClickListener {
 
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getPushVMFactory()).get(
-            PushViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<PushViewModel>()
 
     private val pushMessageAdapter: PushMessageAdapter =
         PushMessageAdapter(mutableListOf())

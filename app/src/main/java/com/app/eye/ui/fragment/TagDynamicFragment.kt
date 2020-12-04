@@ -12,7 +12,6 @@ import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TagVideoAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -24,6 +23,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_tag_video.recycler_view
 import kotlinx.android.synthetic.main.fragment_tag_video.refresh_layout
 import kotlinx.android.synthetic.main.fragment_tag_video.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TagDynamicFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
     OnLoadMoreListener,
@@ -41,12 +41,7 @@ class TagDynamicFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListene
             }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getTagDynamicVMFactory()
-        ).get(TagVideoViewModel::class.java)
-    }
+    private val viewModel by viewModel<TagVideoViewModel>()
 
     private lateinit var id: String
 

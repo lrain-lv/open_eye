@@ -17,7 +17,6 @@ import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.ui.adapter.BrandWallAdapter
 import com.app.eye.ui.adapter.BrandWallHeaderAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -32,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_brand_detail.*
 import kotlinx.android.synthetic.main.activity_brand_wall.recycler_view
 import kotlinx.android.synthetic.main.activity_brand_wall.refresh_layout
 import kotlinx.android.synthetic.main.activity_brand_wall.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListener,
     OnLoadMoreListener {
@@ -46,12 +46,7 @@ class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListen
         }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getBrandWallVMFactory()
-        ).get(BrandWallViewModel::class.java)
-    }
+    private val viewModel by viewModel<BrandWallViewModel>()
 
     private var isRefresh = true
 

@@ -13,7 +13,7 @@ import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.VideoDetailActivity
 import com.app.eye.ui.adapter.RankAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.RankViewModel
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
@@ -25,6 +25,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_rank_list.recycler_view
 import kotlinx.android.synthetic.main.fragment_rank_list.refresh_layout
 import kotlinx.android.synthetic.main.fragment_rank_list.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RankListFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
     OnItemClickListener {
@@ -39,12 +40,7 @@ class RankListFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
                 }
             }
     }
-
-    private val viewModel by lazy {
-        ViewModelProvider(this, InjectorUtil.getRankVMFactory()).get(
-            RankViewModel::class.java
-        )
-    }
+    private val viewModel by viewModel<RankViewModel>()
     private var nextPageUrl: String? = ""
 
     private var isRefresh: Boolean = true

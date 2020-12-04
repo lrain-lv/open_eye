@@ -4,22 +4,21 @@ import com.app.eye.http.RetrofitManager
 import com.app.eye.ui.entity.ConfigEntity
 import java.io.IOException
 
-class ServiceHelper {
-    val service: ApiService by lazy { RetrofitManager.sInstance.createService(ApiService::class.java) }
+class ServiceHelper(private val service : ApiService) {
 
-    companion object {
-        var serviceHelper: ServiceHelper? = null
-        fun getInstance(): ServiceHelper {
-            if (serviceHelper == null) {
-                synchronized(ServiceHelper::class.java) {
-                    if (serviceHelper == null) {
-                        serviceHelper = ServiceHelper()
-                    }
-                }
-            }
-            return serviceHelper!!
-        }
-    }
+//    companion object {
+//        var serviceHelper: ServiceHelper? = null
+//        fun getInstance(): ServiceHelper {
+//            if (serviceHelper == null) {
+//                synchronized(ServiceHelper::class.java) {
+//                    if (serviceHelper == null) {
+//                        serviceHelper = ServiceHelper()
+//                    }
+//                }
+//            }
+//            return serviceHelper!!
+//        }
+//    }
 
     suspend fun getHomeRec(map: Map<String, String>) =
         try {

@@ -11,7 +11,7 @@ import com.app.eye.base.mvvm.BaseVMFragment
 import com.app.eye.rx.checkSuccess
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.AttentionAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.CommunityViewModel
 import com.app.eye.widgets.*
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -20,6 +20,7 @@ import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_com_attention.recycler_view
 import kotlinx.android.synthetic.main.fragment_com_attention.refresh_layout
 import kotlinx.android.synthetic.main.fragment_com_attention.status_view
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ComAttentionFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListener,
     MultipleStatusView.OnRetryClickListener, OnLoadMoreListener, OnItemClickListener {
@@ -31,12 +32,7 @@ class ComAttentionFragment : BaseVMFragment(), SwipeRefreshLayout.OnRefreshListe
             }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getCommunityVMFactory()
-        ).get(CommunityViewModel::class.java)
-    }
+    private val viewModel by viewModel<CommunityViewModel>()
     private var nextPageUrl: String? = ""
 
     private var isRefresh: Boolean = true

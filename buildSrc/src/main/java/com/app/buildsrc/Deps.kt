@@ -13,7 +13,7 @@ object Versions {
     const val versionName = "1.0"
 
     const val kotlin_version = "1.4.10"
-    const val koin_version = "2.2.1"
+    const val koin_version = "2.2.0"
 }
 
 object Deps {
@@ -32,8 +32,7 @@ object Deps {
     const val glide_annotations = "com.github.bumptech.glide:annotations:4.11.0"
     const val glide_transformations = "jp.wasabeef:glide-transformations:4.3.0"
     const val adapterHelper = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
-    const val
-            logger = "com.orhanobut:logger:2.2.0"
+    const val logger = "com.orhanobut:logger:2.2.0"
     const val utilCode = "com.blankj:utilcodex:1.29.0"
     const val immersionbar = "com.gyf.immersionbar:immersionbar:3.0.0"
     const val logging_interceptor = "com.squareup.okhttp3:logging-interceptor:3.4.1"
@@ -61,6 +60,7 @@ object Deps {
     const val koin_scope = "org.koin:koin-androidx-scope:${koin_version}"
     const val koin_viewmodel = "org.koin:koin-androidx-viewmodel:$koin_version"
     const val koin_ext = "org.koin:koin-androidx-ext:$koin_version"
+    const val koin_fragment = "org.koin:koin-androidx-fragment:$koin_version"
     const val coil = "io.coil-kt:coil:1.1.0"
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.5"
     const val legacy = "androidx.legacy:legacy-support-v4:1.0.0"

@@ -13,7 +13,7 @@ import com.app.eye.http.mvvm.EyeResult
 import com.app.eye.rx.urlToMap
 import com.app.eye.ui.activity.*
 import com.app.eye.ui.adapter.HomeRecAdapter
-import com.app.eye.ui.mvvm.factory.InjectorUtil
+import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.RecommendViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
@@ -22,17 +22,12 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import kotlinx.android.synthetic.main.fragment_recommend.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecommendFragment : BaseVMFragment(),
     SwipeRefreshLayout.OnRefreshListener, OnLoadMoreListener,
     OnItemClickListener, OnItemChildClickListener {
-
-    private val viewModel: RecommendViewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtil.getRecommendVMFactory()
-        ).get(RecommendViewModel::class.java)
-    }
+    private val viewModel by viewModel<RecommendViewModel>()
 
     companion object {
         @JvmStatic
