@@ -1,5 +1,7 @@
 package com.app.eye.ui.fragment
 
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.app.eye.R
@@ -10,6 +12,7 @@ import com.app.eye.rx.loadImageCircle
 import com.app.eye.rx.setOnClickListener
 import com.app.eye.ui.activity.BadgeActivity
 import com.app.eye.ui.activity.LoginActivity
+import com.app.eye.utils.DataStoreUtils
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.SPUtils
@@ -17,10 +20,8 @@ import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_mine.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -32,23 +33,23 @@ class MineFragment : BaseFragment() {
     private lateinit var avatar: String
     private lateinit var nick: String
 
-    private val spUtils: SPUtils by lazy { SPUtils.getInstance("eye") }
+    private val mainScope = MainScope()
 
     override fun initView() {
+        requireActivity().classLoader
         initListener()
-        GlobalScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                avatar = spUtils.getString("avatar", "")
-                nick = spUtils.getString("nick", "")
-            }
+        mainScope.launch {
+            avatar =
+                DataStoreUtils.getInstance().readStringFlow("avatar", "").first().toString()
+            nick = DataStoreUtils.getInstance().readStringFlow("nick", "点击登录即可评论及发布内容").first()
+                .toString()
             iv_header.load(avatar) {
                 error(R.mipmap.pgc_default_avatar)
                 size(80f.dp2px().toInt())
                 transformations(CircleCropTransformation())
             }
-            tv_login.text = if (nick.isNotEmpty()) nick else "点击登录即可评论及发布内容"
+            tv_login.text = nick
         }
-
         tv_version.text = "Version ${AppUtils.getAppVersionName()}"
     }
 
@@ -60,7 +61,7 @@ class MineFragment : BaseFragment() {
             layout_collect,
             layout_cache,
             tv_attention,
-            tv_record, tv_notification, tv_badge, tv_feedback, tv_submit
+            tv_record, tv_notification, tv_badge, tv_feedback, tv_submit, tv_logout
         ) {
             when (this.id) {
                 R.id.iv_header, R.id.tv_login -> {
@@ -69,6 +70,21 @@ class MineFragment : BaseFragment() {
                 }
                 R.id.tv_badge -> {
                     ActivityUtils.startActivity(BadgeActivity::class.java)
+                }
+
+                R.id.tv_logout -> {
+                    mainScope.launch {
+                        withContext(Dispatchers.IO) {
+                            DataStoreUtils.getInstance().saveBooleanData("isLogin", false)
+                            DataStoreUtils.getInstance().saveStringData("avatar", "")
+                            DataStoreUtils.getInstance().saveStringData("nick", "点击登录即可评论及发布内容")
+                        }
+                        iv_header.load(R.mipmap.pgc_default_avatar) {
+                            size(80f.dp2px().toInt())
+                            transformations(CircleCropTransformation())
+                        }
+                        tv_login.text = "点击登录即可评论及发布内容"
+                    }
                 }
             }
         }
@@ -93,12 +109,11 @@ class MineFragment : BaseFragment() {
         tv_login.text = loginEntity.member.nick
         Logger.e(loginEntity.member.avatar + loginEntity.member.nick)
         GlobalScope.launch(Dispatchers.IO) {
-            spUtils.put("isLogin", true)
-            spUtils.put("avatar", loginEntity.member.avatar)
-            spUtils.put("nick", loginEntity.member.nick)
+            DataStoreUtils.getInstance().saveBooleanData("isLogin", true)
+            DataStoreUtils.getInstance().saveStringData("avatar", loginEntity.member.avatar)
+            DataStoreUtils.getInstance().saveStringData("nick", loginEntity.member.nick)
         }
     }
-
 
     override fun reConnect() {
     }

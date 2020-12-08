@@ -10,5 +10,4 @@ abstract class BaseVMActivity : BaseActivity() {
         startObserver()
     }
     abstract fun startObserver()
-    override fun isVM(): Boolean = true
 }

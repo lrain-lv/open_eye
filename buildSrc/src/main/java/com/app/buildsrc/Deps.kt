@@ -7,8 +7,8 @@ object Versions {
 
     const val applicationId = "com.app.eye"
     const val minSdkVersion = 21
-    const val targetSdkVersion = 29
-    const val compileSdkVersion = 29
+    const val targetSdkVersion = 30
+    const val compileSdkVersion = 30
     const val versionCode = 1
     const val versionName = "1.0"
 
@@ -55,6 +55,8 @@ object Deps {
     const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha05"
+    const val dataStorePref = "androidx.datastore:datastore-preferences-core:1.0.0-alpha05"
     const val coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
     const val coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
     const val koin_scope = "org.koin:koin-androidx-scope:${koin_version}"

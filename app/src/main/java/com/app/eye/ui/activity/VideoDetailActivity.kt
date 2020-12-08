@@ -19,6 +19,7 @@ import com.app.eye.ui.entity.VideoDetailHeaderEntity
 import com.app.eye.ui.entity.VrItem
 import com.app.eye.ui.mvvm.viewmodel.TopicViewModel
 import com.app.eye.ui.mvvm.viewmodel.VideoDetailViewModel
+import com.app.eye.utils.DataStoreUtils
 import com.app.eye.widgets.*
 import com.app.eye.widgets.videoplayer.Jzvd
 import com.app.eye.widgets.videoplayer.Jzvd.SCREEN_NORMAL
@@ -31,6 +32,8 @@ import com.gyf.immersionbar.BarHide
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import kotlinx.android.synthetic.main.activity_video_detail.recycler_view
 import kotlinx.android.synthetic.main.activity_video_detail.status_view
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
@@ -48,8 +51,6 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
             )
         }
     }
-
-    private val spUtils by lazy { SPUtils.getInstance("eye") }
 
     private val viewModel by viewModel<VideoDetailViewModel>()
 
@@ -73,6 +74,8 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
     private lateinit var icon: ImageView
     private lateinit var recHeader: RecyclerView
 
+    private val mainScope = MainScope()
+
     override fun getLayoutRes(): Int = R.layout.activity_video_detail
 
     override fun initView() {
@@ -80,9 +83,12 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
         val extras = intent.extras!!
         id = extras.getString("id", "")!!
         if (id.isEmpty()) onBackPressedSupport()
-        iv_header.load(spUtils.getString("avatar", "")) {
-            size(30f.dp2px().toInt())
-            error(R.mipmap.pgc_default_avatar)
+        mainScope.launch {
+            val avatar = DataStoreUtils.getInstance().readStringData("avatar", "")
+            iv_header.load(avatar) {
+                size(30f.dp2px().toInt())
+                error(R.mipmap.pgc_default_avatar)
+            }
         }
         setOnClickListener(tv_count, iv_comment, tv_comment) {
             when (this.id) {

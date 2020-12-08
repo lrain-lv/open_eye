@@ -5,6 +5,7 @@ import com.app.eye.base.BaseActivity
 import com.app.eye.event.ChangeTabEvent
 import com.app.eye.ui.fragment.*
 import com.app.eye.ui.entity.TabEntity
+import com.app.eye.utils.DataStoreUtils
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.SPUtils
@@ -12,6 +13,9 @@ import com.blankj.utilcode.util.ToastUtils
 import com.flyco.tablayout.listener.CustomTabEntity
 import com.flyco.tablayout.listener.OnTabSelectListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import org.greenrobot.eventbus.Subscribe
@@ -53,14 +57,17 @@ class MainActivity : BaseActivity() {
 
     private var title = listOf("首页", "社区", "", "通知", "我的")
 
+    private val mainScope = MainScope()
 
     override fun initView() {
         initStatusBar()
         iv_add.setOnClickListener {
-            if (!SPUtils.getInstance("eye").getBoolean("isLogin", false)) {
-                ActivityUtils.startActivity(LoginActivity::class.java)
+            mainScope.launch {
+                val isLogin = DataStoreUtils.getInstance().readBooleanData("isLogin")
+                if (!isLogin) {
+                    ActivityUtils.startActivity(LoginActivity::class.java)
+                }
             }
-//            ToastUtils.showShort("ImageView added")
         }
         val firstFragment = findFragment(HomeFragment::class.java)
         if (firstFragment == null) {

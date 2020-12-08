@@ -84,6 +84,8 @@ dependencies {
     implementation Deps.gpuimage
     implementation Deps.lottie
     implementation Deps.viewmodel
+    implementation Deps.dataStore
+    implementation Deps.dataStorePref
     implementation Deps.livedata
     implementation Deps.extensions
     implementation Deps.coroutines_core
@@ -91,6 +93,7 @@ dependencies {
     implementation Deps.koin_scope
     implementation Deps.koin_viewmodel
     implementation Deps.koin_ext
+    implementation Deps.koin_fragment
     implementation Deps.coil
     implementation Deps.leakCanary
     implementation Deps.startUp

@@ -2,6 +2,7 @@ package com.app.eye.ui.adapter
 
 import android.text.TextUtils
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.eye.R

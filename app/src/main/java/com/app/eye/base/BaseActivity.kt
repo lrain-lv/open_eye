@@ -34,9 +34,6 @@ abstract class BaseActivity : SupportActivity() {
         if (isUseEventBus()) {
             EventBus.getDefault().register(this)
         }
-        if (!isVM()) {
-            initPresenter()
-        }
         initView()
         initData()
     }
@@ -54,12 +51,14 @@ abstract class BaseActivity : SupportActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public fun onNetworkChangeEvent(event: NetworkEvent) {
+
         SPUtils.getInstance("eye").put("isLastConnect", event.isConnect)
         if (event.isConnect) {
             reConnect()
         } else {
             ToastUtils.showShort("当前无网络！")
         }
+
     }
 
 
@@ -72,11 +71,9 @@ abstract class BaseActivity : SupportActivity() {
         ActivityUtils.removeActivityLifecycleCallbacks(this)
     }
 
-    open fun initPresenter() {}
     abstract fun getLayoutRes(): Int
     abstract fun initView()
     abstract fun initData()
     open fun reConnect() {}
     open fun isUseEventBus(): Boolean = false
-    open fun isVM(): Boolean = false
 }

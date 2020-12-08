@@ -5,6 +5,8 @@ import android.graphics.Typeface
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewPropertyAnimator
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import com.app.eye.R
 import com.app.eye.base.BaseActivity
 import com.app.eye.http.mvvm.ApiService
@@ -13,6 +15,7 @@ import com.app.eye.http.mvvm.ServiceHelper
 import com.app.eye.rx.isSuccess
 import com.app.eye.rx.loadImageCommon
 import com.app.eye.rx.setOnClickListener
+import com.app.eye.utils.DataStoreUtils
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -42,17 +45,18 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
         READ_PHONE_STATE
     )
 
-    private val splash: String by lazy { SPUtils.getInstance("eye").getString("splash", "") }
+//    private val splash: String by lazy { SPUtils.getInstance("eye").getString("splash", "") }
 
     private val serviceHelper: ServiceHelper by inject()
 
     override fun initView() {
+
         immersionBar.hideBar(BarHide.FLAG_HIDE_BAR).init()
         scope.launch(Dispatchers.IO) {
             val result = serviceHelper.getConfigs()
             if (result.isSuccess()) {
-                SPUtils.getInstance("eye")
-                    .put("splash", (result as EyeResult.Success).data.startPageAd.imageUrl)
+                DataStoreUtils.getInstance()
+                    .putData("splash", (result as EyeResult.Success).data.startPageAd.imageUrl)
             }
         }
         setOnClickListener(tv_skip) {
@@ -68,13 +72,9 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
 
     private lateinit var subscribe: Disposable
     private fun init() {
-        subscribe = Observable.intervalRange(0, 4, 0, 1, TimeUnit.SECONDS)
-            .subscribeOn(Schedulers.io())
-            .doOnSubscribe {
-                tv_time.visibility = View.VISIBLE
-                tv_skip.visibility = View.VISIBLE
-                tv_time.text = "3秒"
-                if (splash.isEmpty()) {
+        DataStoreUtils.getInstance().readStringFlow("splash", "").asLiveData()
+            .observe(this, Observer {
+                if (it.isEmpty()) {
                     val typeface = Typeface.createFromAsset(assets, "fonts/Lobster-1.4.otf")
                     tv_en.typeface = typeface
                     iv_splash.setImageResource(R.mipmap.icon_splash)
@@ -86,7 +86,7 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
                 } else {
                     iv_account.visibility = View.GONE
                     layout.visibility = View.GONE
-                    iv_splash.loadImageCommon(splash)
+                    iv_splash.loadImageCommon(it)
                     animator = iv_splash.animate()
                         .alpha(0.85f)
                         .scaleX(1.1f)
@@ -94,6 +94,13 @@ class SplashActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
                         .setDuration(2500)
                     animator.start()
                 }
+            })
+        subscribe = Observable.intervalRange(0, 4, 0, 1, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe {
+                tv_time.visibility = View.VISIBLE
+                tv_skip.visibility = View.VISIBLE
+                tv_time.text = "3秒"
             }
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
