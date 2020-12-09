@@ -1,5 +1,6 @@
 package com.app.eye.ui.entity
 
+import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
 data class ReplyVideoEntity(

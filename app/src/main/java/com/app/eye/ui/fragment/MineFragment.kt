@@ -95,9 +95,7 @@ class MineFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            MineFragment().apply {
-            }
+        fun newInstance() = MineFragment()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

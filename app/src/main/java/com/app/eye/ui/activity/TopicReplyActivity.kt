@@ -2,32 +2,18 @@ package com.app.eye.ui.activity
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.View
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.eye.R
-import com.app.eye.base.mvvm.BaseVMActivity
+import com.app.eye.base.mvvm.BaseDataBindActivity
+import com.app.eye.databinding.ActivityTopicReplyBinding
 import com.app.eye.rx.checkSuccess
-import com.app.eye.rx.urlToMap
 import com.app.eye.ui.adapter.TopicReplyAdapter
-import com.app.eye.ui.mvvm.viewmodel.TagVideoViewModel
-import com.app.eye.ui.mvvm.viewmodel.TopicDetailViewModel
-import com.app.eye.widgets.STATUS_CONTENT
-import com.app.eye.widgets.STATUS_EMPTY
-import com.app.eye.widgets.STATUS_ERROR
-import com.app.eye.widgets.STATUS_LOADING
+import com.app.eye.ui.mvvm.viewmodel.TopicReplyViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import kotlinx.android.synthetic.main.activity_topic_reply.*
-import kotlinx.android.synthetic.main.activity_topic_reply.refresh_layout
-import kotlinx.android.synthetic.main.activity_topic_reply.status_view
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TopicReplyActivity :
-    BaseVMActivity(), View.OnClickListener, OnLoadMoreListener,
-    SwipeRefreshLayout.OnRefreshListener {
+    BaseDataBindActivity(), OnLoadMoreListener {
 
     companion object {
         fun startActivity(
@@ -54,136 +40,89 @@ class TopicReplyActivity :
     private var replyId = -1L
     private var replyType = ""
 
-    private var nextPageUrl: String? = ""
-
     private val topicDetailAdapter = TopicReplyAdapter(mutableListOf())
 
-    private var isRefresh: Boolean = true
 
-    private val viewModel by viewModel<TopicDetailViewModel>()
+    private val viewModel by viewModel<TopicReplyViewModel>()
 
-    override fun getLayoutRes(): Int = R.layout.activity_topic_reply
+    private val binding by binding<ActivityTopicReplyBinding>(R.layout.activity_topic_reply)
 
     override fun initView() {
         immersionBar.fitsSystemWindows(true)
             .statusBarDarkFont(false)
             .statusBarColor(R.color.black)
             .init()
-        type = intent?.extras!!.getInt("type", 0)
-        videoId = intent?.extras!!.getInt("videoId", -1)
-        replyId = intent?.extras!!.getLong("replyId", -1)
-        replyType = intent?.extras!!.getString("replyType", "")
-        initSwipeRefreshLayout(refresh_layout)
-        refresh_layout.setOnRefreshListener(this)
-        tv_title.text = if (type == 0) "查看热门评论" else "查看全部对话"
-        iv_arrow.setOnClickListener(this)
+        intent?.extras?.apply {
+            type = getInt("type", 0)
+            videoId = getInt("videoId", -1)
+            replyId = getLong("replyId", -1)
+            replyType = getString("replyType", "")
+        }
+        binding.apply {
+            lifecycleOwner = this@TopicReplyActivity
+            model = viewModel
+            vId = videoId.toString()
+            rId = replyId.toString()
+            rType = replyType
+            pType = type
+        }
         initAdapter()
     }
 
     private fun initAdapter() {
-        recycler.layoutManager = LinearLayoutManager(mContext)
         topicDetailAdapter.loadMoreModule.setOnLoadMoreListener(this)
-        topicDetailAdapter.loadMoreModule.isEnableLoadMore = false
-        recycler.adapter = topicDetailAdapter
+        binding.adapter = topicDetailAdapter
     }
 
     override fun initData() {
-        recycler.post {
+        binding.recycler.post {
             viewModel.getReplyRequest(
-                type, if (type == 0) hashMapOf(
-                    "videoId" to videoId.toString(),
-                    "type" to replyType
-                ) else hashMapOf(
-                    "replyId" to replyId.toString(),
-                    "type" to replyType
-                ), isFirst = true
+                type,
+                videoId = videoId.toString(),
+                replyType = replyType,
+                replyId = replyId.toString(),
+                isFirst = true
             )
-
         }
     }
 
-    override fun reConnect() {
-    }
-
     override fun startObserver() {
-        viewModel.refreshLiveData.observe(this, Observer {
-            refresh_layout.isRefreshing = it
-        })
-        viewModel.statusLiveData.observe(this, Observer {
-            when (it) {
-                STATUS_LOADING -> {
-                    status_view.showLoadingView()
-                }
-                STATUS_ERROR -> {
-                    status_view.showErrorView()
-                }
-                STATUS_EMPTY -> {
-                    status_view.showEmptyView()
-                }
-                STATUS_CONTENT -> {
-                    status_view.showContentView()
-                }
-            }
-        })
-
-        viewModel.replyVideoLiveData.observe(this, Observer {
-            it.checkSuccess(
-                { entity ->
-                    nextPageUrl = entity.nextPageUrl
-                    if (isRefresh) {
-                        topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-                        topicDetailAdapter.setList(entity.itemList)
-                        if (TextUtils.isEmpty(nextPageUrl)) topicDetailAdapter.loadMoreModule.loadMoreEnd()
-                    } else {
-                        topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
-                        topicDetailAdapter.addData(entity.itemList)
-                        if (TextUtils.isEmpty(nextPageUrl)) {
-                            topicDetailAdapter.loadMoreModule.loadMoreEnd()
+        viewModel.apply {
+            replyVideoLiveData.observe(this@TopicReplyActivity, {
+                it.checkSuccess(
+                    { entity ->
+                        if (viewModel.isRefresh) {
+                            topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
+                            topicDetailAdapter.setList(entity.itemList)
+                            if (TextUtils.isEmpty(entity.nextPageUrl)) topicDetailAdapter.loadMoreModule.loadMoreEnd()
                         } else {
-                            topicDetailAdapter.loadMoreModule.loadMoreComplete()
+                            topicDetailAdapter.loadMoreModule.isEnableLoadMore = true
+                            topicDetailAdapter.addData(entity.itemList)
+                            if (TextUtils.isEmpty(entity.nextPageUrl)) {
+                                topicDetailAdapter.loadMoreModule.loadMoreEnd()
+                            } else {
+                                topicDetailAdapter.loadMoreModule.loadMoreComplete()
+                            }
                         }
                     }
-                    refresh_layout.isEnabled = true
-                }, {
-                    status_view.showErrorView()
-                }
-            )
-        })
+                )
+            })
+            enableLoadMore.observe(this@TopicReplyActivity, {
+                topicDetailAdapter.loadMoreModule.isEnableLoadMore = it
+            })
+        }
     }
 
     override fun onBackPressedSupport() {
         super.onBackPressedSupport()
-        overridePendingTransition(R.anim.top_slient, R.anim.out_from_bottom)
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.iv_arrow -> {
-                onBackPressedSupport()
-            }
-        }
+        overridePendingTransition(
+            R.anim.top_slient,
+            R.anim.out_from_bottom
+        )
     }
 
     override fun onLoadMore() {
-        if (!nextPageUrl.isNullOrEmpty()) {
-            refresh_layout.isEnabled = false
-            isRefresh = false
-            val map = nextPageUrl!!.urlToMap()
-            viewModel.getReplyRequestMore(type, map)
-        }
+        viewModel.getReplyRequestMore(type)
     }
 
-    override fun onRefresh() {
-        topicDetailAdapter.loadMoreModule.isEnableLoadMore = false
-        isRefresh = true
-        viewModel.getReplyRequest(
-            type, if (type == 0) hashMapOf(
-                "videoId" to videoId.toString(),
-                "type" to replyType
-            ) else hashMapOf(
-                "replyId" to replyId.toString(),
-                "type" to replyType
-            ), isFirst = false
-        )
-    }
 }

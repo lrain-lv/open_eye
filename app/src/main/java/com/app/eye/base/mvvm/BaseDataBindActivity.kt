@@ -6,6 +6,8 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.app.eye.R
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.Utils
@@ -34,9 +36,14 @@ abstract class BaseDataBindActivity : SupportActivity() {
         if (isUseEventBus()) {
             EventBus.getDefault().register(this)
         }
-        startObserve()
         initView()
         initData()
+        startObserver()
+    }
+
+    open fun initSwipeRefreshLayout(refreshLayout: SwipeRefreshLayout) {
+        val intArray = resources.getIntArray(R.array.google_colors)
+        refreshLayout.setColorSchemeColors(*intArray)
     }
 
     override fun onDestroy() {
@@ -49,6 +56,6 @@ abstract class BaseDataBindActivity : SupportActivity() {
 
     abstract fun initView()
     abstract fun initData()
-    abstract fun startObserve()
+    abstract fun startObserver()
     open fun isUseEventBus(): Boolean = false
 }

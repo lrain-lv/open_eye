@@ -163,7 +163,7 @@ class VideoDetailActivity : BaseVMActivity(), OnLoadMoreListener {
         })
         viewModel.replyVideoEntityLiveData.observe(this, Observer {
             it.checkSuccess({ entity ->
-
+                setReplyVideoResponse(entity)
             })
         })
         viewModel.videoEntityLiveData.observe(this, Observer {

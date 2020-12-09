@@ -63,6 +63,7 @@ class MainApp : Application() {
             viewModel { SearchViewModel(get()) }
             viewModel { TagVideoViewModel(get()) }
             viewModel { TopicDetailViewModel(get()) }
+            viewModel { TopicReplyViewModel(get()) }
             viewModel { TopicViewModel(get()) }
             viewModel { VideoDetailViewModel(get()) }
         }

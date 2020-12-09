@@ -1,191 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="15dp"
-    android:paddingTop="15dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/line1"
-        android:layout_width="wrap_content"
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.blankj.utilcode.util.TimeUtils" />
+
+        <import type="com.app.eye.ui.entity.ReplyData" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="data"
+            type="ReplyData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="45dp" />
+        android:paddingHorizontal="15dp"
+        android:paddingTop="15dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/line1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="45dp" />
 
         <ImageView
-        android:scaleType="centerCrop"
-        android:id="@+id/iv_header_big"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/iv_header_big"
+            url="@{data.user.avatar}"
+            width="@{36F}"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@id/line1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@{data.user.nickname}"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/line1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_reply_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        app:layout_constraintLeft_toRightOf="@id/line1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+        <TextView
+            android:id="@+id/tv_reply_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text='@{data.parentReply == null ?"" :"回复" + data.parentReply.user.nickname}'
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:isVisible="@{data.parentReply!= null}"
+            app:layout_constraintLeft_toRightOf="@id/line1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toRightOf="@id/line1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_reply_name" />
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{data.message}"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toRightOf="@id/line1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_reply_name" />
 
-        <ImageView
-        android:scaleType="centerCrop"
-        android:id="@+id/iv_main"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@id/line1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_content" />
-
-    <LinearLayout
-        android:id="@+id/layout_reply"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_reply_dark"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintLeft_toRightOf="@id/line1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_main">
-
-            <ImageView
-        android:scaleType="centerCrop"
-            android:id="@+id/iv_header_sm"
-            android:layout_width="26dp"
-            android:layout_height="26dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/layout_reply"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
+            android:background="@drawable/shape_reply_dark"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:isVisible="@{data.parentReply!= null}"
+            app:layout_constraintLeft_toRightOf="@id/line1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_content">
 
-            <TextView
-                android:id="@+id/tv_name_reply"
+            <ImageView
+                android:id="@+id/iv_header_sm"
+                url="@{data.parentReply.user.avatar}"
+                width="@{26f}"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/line1"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name_reply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.parentReply.user.nickname}"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/line1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/tv_content_reply"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                app:layout_constraintLeft_toRightOf="@id/line1"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_name_reply" />
+                <TextView
+                    android:id="@+id/tv_content_reply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@{data.parentReply.message}"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    app:layout_constraintLeft_toRightOf="@id/line1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name_reply" />
 
                 <ImageView
-        android:scaleType="centerCrop"
-                android:id="@+id/iv_reply"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp" />
+                    android:id="@+id/iv_reply"
+                    radius=""
+                    url="@{data.parentReply.imageUrl}"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="centerCrop"
+                    app:isVisible="@{!TextUtils.isEmpty(data.parentReply.imageUrl)}" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="1px"
-        android:layout_marginTop="40dp"
-        android:background="#C1C1C1"
-        app:layout_constraintLeft_toRightOf="@id/line1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_reply" />
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginTop="40dp"
+            android:background="#C1C1C1"
+            app:layout_constraintLeft_toRightOf="@id/line1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_reply" />
 
-    <TextView
-        android:id="@+id/tv_get_converse"
-        android:layout_width="wrap_content"
-        android:layout_height="28dp"
-        android:gravity="center"
-        android:text="查看对话"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/view"
-        app:layout_constraintLeft_toRightOf="@id/line1"
-        app:layout_constraintTop_toBottomOf="@id/layout_reply" />
+        <TextView
+            android:id="@+id/tv_get_converse"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:text="查看对话"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:isVisible="@{data.parentReply!= null}"
+            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintLeft_toRightOf="@id/line1"
+            app:layout_constraintTop_toBottomOf="@id/layout_reply" />
 
+        <TextView
+            android:id="@+id/tv_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
+            android:gravity="center"
+            android:text="回复"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintLeft_toRightOf="@id/tv_get_converse"
+            app:layout_constraintTop_toBottomOf="@id/layout_reply"
+            app:layout_goneMarginStart="0dp" />
 
-    <TextView
-        android:id="@+id/tv_reply"
-        android:layout_width="wrap_content"
-        android:layout_height="28dp"
-        android:layout_marginStart="15dp"
-        android:gravity="center"
-        android:text="回复"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/view"
-        app:layout_constraintLeft_toRightOf="@id/tv_get_converse"
-        app:layout_constraintTop_toBottomOf="@id/layout_reply"
-        app:layout_goneMarginStart="0dp" />
+        <TextView
+            android:id="@+id/tv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
+            android:gravity="center"
+            android:text="分享"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintLeft_toRightOf="@id/tv_reply"
+            app:layout_constraintTop_toBottomOf="@id/layout_reply"
+            app:layout_goneMarginStart="0dp" />
 
-    <TextView
-        android:id="@+id/tv_share"
-        android:layout_width="wrap_content"
-        android:layout_height="28dp"
-        android:layout_marginStart="15dp"
-        android:gravity="center"
-        android:text="分享"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/view"
-        app:layout_constraintLeft_toRightOf="@id/tv_reply"
-        app:layout_constraintTop_toBottomOf="@id/layout_reply"
-        app:layout_goneMarginStart="0dp" />
-
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/view"
-        app:layout_constraintLeft_toRightOf="@id/tv_share"
-        app:layout_constraintTop_toBottomOf="@id/layout_reply"
-        app:layout_goneMarginStart="0dp" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text='@{TimeUtils.getFriendlyTimeSpanByNow(data.createTime)}'
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintLeft_toRightOf="@id/tv_share"
+            app:layout_constraintTop_toBottomOf="@id/layout_reply"
+            app:layout_goneMarginStart="0dp" />
 
         <ImageView
-        android:scaleType="centerCrop"
-        android:id="@+id/iv_more"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:src="@drawable/ic_action_reply_more"
-        app:layout_constraintBottom_toTopOf="@id/view"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_reply" />
+            android:id="@+id/iv_more"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_reply_more"
+            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_reply" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

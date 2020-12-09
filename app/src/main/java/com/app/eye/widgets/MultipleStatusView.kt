@@ -9,11 +9,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.app.eye.R
 
-const val STATUS_CONTENT = 0X00
-const val STATUS_LOADING = 0x01
-const val STATUS_EMPTY = 0x02
-const val STATUS_ERROR = 0x03
-const val STATUS_NO_NETWORK = 0x04
+const val STATUS_CONTENT = 0
+const val STATUS_LOADING = 1
+const val STATUS_EMPTY = 2
+const val STATUS_ERROR = 3
+const val STATUS_NO_NETWORK = 4
 
 class MultipleStatusView(context: Context, attr: AttributeSet) : FrameLayout(context, attr) {
 
