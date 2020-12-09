@@ -7,11 +7,11 @@ object Constant {
     const val ACCOUNT_BASE_URL = "https://account.kaiyanapp.com/"
 
     const val X_THEFAIR_APPID = "ahpagrcrf2p7m6rg"
-    const val X_THEFAIR_AUTH =
-        "Td6EyI0axFLyxoRC7S+NLXPV4/eHxNmHDilRdZBEgSs2yn8OoAfY4QiegC24PrfRyzxijX2MusS+QpZC03Jw2h4vDBCrIrW5bzZPYfU8h3Jgtl5gfeeOI+J3hvIxyeJur4/QOXk39AnooWQTkwW5kvVV6xaqlfNxfKJhye0MigVDhzVZD7J5Bt8c+Tl2PeQk+cRCSTwcjxZBTfGLdbEqOAh9zbM9vAOa/E5h+MDPd6LmEKGEsgLokx+EFZALF2px/FN4woOlF5/JaCPsWjvg9g=="
+    const val X_THEFAIR_AUTH ="Td6EyI0axFLyxoRC7S+NLXPV4/eHxNmHDilRdZBEgSs2yn8OoAfY4QiegC24PrfRyzxijX2MusS+QpZC03Jw2h4vDBCrIrW5bzZPYfU8h3Jgtl5gfeeOI+J3hvIxyeJur4/QOXk39AnooWQTkwW5kvVV6xaqlfNxfKJhye0MigVDhzVZD7J5Bt8c+Tl2PeQk+cRCSTwcjxZBTfGLdbEqOAh9zbM9vAOa/E5h+MDPd6K3SuFcz8owA+kSsCzlf7IIUW5HPaZuF4t7xJW9kQmhMQ=="
+
     const val X_THEFAIR_CID = "033cb043aa2cb1b29b370d9783dc4821"
-    const val X_THEFAIR_UA =
-        "EYEPETIZER/6040004 (ALP-AL00;android;10;zh_CN_#Hans;android;6.4.0;cn-bj;huawei;033cb043aa2cb1b29b370d9783dc4821;WIFI;1440*2560) native/1.0"
+    const val X_THEFAIR_UA ="EYEPETIZER/6040004 (ALP-AL00;android;10;zh_CN_#Hans;android;6.4.0;cn-bj;huawei;033cb043aa2cb1b29b370d9783dc4821;WIFI;1440*2560) native/1.0"
+
     const val x_api_key = "0530ee4341324ce2b26c23fcece80ea2"
 
     const val LOGIN = "v1/api/login"

@@ -39,6 +39,10 @@
             name="rType"
             type="String" />
 
+        <variable
+            name="colorsId"
+            type="int" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,10 +93,9 @@
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refresh_layout"
-            colors=""
-            isEnable="@{model.enableRefreshLiveData.booleanValue()}"
-            isRefresh="@{model.refreshLiveData.booleanValue()}"
-            onRefreshClick="@{()->model.getReplyRequest(pType,vId,rType,rId,false)}"
+            app:isEnable="@{model.enableRefreshLiveData.booleanValue()}"
+            app:isRefresh="@{model.refreshLiveData.booleanValue()}"
+            app:onRefreshClick="@{()->model.getReplyRequest(pType,vId,rType,rId,false)}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

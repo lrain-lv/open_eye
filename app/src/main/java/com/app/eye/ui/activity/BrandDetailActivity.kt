@@ -67,8 +67,6 @@ class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListen
 
     private var distance: Int = 0
 
-    private var isShow: Boolean = false
-
     override fun getLayoutRes(): Int = R.layout.activity_brand_detail
 
     override fun initView() {
@@ -125,13 +123,9 @@ class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun initData() {
-        val map = mapOf(
-            "page_label" to "brand_wall_detail",
-            "resource_id" to id,
-            "page_type" to "card"
-        )
+
         recycler_view.post {
-            viewModel.onRefresh(map, isFirst = true)
+            viewModel.onRefresh(id = id, isDetail = true, isFirst = true)
         }
     }
 
@@ -234,19 +228,11 @@ class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun onRefresh() {
-        isRefresh = true
-        brandAdapter.loadMoreModule.isEnableLoadMore = false
-        val map = mapOf(
-            "page_label" to "brand_wall_detail",
-            "resource_id" to id,
-            "page_type" to "card"
-        )
-        viewModel.onRefresh(map, isFirst = true)
+
+        viewModel.onRefresh(id = id, isDetail = true)
     }
 
     override fun onLoadMore() {
-        isRefresh = false
-        refresh_layout.isEnabled = false
-        viewModel.onLoadMore(paramsMap)
+        viewModel.onLoadMore()
     }
 }

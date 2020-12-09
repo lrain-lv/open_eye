@@ -1,56 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent"
-    tools:context=".ui.activity.BrandWallActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@mipmap/icon_back">
+    <data>
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="品牌墙"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+        <import type="com.app.eye.ui.entity.ToolbarTitle" />
 
-    </androidx.appcompat.widget.Toolbar>
+        <import type="com.app.eye.widgets.MultipleStatusView" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:id="@+id/refresh_layout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tool_bar">
+        <import type="com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <variable
+            name="toolbarTitle"
+            type="ToolbarTitle" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+        <variable
+            name="viewModel"
+            type="BrandWallViewModel" />
+
+        <variable
+            name="colorResId"
+            type="int" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.activity.BrandWallActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onNavClick="@{toolbarTitle.action}"
+            app:resId="@{toolbarTitle.resId}">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="品牌墙"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:schemeColors="@{colorResId}"
+            app:isEnable="@{viewModel.enableRefreshLiveData.booleanValue()}"
+            app:isRefresh="@{viewModel.refreshLiveData.booleanValue()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tool_bar"
+            app:onRefreshClick='@{()->viewModel.onRefresh("",false,false)}'>
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
-            <com.app.eye.widgets.MultipleStatusView
-                android:id="@+id/status_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.app.eye.widgets.MultipleStatusView
+                    android:id="@+id/status_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:statusValue="@{viewModel.statusLiveData.intValue()}" />
+            </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
