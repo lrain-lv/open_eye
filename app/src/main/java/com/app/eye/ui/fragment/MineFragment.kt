@@ -1,5 +1,6 @@
 package com.app.eye.ui.fragment
 
+import androidx.core.view.doOnLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import coil.load

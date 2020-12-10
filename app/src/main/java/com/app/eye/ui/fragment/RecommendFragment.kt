@@ -18,6 +18,7 @@ import com.app.eye.ui.mvvm.viewmodel.RecommendViewModel
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.animation.AlphaInAnimation
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
@@ -57,6 +58,7 @@ class RecommendFragment : BaseVMFragment(),
             setOnItemClickListener { adapter, view, position ->
 
             }
+            adapterAnimation = AlphaInAnimation()
             addChildClickViewIds(R.id.tv_right_text)
             setOnItemClickListener(this@RecommendFragment)
             setOnItemChildClickListener(this@RecommendFragment)

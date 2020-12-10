@@ -47,7 +47,6 @@ class RetrofitManager {
 
     private fun initRetrofit() {
         retrofit = Retrofit.Builder()
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .baseUrl(Constant.COMMON_BASE_URL)
             .client(client)
