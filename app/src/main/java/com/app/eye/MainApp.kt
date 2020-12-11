@@ -66,6 +66,7 @@ class MainApp : Application() {
             viewModel { TopicReplyViewModel(get()) }
             viewModel { TopicViewModel(get()) }
             viewModel { VideoDetailViewModel(get()) }
+            viewModel { InteractViewModel(get()) }
         }
     )
 

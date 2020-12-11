@@ -16,6 +16,7 @@ import com.app.eye.ui.activity.LoginActivity
 import com.app.eye.ui.adapter.PrivateMsgAdapter
 import com.app.eye.ui.mvvm.viewmodel.BrandWallViewModel
 import com.app.eye.ui.mvvm.viewmodel.MessageViewModel
+import com.app.eye.utils.DataStoreUtils
 import com.app.eye.widgets.STATUS_CONTENT
 import com.app.eye.widgets.STATUS_EMPTY
 import com.app.eye.widgets.STATUS_ERROR
@@ -25,10 +26,16 @@ import com.blankj.utilcode.util.SPUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_message.*
 import kotlinx.android.synthetic.main.fragment_message.recycler_view
 import kotlinx.android.synthetic.main.fragment_message.refresh_layout
 import kotlinx.android.synthetic.main.fragment_message.status_view
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,11 +51,11 @@ class MessageFragment : BaseVMFragment(), View.OnClickListener,
             }
     }
 
+    private val mainScope = MainScope()
+
     private val viewModel by viewModel<MessageViewModel>()
 
-    private val isLogin: Boolean by lazy {
-        SPUtils.getInstance("eye").getString("avatar", "").isNotEmpty()
-    }
+    private var isLogin: Boolean = false
 
     private var msgAdapter = PrivateMsgAdapter(mutableListOf())
 
@@ -63,7 +70,6 @@ class MessageFragment : BaseVMFragment(), View.OnClickListener,
     }
 
     override fun initView() {
-        layout_login.visibility = if (isLogin) View.GONE else View.VISIBLE
         initListener()
         initSwipeRefreshLayout(refresh_layout)
         recycler_view.layoutManager = LinearLayoutManager(mContext)
@@ -80,10 +86,17 @@ class MessageFragment : BaseVMFragment(), View.OnClickListener,
     }
 
     override fun initData() {
-        if (isLogin) {
-            refresh_layout.post {
-                viewModel.onRefresh(hashMapOf(), isFirst = true)
-            }
+        mainScope.launch {
+            DataStoreUtils.getInstance().readStringFlow("avatar", "")
+                .collect {
+                    isLogin = it.isNotEmpty()
+                    layout_login.visibility = if (isLogin) View.GONE else View.VISIBLE
+                    if (isLogin) {
+                        refresh_layout.post {
+                            viewModel.onRefresh(hashMapOf(), isFirst = true)
+                        }
+                    }
+                }
         }
     }
 

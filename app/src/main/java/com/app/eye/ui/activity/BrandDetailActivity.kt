@@ -1,7 +1,9 @@
 package com.app.eye.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -42,6 +44,7 @@ class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListen
             val bundle = Bundle().apply {
                 putString("id", id)
             }
+
             ActivityUtils.startActivity(bundle, BrandDetailActivity::class.java)
         }
     }
@@ -70,6 +73,7 @@ class BrandDetailActivity : BaseVMActivity(), SwipeRefreshLayout.OnRefreshListen
     override fun getLayoutRes(): Int = R.layout.activity_brand_detail
 
     override fun initView() {
+
         immersionBar.statusBarDarkFont(false)
             .statusBarAlpha(0f)
             .init()

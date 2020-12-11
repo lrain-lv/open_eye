@@ -32,13 +32,13 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-            <ImageView
-        android:scaleType="centerCrop"
+        <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="centerCrop"
             android:src="@mipmap/no_account_tip" />
 
         <TextView

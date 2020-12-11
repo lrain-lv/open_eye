@@ -15,6 +15,7 @@ import com.app.eye.event.NetworkEvent
 import com.app.eye.receiver.NetworkChangeReceiver
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import me.yokeyword.fragmentation.SupportFragment
 import org.greenrobot.eventbus.EventBus
@@ -26,6 +27,9 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : SupportFragment() {
     lateinit var mContext: Context
 
     var mRootView: View? = null
+
+    lateinit var binding: T
+
 
     protected fun <T : ViewDataBinding> binding(
         inflater: LayoutInflater,
@@ -51,7 +55,7 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : SupportFragment() {
         if (isUseEventBus()) {
             EventBus.getDefault().register(this)
         }
-        val binding = binding<T>(inflater, getLayoutRes(), container)
+        binding = binding<T>(inflater, getLayoutRes(), container)
         mRootView = binding.root
         return mRootView
     }

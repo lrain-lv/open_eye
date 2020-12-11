@@ -1,5 +1,6 @@
 package com.app.eye.ui.activity
 
+import android.provider.Settings
 import com.app.eye.R
 import com.app.eye.base.BaseActivity
 import com.app.eye.event.ChangeTabEvent
@@ -12,6 +13,7 @@ import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.flyco.tablayout.listener.CustomTabEntity
 import com.flyco.tablayout.listener.OnTabSelectListener
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -20,6 +22,7 @@ import me.yokeyword.fragmentation.ISupportFragment
 import me.yokeyword.fragmentation.SupportFragment
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.reflect.Array.setInt
 
 class MainActivity : BaseActivity() {
     override fun getLayoutRes(): Int = R.layout.activity_main

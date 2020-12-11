@@ -2,9 +2,10 @@ package com.app.eye.http.mvvm
 
 import com.app.eye.http.RetrofitManager
 import com.app.eye.ui.entity.ConfigEntity
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
-class ServiceHelper(private val service : ApiService) {
+class ServiceHelper(private val service: ApiService) {
 
 //    companion object {
 //        var serviceHelper: ServiceHelper? = null
@@ -271,5 +272,10 @@ class ServiceHelper(private val service : ApiService) {
         EyeResult.Error(IOException(e.message))
     }
 
-
+    suspend fun getDiscoverMyMsg() = try {
+        val entity = service.getDiscoverMyMsg()
+        EyeResult.Success(entity)
+    } catch (e: Exception) {
+        EyeResult.Error(IOException(e.message))
+    }
 }

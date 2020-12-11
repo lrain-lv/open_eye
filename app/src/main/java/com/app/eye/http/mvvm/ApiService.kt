@@ -126,4 +126,6 @@ interface ApiService {
     @POST(Constant.BRAND_LIST)
     suspend fun getBrandList(): BrandListEntity
 
+    @GET(Constant.DISCOVER_MSG)
+    suspend fun getDiscoverMyMsg(): InteractEntity
 }

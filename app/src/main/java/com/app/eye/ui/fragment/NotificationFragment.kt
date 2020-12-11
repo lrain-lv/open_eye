@@ -10,12 +10,13 @@ import me.yokeyword.fragmentation.SupportFragment
 
 class NotificationFragment : BaseFragment(), ViewPager.OnPageChangeListener {
 
-    private val titleList = mutableListOf("推送", "私信")
+    private val titleList = mutableListOf("推送","互动", "私信")
     override fun getLayoutRes(): Int = R.layout.fragment_notification
 
     override fun initView() {
         val fragmentList = mutableListOf<SupportFragment>().apply {
             add(PushFragment.newInstance())
+            add(InteractFragment.newInstance())
             add(MessageFragment.newInstance())
         }
         val fragmentAdapter = TabFragmentAdapter(childFragmentManager, fragmentList, titleList)
